@@ -7,6 +7,7 @@ import org.apache.uima.fit.component.JCasAnnotator_ImplBase;
 import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
 
+import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.NGram;
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token;
 import de.unidue.langtech.teaching.pp.type.DetectedLanguage;
 
@@ -27,7 +28,11 @@ public class BaselineExample
         System.out.println("Document is: " + jcas.getDocumentText());
         
         Collection<Token> tokens = JCasUtil.select(jcas, Token.class);
-        System.out.println("CAS contains " + tokens.size() + " tokens.");
+        //System.out.println("CAS contains " + tokens.size() + " tokens.");
+        
+        Collection<NGram> ngrams = JCasUtil.select(jcas, NGram.class);
+        for (NGram ngram : ngrams)
+        System.out.println(ngram.getText());
         
         DetectedLanguage languageAnno = new DetectedLanguage(jcas);
         languageAnno.setLanguage("EN");
