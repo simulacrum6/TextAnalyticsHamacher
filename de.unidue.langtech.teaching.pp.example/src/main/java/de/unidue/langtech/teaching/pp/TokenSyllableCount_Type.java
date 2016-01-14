@@ -14,7 +14,7 @@ import org.apache.uima.cas.Feature;
 import org.apache.uima.jcas.tcas.Annotation_Type;
 
 /** 
- * Updated by JCasGen Thu Jan 14 09:17:32 CET 2016
+ * Updated by JCasGen Thu Jan 14 12:27:32 CET 2016
  * @generated */
 public class TokenSyllableCount_Type extends Annotation_Type {
   /** @generated 
@@ -57,7 +57,7 @@ public class TokenSyllableCount_Type extends Annotation_Type {
   public int getCountSyllables(int addr) {
         if (featOkTst && casFeat_countSyllables == null)
       jcas.throwFeatMissing("countSyllables", "de.unidue.langtech.teaching.pp.TokenSyllableCount");
-    return ll_cas.ll_getRefValue(addr, casFeatCode_countSyllables);
+    return ll_cas.ll_getIntValue(addr, casFeatCode_countSyllables);
   }
   /** @generated
    * @param addr low level Feature Structure reference
@@ -66,36 +66,9 @@ public class TokenSyllableCount_Type extends Annotation_Type {
   public void setCountSyllables(int addr, int v) {
         if (featOkTst && casFeat_countSyllables == null)
       jcas.throwFeatMissing("countSyllables", "de.unidue.langtech.teaching.pp.TokenSyllableCount");
-    ll_cas.ll_setRefValue(addr, casFeatCode_countSyllables, v);}
+    ll_cas.ll_setIntValue(addr, casFeatCode_countSyllables, v);}
     
-   /** @generated
-   * @param addr low level Feature Structure reference
-   * @param i index of item in the array
-   * @return value at index i in the array 
-   */
-  public int getCountSyllables(int addr, int i) {
-        if (featOkTst && casFeat_countSyllables == null)
-      jcas.throwFeatMissing("countSyllables", "de.unidue.langtech.teaching.pp.TokenSyllableCount");
-    if (lowLevelTypeChecks)
-      return ll_cas.ll_getIntArrayValue(ll_cas.ll_getRefValue(addr, casFeatCode_countSyllables), i, true);
-    jcas.checkArrayBounds(ll_cas.ll_getRefValue(addr, casFeatCode_countSyllables), i);
-  return ll_cas.ll_getIntArrayValue(ll_cas.ll_getRefValue(addr, casFeatCode_countSyllables), i);
-  }
-   
-  /** @generated
-   * @param addr low level Feature Structure reference
-   * @param i index of item in the array
-   * @param v value to set
-   */ 
-  public void setCountSyllables(int addr, int i, int v) {
-        if (featOkTst && casFeat_countSyllables == null)
-      jcas.throwFeatMissing("countSyllables", "de.unidue.langtech.teaching.pp.TokenSyllableCount");
-    if (lowLevelTypeChecks)
-      ll_cas.ll_setIntArrayValue(ll_cas.ll_getRefValue(addr, casFeatCode_countSyllables), i, v, true);
-    jcas.checkArrayBounds(ll_cas.ll_getRefValue(addr, casFeatCode_countSyllables), i);
-    ll_cas.ll_setIntArrayValue(ll_cas.ll_getRefValue(addr, casFeatCode_countSyllables), i, v);
-  }
- 
+  
 
 
 
@@ -109,7 +82,7 @@ public class TokenSyllableCount_Type extends Annotation_Type {
     casImpl.getFSClassRegistry().addGeneratorForType((TypeImpl)this.casType, getFSGenerator());
 
  
-    casFeat_countSyllables = jcas.getRequiredFeatureDE(casType, "countSyllables", "uima.cas.IntegerArray", featOkTst);
+    casFeat_countSyllables = jcas.getRequiredFeatureDE(casType, "countSyllables", "uima.cas.Integer", featOkTst);
     casFeatCode_countSyllables  = (null == casFeat_countSyllables) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_countSyllables).getCode();
 
   }

@@ -1,11 +1,14 @@
 package de.unidue.langtech.teaching.pp.example;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.fit.component.JCasAnnotator_ImplBase;
 import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
+import org.apache.uima.jcas.cas.IntegerArray;
 
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.NGram;
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token;
@@ -28,38 +31,30 @@ public class BaselineExample
         throws AnalysisEngineProcessException
     {
         System.out.println("Document is: " + jcas.getDocumentText());
+       
         
-        Collection<TokenSyllableCount> syllables = JCasUtil.select(jcas, TokenSyllableCount.class);
-        int i = 0;
+       List<Token> tokens = new ArrayList<Token>(JCasUtil.select(jcas, Token.class));        
+       List<TokenSyllableCount> tsc = new ArrayList<TokenSyllableCount>(JCasUtil.select(jcas, TokenSyllableCount.class));
+       
+       int syllableCount;
+       String word;
+              
+       System.out.println("CAS contains " + tokens.size() + " tokens.");        
+       System.out.println("CAS contains " + tsc.size() + " SylCounts.");
+              
+       for(int i = 0; i < tokens.size(); i++){
+    	   word = tokens.get(i).getCoveredText();
+    	   syllableCount = tsc.get(i).getCountSyllables();
+    	   
+    	   System.out.println("Token[" + i + "]: " + word + ", " + syllableCount + " syllables");    	   
+       }
+              
+        System.out.println("\n");
+//       
+//        Collection<NGram> ngrams = JCasUtil.select(jcas, NGram.class);
+//        for (NGram ngram : ngrams)
+//        System.out.println(ngram.getText());
+//       
         
-        for(TokenSyllableCount syllable : syllables){
-        	System.out.println("Syllable Count for token[" + i + "]: " + syllable.getCountSyllables());
-        	i++;
-        }
-        
-        /*
-        
-        //System.out.println("CAS contains " + tokens.size() + " tokens.");
-        WordSyllableCounter wsc = new WordSyllableCounter("en");
-        
-        String word;
-        int syllableCount;
-        
-        for(Token token : tokens){
-        	word = token.getCoveredText();
-        	syllableCount = wsc.countSyllables(word);
-        	System.out.println(word + ", " + syllableCount + ".");
-        }
-        
-        /*
-        Collection<NGram> ngrams = JCasUtil.select(jcas, NGram.class);
-        for (NGram ngram : ngrams)
-        System.out.println(ngram.getText());
-        */
-        /*
-        DetectedLanguage languageAnno = new DetectedLanguage(jcas);
-        languageAnno.setLanguage("EN");
-        languageAnno.addToIndexes();
-        */
     }
 }

@@ -25,27 +25,37 @@ public class SyllableCountAnnotator
 	          throws AnalysisEngineProcessException
 	      {
 	    	  
-	    	  WordSyllableCounter wsc = new WordSyllableCounter("en");
 	    	  Collection<Token> tokens = JCasUtil.select(jcas, Token.class);
-	    	  TokenSyllableCount tsc = new TokenSyllableCount(jcas, 0, tokens.size());
+	    	  
+	    	  WordSyllableCounter wsc = new WordSyllableCounter("en");
+	    	  IntegerArray intArr = new IntegerArray(jcas, tokens.size());
+	    	  
 	    	  String word;
 	          int syllableCount;
 	          int i = 0;
-	          List<Integer> syllableCountList = new ArrayList<Integer>();
 	          
 	          for(Token token : tokens){
 	          	word = token.getCoveredText();
 	          	syllableCount = wsc.countSyllables(word);
-	          	tsc.setCountSyllables(i, syllableCount);
+	          	//intArr.set(i, syllableCount);
 	          	i++;
+	          
+	          	TokenSyllableCount tsc = new TokenSyllableCount(jcas);
+		        tsc.setCountSyllables(syllableCount);
+		        tsc.addToIndexes();
+		          
+	          	
 	          }  
 	          
-	          tsc.addToIndexes();
-	          Collection<TokenSyllableCount> cTsc = JCasUtil.select(jcas, TokenSyllableCount.class);
+//	          TokenSyllableCount tsc = new TokenSyllableCount(jcas);
+//	          tsc.setCountSyllables(intArr);
+//	          tsc.addToIndexes();
 	          
+	          /*
+	          Collection<TokenSyllableCount> cTsc = JCasUtil.select(jcas, TokenSyllableCount.class);
 	          for(TokenSyllableCount sylCount : cTsc){
 	        	  System.out.println(sylCount);
-	          }
+	          }*/
 
 	      }
 }

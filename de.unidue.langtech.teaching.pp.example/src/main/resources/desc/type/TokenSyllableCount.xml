@@ -13,7 +13,7 @@
         <featureDescription>
           <name>countSyllables</name>
           <description/>
-          <rangeTypeName>uima.cas.IntegerArray</rangeTypeName>
+          <rangeTypeName>uima.cas.Integer</rangeTypeName>
         </featureDescription>
       </features>
     </typeDescription>
