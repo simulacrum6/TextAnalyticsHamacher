@@ -8,13 +8,12 @@ import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.fit.component.JCasAnnotator_ImplBase;
 import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
-import org.apache.uima.jcas.cas.IntegerArray;
 
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.NGram;
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token;
-import de.tudarmstadt.ukp.dkpro.core.readability.measure.WordSyllableCounter;
+import de.tudarmstadt.ukp.dkpro.core.ngrams.NGramIterable;
+import de.tudarmstadt.ukp.dkpro.core.ngrams.util.CharacterNGramStringIterable;
 import de.unidue.langtech.teaching.pp.TokenSyllableCount;
-import de.unidue.langtech.teaching.pp.type.DetectedLanguage;
 
 /**
  * The baseline always identifies "EN" as the document language.
@@ -50,6 +49,12 @@ public class BaselineExample
        }
               
         System.out.println("\n");
+        
+        //NGram test
+        
+        CharacterNGramStringIterable ngi = new CharacterNGramStringIterable(tokens.get(0).getCoveredText(), 1, 3 );        
+                
+        
 //       
 //        Collection<NGram> ngrams = JCasUtil.select(jcas, NGram.class);
 //        for (NGram ngram : ngrams)
