@@ -10,6 +10,7 @@ import org.apache.uima.jcas.JCas;
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.NGram;
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token;
 import de.tudarmstadt.ukp.dkpro.core.readability.measure.WordSyllableCounter;
+import de.unidue.langtech.teaching.pp.TokenSyllableCount;
 import de.unidue.langtech.teaching.pp.type.DetectedLanguage;
 
 /**
@@ -28,7 +29,16 @@ public class BaselineExample
     {
         System.out.println("Document is: " + jcas.getDocumentText());
         
-        Collection<Token> tokens = JCasUtil.select(jcas, Token.class);
+        Collection<TokenSyllableCount> syllables = JCasUtil.select(jcas, TokenSyllableCount.class);
+        int i = 0;
+        
+        for(TokenSyllableCount syllable : syllables){
+        	System.out.println("Syllable Count for token[" + i + "]: " + syllable.getCountSyllables());
+        	i++;
+        }
+        
+        /*
+        
         //System.out.println("CAS contains " + tokens.size() + " tokens.");
         WordSyllableCounter wsc = new WordSyllableCounter("en");
         
@@ -46,9 +56,10 @@ public class BaselineExample
         for (NGram ngram : ngrams)
         System.out.println(ngram.getText());
         */
-        
+        /*
         DetectedLanguage languageAnno = new DetectedLanguage(jcas);
         languageAnno.setLanguage("EN");
         languageAnno.addToIndexes();
+        */
     }
 }
