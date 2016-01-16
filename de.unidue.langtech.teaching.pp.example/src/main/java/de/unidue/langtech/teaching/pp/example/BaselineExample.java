@@ -2,7 +2,10 @@ package de.unidue.langtech.teaching.pp.example;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.fit.component.JCasAnnotator_ImplBase;
@@ -14,6 +17,7 @@ import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token;
 import de.tudarmstadt.ukp.dkpro.core.ngrams.NGramIterable;
 import de.tudarmstadt.ukp.dkpro.core.ngrams.util.CharacterNGramStringIterable;
 import de.unidue.langtech.teaching.pp.TokenSyllableCount;
+import de.unidue.langtech.teaching.pp.type.CharNGram;
 
 /**
  * The baseline always identifies "EN" as the document language.
@@ -24,7 +28,9 @@ import de.unidue.langtech.teaching.pp.TokenSyllableCount;
 public class BaselineExample
     extends JCasAnnotator_ImplBase
 {
+	
 
+	
     @Override
     public void process(JCas jcas)
         throws AnalysisEngineProcessException
@@ -34,9 +40,11 @@ public class BaselineExample
         
        List<Token> tokens = new ArrayList<Token>(JCasUtil.select(jcas, Token.class));        
        List<TokenSyllableCount> tsc = new ArrayList<TokenSyllableCount>(JCasUtil.select(jcas, TokenSyllableCount.class));
+       List<CharNGram> ngrams = new ArrayList<CharNGram>(JCasUtil.select(jcas, CharNGram.class));
        
        int syllableCount;
        String word;
+       String charNgrams = "";
               
        System.out.println("CAS contains " + tokens.size() + " tokens.");        
        System.out.println("CAS contains " + tsc.size() + " SylCounts.");
@@ -44,17 +52,23 @@ public class BaselineExample
        for(int i = 0; i < tokens.size(); i++){
     	   word = tokens.get(i).getCoveredText();
     	   syllableCount = tsc.get(i).getCountSyllables();
+    	   charNgrams = "";
     	   
-    	   System.out.println("Token[" + i + "]: " + word + ", " + syllableCount + " syllables");    	   
+    	   for(int j = 0; j < ngrams.get(i).getCharNGrams().size(); j++){
+    		   charNgrams += ngrams.get(i).getCharNGrams(j) + ", ";
+    	   }
+    	   
+    	   System.out.println("Token[" + i + "]: " + word + ", " + syllableCount + " syllables. CharNGrams: " + charNgrams);    	   
        }
               
         System.out.println("\n");
         
         //NGram test
         
-        CharacterNGramStringIterable ngi = new CharacterNGramStringIterable(tokens.get(0).getCoveredText(), 1, 3 );        
-                
         
+        
+        
+      
 //       
 //        Collection<NGram> ngrams = JCasUtil.select(jcas, NGram.class);
 //        for (NGram ngram : ngrams)

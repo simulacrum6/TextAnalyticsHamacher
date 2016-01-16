@@ -6,6 +6,7 @@ import org.apache.uima.fit.pipeline.SimplePipeline;
 
 import de.tudarmstadt.ukp.dkpro.core.ngrams.NGramAnnotator;
 import de.tudarmstadt.ukp.dkpro.core.tokit.BreakIteratorSegmenter;
+import de.unidue.langtech.teaching.pp.annotators.CharNGramAnnotator;
 import de.unidue.langtech.teaching.pp.annotators.SyllableCountAnnotator;
 import de.unidue.langtech.teaching.pp.example.BaselineExample;
 import de.unidue.langtech.teaching.pp.example.EvaluatorExample;
@@ -28,6 +29,7 @@ public class ExtendedPipeline
                 AnalysisEngineFactory.createEngineDescription(NGramAnnotator.class,
                 		NGramAnnotator.PARAM_N, 3),
                 AnalysisEngineFactory.createEngineDescription(SyllableCountAnnotator.class),
+                AnalysisEngineFactory.createEngineDescription(CharNGramAnnotator.class),
                 AnalysisEngineFactory.createEngineDescription(BaselineExample.class)
 
         );

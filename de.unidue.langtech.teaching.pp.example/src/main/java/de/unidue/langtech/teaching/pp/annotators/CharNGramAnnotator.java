@@ -1,0 +1,81 @@
+package de.unidue.langtech.teaching.pp.annotators;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.LinkedHashSet;
+import java.util.List;
+
+import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
+import org.apache.uima.fit.component.JCasAnnotator_ImplBase;
+import org.apache.uima.fit.descriptor.ConfigurationParameter;
+import org.apache.uima.fit.util.JCasUtil;
+import org.apache.uima.jcas.JCas;
+import org.apache.uima.jcas.cas.FSList;
+import org.apache.uima.jcas.cas.IntegerArray;
+import org.apache.uima.jcas.cas.IntegerList;
+import org.apache.uima.jcas.cas.StringArray;
+
+import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token;
+import de.tudarmstadt.ukp.dkpro.core.readability.measure.WordSyllableCounter;
+import de.unidue.langtech.teaching.pp.TokenSyllableCount;
+import de.unidue.langtech.teaching.pp.type.CharNGram;
+import de.unidue.langtech.teaching.pp.type.MyType;
+
+public class CharNGramAnnotator
+	  extends JCasAnnotator_ImplBase
+	  {		  
+	      public static final String PARAM_MIN_N = "PARAM_MIN_N";
+	      @ConfigurationParameter(name = PARAM_MIN_N, defaultValue = "1")
+	      protected int minN;
+	      
+	      public static final String PARAM_MAX_N = "PARAM_MAX_N";
+	      @ConfigurationParameter(name = PARAM_MAX_N, defaultValue = "3")
+	      protected int maxN;
+	      
+	 	 public static LinkedHashSet<String> getCharNGrams(String token, int minN, int maxN){
+	 	   	  List<String> chars = new ArrayList<String>();
+	 	   	  LinkedHashSet<String> ngrams = new LinkedHashSet<String>();
+	 	   	  
+	 	   	  for( int i = minN; i <= maxN; i++){
+	 	   		  for( int j = 0; i+j <= token.length(); j++ ){
+	 	   			chars.add( token.substring(j, j+i) );
+	 	   		  }	    		  
+	 	   	  }
+	 	   	  
+	 	   	  ngrams.addAll(chars);
+	 	   	  return ngrams;
+	 	  };
+	
+		  @Override
+	      public void process(JCas jcas)
+	          throws AnalysisEngineProcessException
+	      {
+	    	  			  
+	    	  Collection<Token> tokens = JCasUtil.select(jcas, Token.class);	    	  
+	    	  LinkedHashSet<String> charNgrams = new LinkedHashSet<String>();
+	    	  StringArray annoCharNgrams;
+	    	  
+	    	  String word;
+	    	  int i;
+	    	  
+	    	  for(Token token : tokens){
+	    		  i = 0;
+	    		  word = token.getCoveredText().toLowerCase();
+	    		  
+	    		  charNgrams = getCharNGrams(word, minN, maxN);
+	    		  annoCharNgrams = new StringArray(jcas, charNgrams.size());
+	    		  
+	    		  
+	    		  for(String ngram : charNgrams){
+	    			  annoCharNgrams.set(i, ngram);
+	    			  i++;
+	    		  }
+	    		  
+	    		  
+	    		  CharNGram ngrams = new CharNGram(jcas);
+	    		  ngrams.setCharNGrams(annoCharNgrams);
+	    		  ngrams.addToIndexes();
+	    	  }
+
+	      }
+}
