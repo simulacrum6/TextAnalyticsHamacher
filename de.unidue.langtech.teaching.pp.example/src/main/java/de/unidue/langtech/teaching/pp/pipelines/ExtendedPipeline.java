@@ -6,6 +6,7 @@ import org.apache.uima.fit.pipeline.SimplePipeline;
 
 import de.tudarmstadt.ukp.dkpro.core.ngrams.NGramAnnotator;
 import de.tudarmstadt.ukp.dkpro.core.tokit.BreakIteratorSegmenter;
+import de.unidue.langtech.pp.readers.ReaderTrain;
 import de.unidue.langtech.teaching.pp.annotators.CharNGramAnnotator;
 import de.unidue.langtech.teaching.pp.annotators.SyllableCountAnnotator;
 import de.unidue.langtech.teaching.pp.example.BaselineExample;
@@ -22,8 +23,8 @@ public class ExtendedPipeline
     {
         SimplePipeline.runPipeline(
                 CollectionReaderFactory.createReader(
-                        ReaderExample.class,
-                        ReaderExample.PARAM_INPUT_FILE, "src/test/resources/test/input.txt"
+                        ReaderTrain.class,
+                        ReaderTrain.PARAM_INPUT_FILE, "src/main/resources/inputfiles/cwi_training_allannotations.txt"
                 ),
                 AnalysisEngineFactory.createEngineDescription(BreakIteratorSegmenter.class),
                 AnalysisEngineFactory.createEngineDescription(NGramAnnotator.class,

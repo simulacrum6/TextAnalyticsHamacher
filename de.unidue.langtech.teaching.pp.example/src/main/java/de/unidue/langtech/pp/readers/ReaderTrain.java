@@ -14,15 +14,26 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.Progress;
 import org.apache.uima.util.ProgressImpl;
 
+import de.unidue.langtech.teaching.pp.type.GoldComplexity;
 import de.unidue.langtech.teaching.pp.type.GoldLanguage;
 
-/**
- * Example of a simple reader that reads a text file 
- * and puts each line of the file in a single document.
- * 
- * @author zesch
- *
- */
+/* 
+ * A training data reader for the SemEval2016 Task11: Complex Word Identification.
+ * Input files must be organised in the following format:
+ *	 TXT-FILE
+ *		[Line1]
+ *		[Line2]
+ *		(...)
+ *		[LineN]
+ *	 LINE
+ *		[Sentence][TAB][.][TAB][Tokeninfo]
+ *	 SENTENCE
+ *		[Word1][TAB][Word2][TAB](...)[TAB][WordN]
+ *	 TOKENINFO
+ *		[TAB][WordX][TAB][Position(WordX)][TAB][Rating1][TAB](...)[TAB][RatingM]
+ *		Each individual rating must be either 1 or 0. 
+*/
+	
 public class ReaderTrain
     extends JCasCollectionReader_ImplBase
 {
@@ -34,9 +45,6 @@ public class ReaderTrain
     private List<String> lines;
     private int currentLine;
     
-    /* 
-     * initializes the reader
-     */
     @Override
     public void initialize(UimaContext context)
         throws ResourceInitializationException
@@ -52,47 +60,50 @@ public class ReaderTrain
         }
     }
     
-    
-    /* 
-     * true, if there is a next document, false otherwise
-     */
     public boolean hasNext()
         throws IOException, CollectionException
     {
         return currentLine < lines.size();
     }
     
-    
-    /* 
-     * feeds the next document into the pipeline
-     */
     @Override
     public void getNext(JCas jcas)
         throws IOException, CollectionException
     {
-        // split line into gold standard language and actual text
-        String[] parts = lines.get(currentLine).split("#");
-        
-        // it is always good to do some sanity checks
-        if (parts.length != 2) {
-            throw new IOException("Wrong line format: " + lines.get(currentLine));
+
+        String[] split1 = lines.get(currentLine).split("\\.");
+        if (split1.length != 2) {
+            throw new IOException("Wrong line format: " + lines.get(currentLine) + " \n Line needs to contain a '.' ");
         }
         
-        // add gold standard value as annotation
-        GoldLanguage goldLanguage = new GoldLanguage(jcas);
-        goldLanguage.setLanguage(parts[0]);
-        goldLanguage.addToIndexes();
+        String[] split2 = split1[1].split("\t", -1);
+        if (split2.length < 3) {
+            throw new IOException("Wrong Tokeninfo format: " + split1[1]);
+        }
         
-        // add actual text of the document
-        jcas.setDocumentText(parts[1]);
+        int complexitySum = 0;
+        for(int i = 3; i < split2.length; i++){
+        	if(split2[i].equals("1")){
+        		complexitySum ++;
+        	}
+        }
+        
+        GoldComplexity goldComplexity = new GoldComplexity(jcas);
+        goldComplexity.setToken(split2[1]);
+        goldComplexity.setPosition( Integer.parseInt(split2[2]) );
+        goldComplexity.setComplexitySum(complexitySum);
+        if(complexitySum > 0){
+        	goldComplexity.setComplexity(1);
+        }else{
+        	goldComplexity.setComplexity(1);
+        }
+        goldComplexity.addToIndexes();
+        
+        jcas.setDocumentText(split1[0]);
         
         currentLine++;
     }
 
-    
-    /* 
-     * informs the pipeline about the current progress
-     */
     public Progress[] getProgress()
     {
         return new Progress[] { new ProgressImpl(currentLine, lines.size(), "lines") };
