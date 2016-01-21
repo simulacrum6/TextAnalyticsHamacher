@@ -7,12 +7,18 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.JCasRegistry;
 import org.apache.uima.jcas.cas.TOP_Type;
 
+import org.apache.uima.jcas.cas.StringArray;
+import org.apache.uima.jcas.cas.StringList;
+import org.apache.uima.jcas.cas.IntegerList;
 import org.apache.uima.jcas.tcas.Annotation;
 
 
+import org.apache.uima.jcas.cas.IntegerArray;
+
+
 /** 
- * Updated by JCasGen Tue Jan 19 02:45:04 CET 2016
- * XML source: C:/Users/Marius/git/TextAnalyticsHamacher/de.unidue.langtech.teaching.pp.example/src/main/resources/desc/type/GoldComplexity.xml
+ * Updated by JCasGen Thu Jan 21 23:05:57 CET 2016
+ * XML source: C:/Users/Nev/git/TextAnalyticsHamacher/de.unidue.langtech.teaching.pp.example/src/main/resources/desc/type/GoldComplexity.xml
  * @generated */
 public class GoldComplexity extends Annotation {
   /** @generated
@@ -77,75 +83,97 @@ public class GoldComplexity extends Annotation {
  
     
   //*--------------*
-  //* Feature: token
+  //* Feature: word
 
-  /** getter for token - gets Target token.
+  /** getter for word - gets Target word.
    * @generated
    * @return value of the feature 
    */
-  public String getToken() {
-    if (GoldComplexity_Type.featOkTst && ((GoldComplexity_Type)jcasType).casFeat_token == null)
-      jcasType.jcas.throwFeatMissing("token", "de.unidue.langtech.teaching.pp.type.GoldComplexity");
-    return jcasType.ll_cas.ll_getStringValue(addr, ((GoldComplexity_Type)jcasType).casFeatCode_token);}
+  public StringArray getWord() {
+    if (GoldComplexity_Type.featOkTst && ((GoldComplexity_Type)jcasType).casFeat_word == null)
+      jcasType.jcas.throwFeatMissing("word", "de.unidue.langtech.teaching.pp.type.GoldComplexity");
+    return (StringArray)(jcasType.ll_cas.ll_getFSForRef(jcasType.ll_cas.ll_getRefValue(addr, ((GoldComplexity_Type)jcasType).casFeatCode_word)));}
     
-  /** setter for token - sets Target token. 
+  /** setter for word - sets Target word. 
    * @generated
    * @param v value to set into the feature 
    */
-  public void setToken(String v) {
-    if (GoldComplexity_Type.featOkTst && ((GoldComplexity_Type)jcasType).casFeat_token == null)
-      jcasType.jcas.throwFeatMissing("token", "de.unidue.langtech.teaching.pp.type.GoldComplexity");
-    jcasType.ll_cas.ll_setStringValue(addr, ((GoldComplexity_Type)jcasType).casFeatCode_token, v);}    
+  public void setWord(StringArray v) {
+    if (GoldComplexity_Type.featOkTst && ((GoldComplexity_Type)jcasType).casFeat_word == null)
+      jcasType.jcas.throwFeatMissing("word", "de.unidue.langtech.teaching.pp.type.GoldComplexity");
+    jcasType.ll_cas.ll_setRefValue(addr, ((GoldComplexity_Type)jcasType).casFeatCode_word, jcasType.ll_cas.ll_getFSRef(v));}    
+    
+  /** indexed getter for word - gets an indexed value - Target word.
+   * @generated
+   * @param i index in the array to get
+   * @return value of the element at index i 
+   */
+  public String getWord(int i) {
+    if (GoldComplexity_Type.featOkTst && ((GoldComplexity_Type)jcasType).casFeat_word == null)
+      jcasType.jcas.throwFeatMissing("word", "de.unidue.langtech.teaching.pp.type.GoldComplexity");
+    jcasType.jcas.checkArrayBounds(jcasType.ll_cas.ll_getRefValue(addr, ((GoldComplexity_Type)jcasType).casFeatCode_word), i);
+    return jcasType.ll_cas.ll_getStringArrayValue(jcasType.ll_cas.ll_getRefValue(addr, ((GoldComplexity_Type)jcasType).casFeatCode_word), i);}
+
+  /** indexed setter for word - sets an indexed value - Target word.
+   * @generated
+   * @param i index in the array to set
+   * @param v value to set into the array 
+   */
+  public void setWord(int i, String v) { 
+    if (GoldComplexity_Type.featOkTst && ((GoldComplexity_Type)jcasType).casFeat_word == null)
+      jcasType.jcas.throwFeatMissing("word", "de.unidue.langtech.teaching.pp.type.GoldComplexity");
+    jcasType.jcas.checkArrayBounds(jcasType.ll_cas.ll_getRefValue(addr, ((GoldComplexity_Type)jcasType).casFeatCode_word), i);
+    jcasType.ll_cas.ll_setStringArrayValue(jcasType.ll_cas.ll_getRefValue(addr, ((GoldComplexity_Type)jcasType).casFeatCode_word), i, v);}
    
     
   //*--------------*
   //* Feature: position
 
-  /** getter for position - gets The token's position in its sentence.
+  /** getter for position - gets The word's position in its sentence.
    * @generated
    * @return value of the feature 
    */
-  public int getPosition() {
+  public IntegerArray getPosition() {
     if (GoldComplexity_Type.featOkTst && ((GoldComplexity_Type)jcasType).casFeat_position == null)
       jcasType.jcas.throwFeatMissing("position", "de.unidue.langtech.teaching.pp.type.GoldComplexity");
-    return jcasType.ll_cas.ll_getIntValue(addr, ((GoldComplexity_Type)jcasType).casFeatCode_position);}
+    return (IntegerArray)(jcasType.ll_cas.ll_getFSForRef(jcasType.ll_cas.ll_getRefValue(addr, ((GoldComplexity_Type)jcasType).casFeatCode_position)));}
     
-  /** setter for position - sets The token's position in its sentence. 
+  /** setter for position - sets The word's position in its sentence. 
    * @generated
    * @param v value to set into the feature 
    */
-  public void setPosition(int v) {
+  public void setPosition(IntegerArray v) {
     if (GoldComplexity_Type.featOkTst && ((GoldComplexity_Type)jcasType).casFeat_position == null)
       jcasType.jcas.throwFeatMissing("position", "de.unidue.langtech.teaching.pp.type.GoldComplexity");
-    jcasType.ll_cas.ll_setIntValue(addr, ((GoldComplexity_Type)jcasType).casFeatCode_position, v);}    
-   
+    jcasType.ll_cas.ll_setRefValue(addr, ((GoldComplexity_Type)jcasType).casFeatCode_position, jcasType.ll_cas.ll_getFSRef(v));}    
     
-  //*--------------*
-  //* Feature: sentence
+  /** indexed getter for position - gets an indexed value - The word's position in its sentence.
+   * @generated
+   * @param i index in the array to get
+   * @return value of the element at index i 
+   */
+  public int getPosition(int i) {
+    if (GoldComplexity_Type.featOkTst && ((GoldComplexity_Type)jcasType).casFeat_position == null)
+      jcasType.jcas.throwFeatMissing("position", "de.unidue.langtech.teaching.pp.type.GoldComplexity");
+    jcasType.jcas.checkArrayBounds(jcasType.ll_cas.ll_getRefValue(addr, ((GoldComplexity_Type)jcasType).casFeatCode_position), i);
+    return jcasType.ll_cas.ll_getIntArrayValue(jcasType.ll_cas.ll_getRefValue(addr, ((GoldComplexity_Type)jcasType).casFeatCode_position), i);}
 
-  /** getter for sentence - gets The sentence in which the token occured.
+  /** indexed setter for position - sets an indexed value - The word's position in its sentence.
    * @generated
-   * @return value of the feature 
+   * @param i index in the array to set
+   * @param v value to set into the array 
    */
-  public String getSentence() {
-    if (GoldComplexity_Type.featOkTst && ((GoldComplexity_Type)jcasType).casFeat_sentence == null)
-      jcasType.jcas.throwFeatMissing("sentence", "de.unidue.langtech.teaching.pp.type.GoldComplexity");
-    return jcasType.ll_cas.ll_getStringValue(addr, ((GoldComplexity_Type)jcasType).casFeatCode_sentence);}
-    
-  /** setter for sentence - sets The sentence in which the token occured. 
-   * @generated
-   * @param v value to set into the feature 
-   */
-  public void setSentence(String v) {
-    if (GoldComplexity_Type.featOkTst && ((GoldComplexity_Type)jcasType).casFeat_sentence == null)
-      jcasType.jcas.throwFeatMissing("sentence", "de.unidue.langtech.teaching.pp.type.GoldComplexity");
-    jcasType.ll_cas.ll_setStringValue(addr, ((GoldComplexity_Type)jcasType).casFeatCode_sentence, v);}    
+  public void setPosition(int i, int v) { 
+    if (GoldComplexity_Type.featOkTst && ((GoldComplexity_Type)jcasType).casFeat_position == null)
+      jcasType.jcas.throwFeatMissing("position", "de.unidue.langtech.teaching.pp.type.GoldComplexity");
+    jcasType.jcas.checkArrayBounds(jcasType.ll_cas.ll_getRefValue(addr, ((GoldComplexity_Type)jcasType).casFeatCode_position), i);
+    jcasType.ll_cas.ll_setIntArrayValue(jcasType.ll_cas.ll_getRefValue(addr, ((GoldComplexity_Type)jcasType).casFeatCode_position), i, v);}
    
     
   //*--------------*
   //* Feature: complexity
 
-  /** getter for complexity - gets Complexity rating for given token. 
+  /** getter for complexity - gets Complexity rating for given word.
 1 -> complex
 0 -> not complex
 
@@ -153,12 +181,12 @@ NOTE: Complexity is set to 1 if at least 1 person (of 20) deemed a word complex.
    * @generated
    * @return value of the feature 
    */
-  public int getComplexity() {
+  public IntegerArray getComplexity() {
     if (GoldComplexity_Type.featOkTst && ((GoldComplexity_Type)jcasType).casFeat_complexity == null)
       jcasType.jcas.throwFeatMissing("complexity", "de.unidue.langtech.teaching.pp.type.GoldComplexity");
-    return jcasType.ll_cas.ll_getIntValue(addr, ((GoldComplexity_Type)jcasType).casFeatCode_complexity);}
+    return (IntegerArray)(jcasType.ll_cas.ll_getFSForRef(jcasType.ll_cas.ll_getRefValue(addr, ((GoldComplexity_Type)jcasType).casFeatCode_complexity)));}
     
-  /** setter for complexity - sets Complexity rating for given token. 
+  /** setter for complexity - sets Complexity rating for given word.
 1 -> complex
 0 -> not complex
 
@@ -166,36 +194,92 @@ NOTE: Complexity is set to 1 if at least 1 person (of 20) deemed a word complex.
    * @generated
    * @param v value to set into the feature 
    */
-  public void setComplexity(int v) {
+  public void setComplexity(IntegerArray v) {
     if (GoldComplexity_Type.featOkTst && ((GoldComplexity_Type)jcasType).casFeat_complexity == null)
       jcasType.jcas.throwFeatMissing("complexity", "de.unidue.langtech.teaching.pp.type.GoldComplexity");
-    jcasType.ll_cas.ll_setIntValue(addr, ((GoldComplexity_Type)jcasType).casFeatCode_complexity, v);}    
+    jcasType.ll_cas.ll_setRefValue(addr, ((GoldComplexity_Type)jcasType).casFeatCode_complexity, jcasType.ll_cas.ll_getFSRef(v));}    
+    
+  /** indexed getter for complexity - gets an indexed value - Complexity rating for given word.
+1 -> complex
+0 -> not complex
+
+NOTE: Complexity is set to 1 if at least 1 person (of 20) deemed a word complex.
+   * @generated
+   * @param i index in the array to get
+   * @return value of the element at index i 
+   */
+  public int getComplexity(int i) {
+    if (GoldComplexity_Type.featOkTst && ((GoldComplexity_Type)jcasType).casFeat_complexity == null)
+      jcasType.jcas.throwFeatMissing("complexity", "de.unidue.langtech.teaching.pp.type.GoldComplexity");
+    jcasType.jcas.checkArrayBounds(jcasType.ll_cas.ll_getRefValue(addr, ((GoldComplexity_Type)jcasType).casFeatCode_complexity), i);
+    return jcasType.ll_cas.ll_getIntArrayValue(jcasType.ll_cas.ll_getRefValue(addr, ((GoldComplexity_Type)jcasType).casFeatCode_complexity), i);}
+
+  /** indexed setter for complexity - sets an indexed value - Complexity rating for given word.
+1 -> complex
+0 -> not complex
+
+NOTE: Complexity is set to 1 if at least 1 person (of 20) deemed a word complex.
+   * @generated
+   * @param i index in the array to set
+   * @param v value to set into the array 
+   */
+  public void setComplexity(int i, int v) { 
+    if (GoldComplexity_Type.featOkTst && ((GoldComplexity_Type)jcasType).casFeat_complexity == null)
+      jcasType.jcas.throwFeatMissing("complexity", "de.unidue.langtech.teaching.pp.type.GoldComplexity");
+    jcasType.jcas.checkArrayBounds(jcasType.ll_cas.ll_getRefValue(addr, ((GoldComplexity_Type)jcasType).casFeatCode_complexity), i);
+    jcasType.ll_cas.ll_setIntArrayValue(jcasType.ll_cas.ll_getRefValue(addr, ((GoldComplexity_Type)jcasType).casFeatCode_complexity), i, v);}
    
     
   //*--------------*
   //* Feature: complexitySum
 
-  /** getter for complexitySum - gets The sum of all complexity ratings for given token.
+  /** getter for complexitySum - gets The sum of all complexity ratings for given word.
 Min: 0
 Max: 20
    * @generated
    * @return value of the feature 
    */
-  public int getComplexitySum() {
+  public IntegerArray getComplexitySum() {
     if (GoldComplexity_Type.featOkTst && ((GoldComplexity_Type)jcasType).casFeat_complexitySum == null)
       jcasType.jcas.throwFeatMissing("complexitySum", "de.unidue.langtech.teaching.pp.type.GoldComplexity");
-    return jcasType.ll_cas.ll_getIntValue(addr, ((GoldComplexity_Type)jcasType).casFeatCode_complexitySum);}
+    return (IntegerArray)(jcasType.ll_cas.ll_getFSForRef(jcasType.ll_cas.ll_getRefValue(addr, ((GoldComplexity_Type)jcasType).casFeatCode_complexitySum)));}
     
-  /** setter for complexitySum - sets The sum of all complexity ratings for given token.
+  /** setter for complexitySum - sets The sum of all complexity ratings for given word.
 Min: 0
 Max: 20 
    * @generated
    * @param v value to set into the feature 
    */
-  public void setComplexitySum(int v) {
+  public void setComplexitySum(IntegerArray v) {
     if (GoldComplexity_Type.featOkTst && ((GoldComplexity_Type)jcasType).casFeat_complexitySum == null)
       jcasType.jcas.throwFeatMissing("complexitySum", "de.unidue.langtech.teaching.pp.type.GoldComplexity");
-    jcasType.ll_cas.ll_setIntValue(addr, ((GoldComplexity_Type)jcasType).casFeatCode_complexitySum, v);}    
+    jcasType.ll_cas.ll_setRefValue(addr, ((GoldComplexity_Type)jcasType).casFeatCode_complexitySum, jcasType.ll_cas.ll_getFSRef(v));}    
+    
+  /** indexed getter for complexitySum - gets an indexed value - The sum of all complexity ratings for given word.
+Min: 0
+Max: 20
+   * @generated
+   * @param i index in the array to get
+   * @return value of the element at index i 
+   */
+  public int getComplexitySum(int i) {
+    if (GoldComplexity_Type.featOkTst && ((GoldComplexity_Type)jcasType).casFeat_complexitySum == null)
+      jcasType.jcas.throwFeatMissing("complexitySum", "de.unidue.langtech.teaching.pp.type.GoldComplexity");
+    jcasType.jcas.checkArrayBounds(jcasType.ll_cas.ll_getRefValue(addr, ((GoldComplexity_Type)jcasType).casFeatCode_complexitySum), i);
+    return jcasType.ll_cas.ll_getIntArrayValue(jcasType.ll_cas.ll_getRefValue(addr, ((GoldComplexity_Type)jcasType).casFeatCode_complexitySum), i);}
+
+  /** indexed setter for complexitySum - sets an indexed value - The sum of all complexity ratings for given word.
+Min: 0
+Max: 20
+   * @generated
+   * @param i index in the array to set
+   * @param v value to set into the array 
+   */
+  public void setComplexitySum(int i, int v) { 
+    if (GoldComplexity_Type.featOkTst && ((GoldComplexity_Type)jcasType).casFeat_complexitySum == null)
+      jcasType.jcas.throwFeatMissing("complexitySum", "de.unidue.langtech.teaching.pp.type.GoldComplexity");
+    jcasType.jcas.checkArrayBounds(jcasType.ll_cas.ll_getRefValue(addr, ((GoldComplexity_Type)jcasType).casFeatCode_complexitySum), i);
+    jcasType.ll_cas.ll_setIntArrayValue(jcasType.ll_cas.ll_getRefValue(addr, ((GoldComplexity_Type)jcasType).casFeatCode_complexitySum), i, v);}
   }
 
     

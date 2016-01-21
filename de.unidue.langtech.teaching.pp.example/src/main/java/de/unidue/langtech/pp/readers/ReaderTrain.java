@@ -2,6 +2,7 @@ package de.unidue.langtech.pp.readers;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
@@ -10,6 +11,8 @@ import org.apache.uima.collection.CollectionException;
 import org.apache.uima.fit.component.JCasCollectionReader_ImplBase;
 import org.apache.uima.fit.descriptor.ConfigurationParameter;
 import org.apache.uima.jcas.JCas;
+import org.apache.uima.jcas.cas.IntegerArray;
+import org.apache.uima.jcas.cas.StringArray;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.Progress;
 import org.apache.uima.util.ProgressImpl;
@@ -20,16 +23,16 @@ import de.unidue.langtech.teaching.pp.type.GoldLanguage;
 /* 
  * A training data reader for the SemEval2016 Task11: Complex Word Identification.
  * Input files must be organised in the following format:
- *	 TXT-FILE
+ *	 Each TEXT in INPUT
  *		[Line1]
  *		[Line2]
  *		(...)
  *		[LineN]
- *	 LINE
+ *	 Each LINE in TEXT
  *		[Sentence][TAB][.][TAB][Tokeninfo]
- *	 SENTENCE
+ *	 Each SENTENCE in LINE
  *		[Word1][TAB][Word2][TAB](...)[TAB][WordN]
- *	 TOKENINFO
+ *	 Each TOKENINFO in LINE
  *		[TAB][WordX][TAB][Position(WordX)][TAB][Rating1][TAB](...)[TAB][RatingM]
  *		Each individual rating must be either 1 or 0. 
 */
@@ -43,7 +46,14 @@ public class ReaderTrain
     private File inputFile; 
     
     private List<String> lines;
+    
     private int currentLine;
+    private String documentText;
+    
+    private List<String> wordBuffer = new ArrayList<String>();
+    private List<Integer> positionBuffer = new ArrayList<Integer>();
+    private List<Integer> complexityBuffer = new ArrayList<Integer>();
+    private List<Integer> complexitySumBuffer = new ArrayList<Integer>();
     
     @Override
     public void initialize(UimaContext context)
@@ -63,43 +73,86 @@ public class ReaderTrain
     public boolean hasNext()
         throws IOException, CollectionException
     {
-        return currentLine < lines.size();
+        String currLineText;
+        
+        String[] split1;
+        String[] split2;
+        
+        int complexitySum;
+        
+        wordBuffer = new ArrayList<String>();
+        positionBuffer = new ArrayList<Integer>();
+        complexityBuffer = new ArrayList<Integer>();
+        complexitySumBuffer = new ArrayList<Integer>();
+    	
+        //FIXME Issue: Regex lacks whitespace in front of dot separator.
+        split1 = lines.get(currentLine).split("[\\s+]\\.");
+        if (split1.length != 2) {
+            throw new IOException("Wrong line format: " + lines.get(currentLine) + " \n Line needs to contain a '.' ");
+        }    	
+    	currLineText = split1[0];
+    	documentText = currLineText;
+    	
+    	do{
+            split2 = split1[1].split("\t", -1);
+            if (split2.length < 3) {
+                throw new IOException("Wrong Tokeninfo format: " + split1[1]);
+            }
+            
+            complexitySum = 0;
+            for(int i = 3; i < split2.length; i++){
+            	if(split2[i].equals("1")){
+            		complexitySum ++;
+            	}
+            }
+            
+            //Add to buffer array.
+            wordBuffer.add(split2[1]);
+            positionBuffer.add( Integer.parseInt( split2[2] ) );
+            complexitySumBuffer.add(complexitySum);
+            complexityBuffer.add( (complexitySum > 0)?1:0 );
+            
+            //Preprations for next loop.
+            
+            currentLine ++;
+            
+        	split1 = lines.get(currentLine).split("\\.");
+            if (split1.length != 2) {
+                throw new IOException("Wrong line format: " + lines.get(currentLine) + " \n Line needs to contain a '.' ");
+            }    	
+        	currLineText = split1[0];
+        	
+    	}while(documentText.equals(currLineText));
+    	
+    	return currentLine < lines.size();
     }
     
     @Override
     public void getNext(JCas jcas)
         throws IOException, CollectionException
     {
-
-        String[] split1 = lines.get(currentLine).split("\\.");
-        if (split1.length != 2) {
-            throw new IOException("Wrong line format: " + lines.get(currentLine) + " \n Line needs to contain a '.' ");
-        }
-        
-        String[] split2 = split1[1].split("\t", -1);
-        if (split2.length < 3) {
-            throw new IOException("Wrong Tokeninfo format: " + split1[1]);
-        }
-        
-        int complexitySum = 0;
-        for(int i = 3; i < split2.length; i++){
-        	if(split2[i].equals("1")){
-        		complexitySum ++;
-        	}
-        }
-        
+        //Transfer variables from buffer to storage.
+    	StringArray word = new StringArray(jcas, wordBuffer.size());
+    	IntegerArray position = new IntegerArray(jcas, positionBuffer.size());
+    	IntegerArray complexity = new IntegerArray(jcas, complexitySumBuffer.size());
+    	IntegerArray complexitySum = new IntegerArray(jcas, complexitySumBuffer.size());
+    	
+    	for(int i = 0; i < wordBuffer.size(); i++){
+    		word.set(i, wordBuffer.get(i));
+    		position.set(i, positionBuffer.get(i));
+    		complexity.set(i, complexityBuffer.get(i));
+    		complexitySum.set(i, complexitySumBuffer.get(i));
+    	}
+    	
+        //Set Gold Annotation.
         GoldComplexity goldComplexity = new GoldComplexity(jcas);
-        goldComplexity.setToken(split2[1]);
-        goldComplexity.setPosition( Integer.parseInt(split2[2]) );
+        goldComplexity.setWord(word);
+        goldComplexity.setPosition(position);
+        goldComplexity.setComplexity(complexity);
         goldComplexity.setComplexitySum(complexitySum);
-        if(complexitySum > 0){
-        	goldComplexity.setComplexity(1);
-        }else{
-        	goldComplexity.setComplexity(1);
-        }
         goldComplexity.addToIndexes();
         
-        jcas.setDocumentText(split1[0]);
+        jcas.setDocumentText(documentText);
         
         currentLine++;
     }

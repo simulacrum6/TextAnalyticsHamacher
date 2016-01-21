@@ -1,5 +1,5 @@
 
-/* First created by JCasGen Wed Jan 13 12:44:04 CET 2016 */
+/* First created by JCasGen Thu Jan 21 23:22:57 CET 2016 */
 package de.unidue.langtech.teaching.pp;
 
 import org.apache.uima.jcas.JCas;
@@ -14,7 +14,7 @@ import org.apache.uima.cas.Feature;
 import org.apache.uima.jcas.tcas.Annotation_Type;
 
 /** 
- * Updated by JCasGen Thu Jan 14 12:27:32 CET 2016
+ * Updated by JCasGen Thu Jan 21 23:22:57 CET 2016
  * @generated */
 public class TokenSyllableCount_Type extends Annotation_Type {
   /** @generated 

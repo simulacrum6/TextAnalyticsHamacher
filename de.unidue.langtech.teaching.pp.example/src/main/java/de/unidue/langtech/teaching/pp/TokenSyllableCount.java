@@ -1,25 +1,17 @@
 
 
-/* First created by JCasGen Wed Jan 13 12:44:04 CET 2016 */
+/* First created by JCasGen Thu Jan 21 23:22:57 CET 2016 */
 package de.unidue.langtech.teaching.pp;
 
 import org.apache.uima.jcas.JCas; 
 import org.apache.uima.jcas.JCasRegistry;
 import org.apache.uima.jcas.cas.TOP_Type;
 
-import org.apache.uima.jcas.cas.FSArray;
-import org.apache.uima.jcas.cas.TOP;
-import org.apache.uima.jcas.cas.FSList;
-import org.apache.uima.jcas.cas.IntegerList;
-import org.apache.uima.jcas.cas.EmptyIntegerList;
 import org.apache.uima.jcas.tcas.Annotation;
 
 
-import org.apache.uima.jcas.cas.IntegerArray;
-
-
 /** 
- * Updated by JCasGen Thu Jan 14 12:27:32 CET 2016
+ * Updated by JCasGen Thu Jan 21 23:22:57 CET 2016
  * XML source: C:/Users/Nev/git/TextAnalyticsHamacher/de.unidue.langtech.teaching.pp.example/src/main/resources/desc/type/TokenSyllableCount.xml
  * @generated */
 public class TokenSyllableCount extends Annotation {

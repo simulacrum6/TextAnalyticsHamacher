@@ -7,35 +7,30 @@
       <supertypeName>uima.tcas.Annotation</supertypeName>
     <features>
         <featureDescription>
-          <name>token</name>
-          <description>Target token.</description>
-          <rangeTypeName>uima.cas.String</rangeTypeName>
+          <name>word</name>
+          <description>Target word.</description>
+          <rangeTypeName>uima.cas.StringArray</rangeTypeName>
         </featureDescription>
       <featureDescription>
           <name>position</name>
-          <description>The token's position in its sentence.</description>
-          <rangeTypeName>uima.cas.Integer</rangeTypeName>
-        </featureDescription>
-        <featureDescription>
-          <name>sentence</name>
-          <description>The sentence in which the token occured.</description>
-          <rangeTypeName>uima.cas.String</rangeTypeName>
+          <description>The word's position in its sentence.</description>
+          <rangeTypeName>uima.cas.IntegerArray</rangeTypeName>
         </featureDescription>
         <featureDescription>
           <name>complexity</name>
-          <description>Complexity rating for given token. 
+          <description>Complexity rating for given word.
 1 -&gt; complex
 0 -&gt; not complex
 
 NOTE: Complexity is set to 1 if at least 1 person (of 20) deemed a word complex.</description>
-          <rangeTypeName>uima.cas.Integer</rangeTypeName>
+          <rangeTypeName>uima.cas.IntegerArray</rangeTypeName>
         </featureDescription>
         <featureDescription>
           <name>complexitySum</name>
-          <description>The sum of all complexity ratings for given token.
+          <description>The sum of all complexity ratings for given word.
 Min: 0
 Max: 20</description>
-          <rangeTypeName>uima.cas.Integer</rangeTypeName>
+          <rangeTypeName>uima.cas.IntegerArray</rangeTypeName>
         </featureDescription>
       </features>
     </typeDescription>
