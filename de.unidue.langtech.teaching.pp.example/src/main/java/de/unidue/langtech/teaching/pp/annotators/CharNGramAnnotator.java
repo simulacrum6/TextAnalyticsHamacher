@@ -31,16 +31,22 @@ public class CharNGramAnnotator
 	      public static final String PARAM_MAX_N = "PARAM_MAX_N";
 	      @ConfigurationParameter(name = PARAM_MAX_N, defaultValue = "3")
 	      protected int maxN;
-	      
-	 	 public static LinkedHashSet<String> getCharNGrams(String token, int minN, int maxN){
+	    
+	      //FIXME Something messes up the ordering.
+	 	 public LinkedHashSet<String> getCharNGrams(String token, int minN, int maxN){
 	 	   	  List<String> chars = new ArrayList<String>();
 	 	   	  LinkedHashSet<String> ngrams = new LinkedHashSet<String>();
 	 	   	  
-	 	   	  for( int i = minN; i <= maxN; i++){
-	 	   		  for( int j = 0; i+j <= token.length(); j++ ){
-	 	   			chars.add( token.substring(j, j+i) );
-	 	   		  }	    		  
+	 	   	  if(minN <= token.length()){
+	 	   		for( int i = minN; i <= maxN; i++){
+		 	   		  for( int j = 0; i+j <= token.length(); j++ ){
+		 	   			chars.add( token.substring(j, j+i) );
+		 	   		  }	    		  
+		 	   	  }  
+	 	   	  }else{
+	 	   		  chars.add("-");
 	 	   	  }
+	 	   	  
 	 	   	  
 	 	   	  ngrams.addAll(chars);
 	 	   	  return ngrams;
@@ -51,8 +57,8 @@ public class CharNGramAnnotator
 	          throws AnalysisEngineProcessException
 	      {
 	    	  			  
-	    	  Collection<Token> tokens = JCasUtil.select(jcas, Token.class);	    	  
-	    	  LinkedHashSet<String> charNgrams = new LinkedHashSet<String>();
+	    	  List<Token> tokens = new ArrayList<Token>(JCasUtil.select(jcas, Token.class));	    	  
+	    	  LinkedHashSet<String> charNgrams;
 	    	  StringArray annoCharNgrams;
 	    	  
 	    	  String word;

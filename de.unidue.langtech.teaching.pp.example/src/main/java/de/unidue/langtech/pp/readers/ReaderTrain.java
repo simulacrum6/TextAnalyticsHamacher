@@ -43,7 +43,11 @@ public class ReaderTrain
 
     public static final String PARAM_INPUT_FILE = "InputFile";
     @ConfigurationParameter(name = PARAM_INPUT_FILE, mandatory = true)
-    private File inputFile; 
+    private File inputFile;
+    
+    public static final String PARAM_DOCUMENT_LANGUAGE = "DocumentLanguage";
+    @ConfigurationParameter(name = PARAM_INPUT_FILE, mandatory = true, defaultValue = "en")
+    private String documentLanguage;
     
     private List<String> lines;
     
@@ -156,6 +160,7 @@ public class ReaderTrain
         goldComplexity.addToIndexes();
         
         jcas.setDocumentText(documentText);
+        jcas.setDocumentLanguage(documentLanguage);
         
         currentLine++;
     }

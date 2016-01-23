@@ -18,13 +18,8 @@ import de.tudarmstadt.ukp.dkpro.core.ngrams.NGramIterable;
 import de.tudarmstadt.ukp.dkpro.core.ngrams.util.CharacterNGramStringIterable;
 import de.unidue.langtech.teaching.pp.type.TokenSyllableCount;
 import de.unidue.langtech.teaching.pp.type.CharNGram;
+import de.unidue.langtech.teaching.pp.type.CorpusFrequency;
 
-/**
- * The baseline always identifies "EN" as the document language.
- * 
- * @author zesch
- *
- */
 public class Playground
     extends JCasAnnotator_ImplBase
 {
@@ -41,6 +36,7 @@ public class Playground
        List<Token> tokens = new ArrayList<Token>(JCasUtil.select(jcas, Token.class));        
        List<TokenSyllableCount> tsc = new ArrayList<TokenSyllableCount>(JCasUtil.select(jcas, TokenSyllableCount.class));
        List<CharNGram> ngrams = new ArrayList<CharNGram>(JCasUtil.select(jcas, CharNGram.class));
+       //List<CorpusFrequency> frequencies = new ArrayList<CorpusFrequency>(JCasUtil.select(jcas, CorpusFrequency.class));
        
        int syllableCount;
        String word;
@@ -48,15 +44,24 @@ public class Playground
               
        System.out.println("CAS contains " + tokens.size() + " tokens.");        
        System.out.println("CAS contains " + tsc.size() + " SylCounts.");
-              
+       System.out.println("CAS contains " + ngrams.size() + " CharNGrams.");
+      // System.out.println("CAS contains " + frequencies.size() + " CharNGrams.");
+       
+//       for(CharNGram ngram : ngrams){
+//    	   for(String charNGram : ngram.getCharNGrams().toArray()){
+//    		   System.out.print(charNGram);
+//    	   }
+//    	   System.out.println();
+//       }
+       
        for(int i = 0; i < tokens.size(); i++){
     	   word = tokens.get(i).getCoveredText();
     	   syllableCount = tsc.get(i).getCountSyllables();
     	   charNgrams = "";
-    	   
-    	   for(int j = 0; j < ngrams.get(i).getCharNGrams().size(); j++){
-    		   charNgrams += ngrams.get(i).getCharNGrams(j) + ", ";
-    	   }
+//    	   
+//    	   for(int j = 0; j < ngrams.get(i).getCharNGrams().size(); j++){
+//    		   charNgrams += ngrams.get(i).getCharNGrams(j) + ", ";
+//    	   }
     	   
     	   System.out.println("Token[" + i + "]: " + word + ", " + syllableCount + " syllables. CharNGrams: " + charNgrams);    	   
        }
