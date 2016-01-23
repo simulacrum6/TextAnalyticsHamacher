@@ -75,6 +75,7 @@ public class ReaderTrain
     {
         String currLineText;
         
+        //TODO reduce to 1 split variable.
         String[] split1;
         String[] split2;
         
@@ -112,13 +113,15 @@ public class ReaderTrain
             complexitySumBuffer.add(complexitySum);
             complexityBuffer.add( (complexitySum > 0)?1:0 );
             
-            //Preprations for next loop.
+            //Preparations for next loop.
             
             currentLine ++;
-            
-        	split1 = lines.get(currentLine).split("\\.");
+            //FIXME WRONG INPUT STYLE
+            //FIXME see above. Fix: set split count to -1, add all but last split to doctext. Alternatively: continue in loop.
+        	split1 = lines.get(currentLine).split("\\s\\.");
             if (split1.length != 2) {
-                throw new IOException("Wrong line format: " + lines.get(currentLine) + " \n Line needs to contain a '.' ");
+            //    throw new IOException("Wrong line format: " + lines.get(currentLine) + " \n Line needs to contain a '.' ");
+            continue;
             }    	
         	currLineText = split1[0];
         	

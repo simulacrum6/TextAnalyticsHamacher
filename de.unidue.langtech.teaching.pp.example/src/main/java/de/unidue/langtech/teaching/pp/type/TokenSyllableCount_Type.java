@@ -1,6 +1,6 @@
 
-/* First created by JCasGen Thu Jan 21 23:22:57 CET 2016 */
-package de.unidue.langtech.teaching.pp;
+/* First created by JCasGen Sat Jan 23 10:19:26 CET 2016 */
+package de.unidue.langtech.teaching.pp.type;
 
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.JCasRegistry;
@@ -14,7 +14,7 @@ import org.apache.uima.cas.Feature;
 import org.apache.uima.jcas.tcas.Annotation_Type;
 
 /** 
- * Updated by JCasGen Thu Jan 21 23:22:57 CET 2016
+ * Updated by JCasGen Sat Jan 23 10:19:26 CET 2016
  * @generated */
 public class TokenSyllableCount_Type extends Annotation_Type {
   /** @generated 
@@ -44,7 +44,7 @@ public class TokenSyllableCount_Type extends Annotation_Type {
   /** @generated 
      @modifiable */
   @SuppressWarnings ("hiding")
-  public final static boolean featOkTst = JCasRegistry.getFeatOkTst("de.unidue.langtech.teaching.pp.TokenSyllableCount");
+  public final static boolean featOkTst = JCasRegistry.getFeatOkTst("de.unidue.langtech.teaching.pp.type.TokenSyllableCount");
  
   /** @generated */
   final Feature casFeat_countSyllables;
@@ -56,7 +56,7 @@ public class TokenSyllableCount_Type extends Annotation_Type {
    */ 
   public int getCountSyllables(int addr) {
         if (featOkTst && casFeat_countSyllables == null)
-      jcas.throwFeatMissing("countSyllables", "de.unidue.langtech.teaching.pp.TokenSyllableCount");
+      jcas.throwFeatMissing("countSyllables", "de.unidue.langtech.teaching.pp.type.TokenSyllableCount");
     return ll_cas.ll_getIntValue(addr, casFeatCode_countSyllables);
   }
   /** @generated
@@ -65,7 +65,7 @@ public class TokenSyllableCount_Type extends Annotation_Type {
    */    
   public void setCountSyllables(int addr, int v) {
         if (featOkTst && casFeat_countSyllables == null)
-      jcas.throwFeatMissing("countSyllables", "de.unidue.langtech.teaching.pp.TokenSyllableCount");
+      jcas.throwFeatMissing("countSyllables", "de.unidue.langtech.teaching.pp.type.TokenSyllableCount");
     ll_cas.ll_setIntValue(addr, casFeatCode_countSyllables, v);}
     
   

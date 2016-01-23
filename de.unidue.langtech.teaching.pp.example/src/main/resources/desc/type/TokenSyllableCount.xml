@@ -6,7 +6,7 @@
   <vendor/>
   <types>
     <typeDescription>
-      <name>de.unidue.langtech.teaching.pp.TokenSyllableCount</name>
+      <name>de.unidue.langtech.teaching.pp.type.TokenSyllableCount</name>
       <description/>
       <supertypeName>uima.tcas.Annotation</supertypeName>
       <features>

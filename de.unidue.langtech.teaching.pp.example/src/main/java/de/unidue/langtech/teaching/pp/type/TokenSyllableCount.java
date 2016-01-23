@@ -1,7 +1,7 @@
 
 
-/* First created by JCasGen Thu Jan 21 23:22:57 CET 2016 */
-package de.unidue.langtech.teaching.pp;
+/* First created by JCasGen Sat Jan 23 10:19:26 CET 2016 */
+package de.unidue.langtech.teaching.pp.type;
 
 import org.apache.uima.jcas.JCas; 
 import org.apache.uima.jcas.JCasRegistry;
@@ -11,7 +11,7 @@ import org.apache.uima.jcas.tcas.Annotation;
 
 
 /** 
- * Updated by JCasGen Thu Jan 21 23:22:57 CET 2016
+ * Updated by JCasGen Sat Jan 23 10:19:26 CET 2016
  * XML source: C:/Users/Nev/git/TextAnalyticsHamacher/de.unidue.langtech.teaching.pp.example/src/main/resources/desc/type/TokenSyllableCount.xml
  * @generated */
 public class TokenSyllableCount extends Annotation {
@@ -85,7 +85,7 @@ public class TokenSyllableCount extends Annotation {
    */
   public int getCountSyllables() {
     if (TokenSyllableCount_Type.featOkTst && ((TokenSyllableCount_Type)jcasType).casFeat_countSyllables == null)
-      jcasType.jcas.throwFeatMissing("countSyllables", "de.unidue.langtech.teaching.pp.TokenSyllableCount");
+      jcasType.jcas.throwFeatMissing("countSyllables", "de.unidue.langtech.teaching.pp.type.TokenSyllableCount");
     return jcasType.ll_cas.ll_getIntValue(addr, ((TokenSyllableCount_Type)jcasType).casFeatCode_countSyllables);}
     
   /** setter for countSyllables - sets  
@@ -94,7 +94,7 @@ public class TokenSyllableCount extends Annotation {
    */
   public void setCountSyllables(int v) {
     if (TokenSyllableCount_Type.featOkTst && ((TokenSyllableCount_Type)jcasType).casFeat_countSyllables == null)
-      jcasType.jcas.throwFeatMissing("countSyllables", "de.unidue.langtech.teaching.pp.TokenSyllableCount");
+      jcasType.jcas.throwFeatMissing("countSyllables", "de.unidue.langtech.teaching.pp.type.TokenSyllableCount");
     jcasType.ll_cas.ll_setIntValue(addr, ((TokenSyllableCount_Type)jcasType).casFeatCode_countSyllables, v);}    
   }
 

@@ -14,7 +14,7 @@ import org.apache.uima.jcas.cas.IntegerList;
 
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token;
 import de.tudarmstadt.ukp.dkpro.core.readability.measure.WordSyllableCounter;
-import de.unidue.langtech.teaching.pp.TokenSyllableCount;
+import de.unidue.langtech.teaching.pp.type.TokenSyllableCount;
 import de.unidue.langtech.teaching.pp.type.MyType;
 
 public class SyllableCountAnnotator

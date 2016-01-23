@@ -16,7 +16,7 @@ import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.NGram;
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token;
 import de.tudarmstadt.ukp.dkpro.core.ngrams.NGramIterable;
 import de.tudarmstadt.ukp.dkpro.core.ngrams.util.CharacterNGramStringIterable;
-import de.unidue.langtech.teaching.pp.TokenSyllableCount;
+import de.unidue.langtech.teaching.pp.type.TokenSyllableCount;
 import de.unidue.langtech.teaching.pp.type.CharNGram;
 
 /**

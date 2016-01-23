@@ -10,11 +10,6 @@ import de.unidue.langtech.pp.readers.ReaderTrain;
 import de.unidue.langtech.teaching.pp.annotators.CharNGramAnnotator;
 import de.unidue.langtech.teaching.pp.annotators.Playground;
 import de.unidue.langtech.teaching.pp.annotators.SyllableCountAnnotator;
-import de.unidue.langtech.teaching.pp.example.BaselineExample;
-import de.unidue.langtech.teaching.pp.example.EvaluatorExample;
-import de.unidue.langtech.teaching.pp.example.ReaderExample;
-import de.unidue.langtech.teaching.pp.example.newType.LetterAnnotator;
-import de.unidue.langtech.teaching.pp.example.newType.Printer;
 
 public class ExtendedPipeline
 {
