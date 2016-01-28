@@ -44,16 +44,17 @@ public class ReaderTrain
     public static final String PARAM_INPUT_FILE = "InputFile";
     @ConfigurationParameter(name = PARAM_INPUT_FILE, mandatory = true)
     private File inputFile;
-    
+
+    //Language required for Stanford Lemmatizer
     public static final String PARAM_DOCUMENT_LANGUAGE = "DocumentLanguage";
-    @ConfigurationParameter(name = PARAM_INPUT_FILE, mandatory = true, defaultValue = "en")
+    @ConfigurationParameter(name = PARAM_DOCUMENT_LANGUAGE, defaultValue = "en")
     private String documentLanguage;
     
     private List<String> lines;
-    
     private int currentLine;
     private String documentText;
     
+    //FIXME Fix goldtype
     private List<String> wordBuffer = new ArrayList<String>();
     private List<Integer> positionBuffer = new ArrayList<Integer>();
     private List<Integer> complexityBuffer = new ArrayList<Integer>();
@@ -90,11 +91,11 @@ public class ReaderTrain
         complexityBuffer = new ArrayList<Integer>();
         complexitySumBuffer = new ArrayList<Integer>();
     	
-        //FIXME Issue: Regex lacks whitespace in front of dot separator.
-        split1 = lines.get(currentLine).split("[\\s+]\\.");
+        split1 = lines.get(currentLine).split("\\s[\\.\\!\\?]\\t");
+        System.out.println("WhoopWhoop");
         if (split1.length != 2) {
-            throw new IOException("Wrong line format: " + lines.get(currentLine) + " \n Line needs to contain a '.' ");
-        }    	
+            throw new IOException("Wrong line format: " + lines.get(currentLine) + " \n Line needs to contain the following separator: '.\\t' ");
+        }
     	currLineText = split1[0];
     	documentText = currLineText;
     	
@@ -111,21 +112,18 @@ public class ReaderTrain
             	}
             }
             
-            //Add to buffer array.
             wordBuffer.add(split2[1]);
             positionBuffer.add( Integer.parseInt( split2[2] ) );
             complexitySumBuffer.add(complexitySum);
             complexityBuffer.add( (complexitySum > 0)?1:0 );
             
-            //Preparations for next loop.
+            /* Preparations for next loop. */
             
             currentLine ++;
-            //FIXME WRONG INPUT STYLE
-            //FIXME see above. Fix: set split count to -1, add all but last split to doctext. Alternatively: continue in loop.
-        	split1 = lines.get(currentLine).split("\\s\\.");
+            
+        	split1 = lines.get(currentLine).split("\\s[\\.\\!\\?]\\t");
             if (split1.length != 2) {
-            //    throw new IOException("Wrong line format: " + lines.get(currentLine) + " \n Line needs to contain a '.' ");
-            continue;
+            	throw new IOException("Wrong line format: " + lines.get(currentLine) + " \n Line needs to contain the following separator: '.\\t' ");
             }    	
         	currLineText = split1[0];
         	
@@ -144,6 +142,8 @@ public class ReaderTrain
     	IntegerArray complexity = new IntegerArray(jcas, complexitySumBuffer.size());
     	IntegerArray complexitySum = new IntegerArray(jcas, complexitySumBuffer.size());
     	
+    	//FIXME OUT OF BOUNDS EXCEPTION.
+    	
     	for(int i = 0; i < wordBuffer.size(); i++){
     		word.set(i, wordBuffer.get(i));
     		position.set(i, positionBuffer.get(i));
@@ -158,6 +158,7 @@ public class ReaderTrain
         goldComplexity.setComplexity(complexity);
         goldComplexity.setComplexitySum(complexitySum);
         goldComplexity.addToIndexes();
+        
         
         jcas.setDocumentText(documentText);
         jcas.setDocumentLanguage(documentLanguage);

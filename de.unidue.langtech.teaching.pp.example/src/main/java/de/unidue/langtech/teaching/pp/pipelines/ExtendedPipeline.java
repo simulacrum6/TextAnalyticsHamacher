@@ -4,6 +4,8 @@ import org.apache.uima.fit.factory.AnalysisEngineFactory;
 import org.apache.uima.fit.factory.CollectionReaderFactory;
 import org.apache.uima.fit.pipeline.SimplePipeline;
 
+import de.tudarmstadt.ukp.dkpro.core.clearnlp.ClearNlpPosTagger;
+import de.tudarmstadt.ukp.dkpro.core.clearnlp.ClearNlpSegmenter;
 import de.tudarmstadt.ukp.dkpro.core.ngrams.NGramAnnotator;
 import de.tudarmstadt.ukp.dkpro.core.stanfordnlp.StanfordLemmatizer;
 import de.tudarmstadt.ukp.dkpro.core.tokit.BreakIteratorSegmenter;
@@ -26,7 +28,7 @@ public class ExtendedPipeline
                 ),
                 AnalysisEngineFactory.createEngineDescription(BreakIteratorSegmenter.class),
                 AnalysisEngineFactory.createEngineDescription(StanfordLemmatizer.class)//,
-//                AnalysisEngineFactory.createEngineDescription(FrequencyAnnotator.class, 
+//                AnalysisEngineFactory.createEngineDescription(FrequencyAnnotator.class)//, 
 //                		FrequencyAnnotator.PARAM_FREQUENCY_LIST, "src/main/resources/required/5kwordfrequency.txt"),
 //                AnalysisEngineFactory.createEngineDescription(CharNGramAnnotator.class),
 //                AnalysisEngineFactory.createEngineDescription(Playground.class)
