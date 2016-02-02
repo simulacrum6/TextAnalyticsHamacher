@@ -24,7 +24,7 @@ import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Lemma;
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token;
 import de.tudarmstadt.ukp.dkpro.core.readability.measure.WordSyllableCounter;
 import de.unidue.langtech.teaching.pp.type.TokenSyllableCount;
-import de.unidue.langtech.teaching.pp.utils.FrequencyList;
+import de.unidue.langtech.teaching.pp.utils.FrequencyMap;
 import de.unidue.langtech.teaching.pp.type.CharNGram;
 import de.unidue.langtech.teaching.pp.type.CorpusFrequency;
 import de.unidue.langtech.teaching.pp.type.MyType;
@@ -37,7 +37,7 @@ public class FrequencyAnnotator
 	    private File frequencyList;
 	    		
 		private List<String> lines;
-		private FrequencyList freqs;
+		private FrequencyMap freqs;
 		
 		@Override
 	    public void initialize(UimaContext context)
@@ -52,7 +52,7 @@ public class FrequencyAnnotator
 	            throw new ResourceInitializationException(e);
 	        }
 	        
-	        freqs = new FrequencyList();
+	        freqs = new FrequencyMap();
 	        String[] values;
 	        for(String line : lines){
 	        	
@@ -70,7 +70,7 @@ public class FrequencyAnnotator
 			  String lemma;
 			  int count;
 			  int rank;
-			  //FIXME NEEDS LEMMATISATION
+			  
 			  for(Lemma l : JCasUtil.select(jcas, Lemma.class)){
 				  
 				  lemma = l.getValue();

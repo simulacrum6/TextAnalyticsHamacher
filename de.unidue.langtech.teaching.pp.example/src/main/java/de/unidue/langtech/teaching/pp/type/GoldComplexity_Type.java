@@ -14,7 +14,7 @@ import org.apache.uima.cas.Feature;
 import org.apache.uima.jcas.tcas.Annotation_Type;
 
 /** 
- * Updated by JCasGen Thu Jan 21 23:05:57 CET 2016
+ * Updated by JCasGen Tue Feb 02 22:07:16 CET 2016
  * @generated */
 public class GoldComplexity_Type extends Annotation_Type {
   /** @generated 
@@ -54,48 +54,21 @@ public class GoldComplexity_Type extends Annotation_Type {
    * @param addr low level Feature Structure reference
    * @return the feature value 
    */ 
-  public int getWord(int addr) {
+  public String getWord(int addr) {
         if (featOkTst && casFeat_word == null)
       jcas.throwFeatMissing("word", "de.unidue.langtech.teaching.pp.type.GoldComplexity");
-    return ll_cas.ll_getRefValue(addr, casFeatCode_word);
+    return ll_cas.ll_getStringValue(addr, casFeatCode_word);
   }
   /** @generated
    * @param addr low level Feature Structure reference
    * @param v value to set 
    */    
-  public void setWord(int addr, int v) {
+  public void setWord(int addr, String v) {
         if (featOkTst && casFeat_word == null)
       jcas.throwFeatMissing("word", "de.unidue.langtech.teaching.pp.type.GoldComplexity");
-    ll_cas.ll_setRefValue(addr, casFeatCode_word, v);}
+    ll_cas.ll_setStringValue(addr, casFeatCode_word, v);}
     
-   /** @generated
-   * @param addr low level Feature Structure reference
-   * @param i index of item in the array
-   * @return value at index i in the array 
-   */
-  public String getWord(int addr, int i) {
-        if (featOkTst && casFeat_word == null)
-      jcas.throwFeatMissing("word", "de.unidue.langtech.teaching.pp.type.GoldComplexity");
-    if (lowLevelTypeChecks)
-      return ll_cas.ll_getStringArrayValue(ll_cas.ll_getRefValue(addr, casFeatCode_word), i, true);
-    jcas.checkArrayBounds(ll_cas.ll_getRefValue(addr, casFeatCode_word), i);
-  return ll_cas.ll_getStringArrayValue(ll_cas.ll_getRefValue(addr, casFeatCode_word), i);
-  }
-   
-  /** @generated
-   * @param addr low level Feature Structure reference
-   * @param i index of item in the array
-   * @param v value to set
-   */ 
-  public void setWord(int addr, int i, String v) {
-        if (featOkTst && casFeat_word == null)
-      jcas.throwFeatMissing("word", "de.unidue.langtech.teaching.pp.type.GoldComplexity");
-    if (lowLevelTypeChecks)
-      ll_cas.ll_setStringArrayValue(ll_cas.ll_getRefValue(addr, casFeatCode_word), i, v, true);
-    jcas.checkArrayBounds(ll_cas.ll_getRefValue(addr, casFeatCode_word), i);
-    ll_cas.ll_setStringArrayValue(ll_cas.ll_getRefValue(addr, casFeatCode_word), i, v);
-  }
- 
+  
  
   /** @generated */
   final Feature casFeat_position;
@@ -108,7 +81,7 @@ public class GoldComplexity_Type extends Annotation_Type {
   public int getPosition(int addr) {
         if (featOkTst && casFeat_position == null)
       jcas.throwFeatMissing("position", "de.unidue.langtech.teaching.pp.type.GoldComplexity");
-    return ll_cas.ll_getRefValue(addr, casFeatCode_position);
+    return ll_cas.ll_getIntValue(addr, casFeatCode_position);
   }
   /** @generated
    * @param addr low level Feature Structure reference
@@ -117,36 +90,9 @@ public class GoldComplexity_Type extends Annotation_Type {
   public void setPosition(int addr, int v) {
         if (featOkTst && casFeat_position == null)
       jcas.throwFeatMissing("position", "de.unidue.langtech.teaching.pp.type.GoldComplexity");
-    ll_cas.ll_setRefValue(addr, casFeatCode_position, v);}
+    ll_cas.ll_setIntValue(addr, casFeatCode_position, v);}
     
-   /** @generated
-   * @param addr low level Feature Structure reference
-   * @param i index of item in the array
-   * @return value at index i in the array 
-   */
-  public int getPosition(int addr, int i) {
-        if (featOkTst && casFeat_position == null)
-      jcas.throwFeatMissing("position", "de.unidue.langtech.teaching.pp.type.GoldComplexity");
-    if (lowLevelTypeChecks)
-      return ll_cas.ll_getIntArrayValue(ll_cas.ll_getRefValue(addr, casFeatCode_position), i, true);
-    jcas.checkArrayBounds(ll_cas.ll_getRefValue(addr, casFeatCode_position), i);
-  return ll_cas.ll_getIntArrayValue(ll_cas.ll_getRefValue(addr, casFeatCode_position), i);
-  }
-   
-  /** @generated
-   * @param addr low level Feature Structure reference
-   * @param i index of item in the array
-   * @param v value to set
-   */ 
-  public void setPosition(int addr, int i, int v) {
-        if (featOkTst && casFeat_position == null)
-      jcas.throwFeatMissing("position", "de.unidue.langtech.teaching.pp.type.GoldComplexity");
-    if (lowLevelTypeChecks)
-      ll_cas.ll_setIntArrayValue(ll_cas.ll_getRefValue(addr, casFeatCode_position), i, v, true);
-    jcas.checkArrayBounds(ll_cas.ll_getRefValue(addr, casFeatCode_position), i);
-    ll_cas.ll_setIntArrayValue(ll_cas.ll_getRefValue(addr, casFeatCode_position), i, v);
-  }
- 
+  
  
   /** @generated */
   final Feature casFeat_complexity;
@@ -159,7 +105,7 @@ public class GoldComplexity_Type extends Annotation_Type {
   public int getComplexity(int addr) {
         if (featOkTst && casFeat_complexity == null)
       jcas.throwFeatMissing("complexity", "de.unidue.langtech.teaching.pp.type.GoldComplexity");
-    return ll_cas.ll_getRefValue(addr, casFeatCode_complexity);
+    return ll_cas.ll_getIntValue(addr, casFeatCode_complexity);
   }
   /** @generated
    * @param addr low level Feature Structure reference
@@ -168,36 +114,9 @@ public class GoldComplexity_Type extends Annotation_Type {
   public void setComplexity(int addr, int v) {
         if (featOkTst && casFeat_complexity == null)
       jcas.throwFeatMissing("complexity", "de.unidue.langtech.teaching.pp.type.GoldComplexity");
-    ll_cas.ll_setRefValue(addr, casFeatCode_complexity, v);}
+    ll_cas.ll_setIntValue(addr, casFeatCode_complexity, v);}
     
-   /** @generated
-   * @param addr low level Feature Structure reference
-   * @param i index of item in the array
-   * @return value at index i in the array 
-   */
-  public int getComplexity(int addr, int i) {
-        if (featOkTst && casFeat_complexity == null)
-      jcas.throwFeatMissing("complexity", "de.unidue.langtech.teaching.pp.type.GoldComplexity");
-    if (lowLevelTypeChecks)
-      return ll_cas.ll_getIntArrayValue(ll_cas.ll_getRefValue(addr, casFeatCode_complexity), i, true);
-    jcas.checkArrayBounds(ll_cas.ll_getRefValue(addr, casFeatCode_complexity), i);
-  return ll_cas.ll_getIntArrayValue(ll_cas.ll_getRefValue(addr, casFeatCode_complexity), i);
-  }
-   
-  /** @generated
-   * @param addr low level Feature Structure reference
-   * @param i index of item in the array
-   * @param v value to set
-   */ 
-  public void setComplexity(int addr, int i, int v) {
-        if (featOkTst && casFeat_complexity == null)
-      jcas.throwFeatMissing("complexity", "de.unidue.langtech.teaching.pp.type.GoldComplexity");
-    if (lowLevelTypeChecks)
-      ll_cas.ll_setIntArrayValue(ll_cas.ll_getRefValue(addr, casFeatCode_complexity), i, v, true);
-    jcas.checkArrayBounds(ll_cas.ll_getRefValue(addr, casFeatCode_complexity), i);
-    ll_cas.ll_setIntArrayValue(ll_cas.ll_getRefValue(addr, casFeatCode_complexity), i, v);
-  }
- 
+  
  
   /** @generated */
   final Feature casFeat_complexitySum;
@@ -210,7 +129,7 @@ public class GoldComplexity_Type extends Annotation_Type {
   public int getComplexitySum(int addr) {
         if (featOkTst && casFeat_complexitySum == null)
       jcas.throwFeatMissing("complexitySum", "de.unidue.langtech.teaching.pp.type.GoldComplexity");
-    return ll_cas.ll_getRefValue(addr, casFeatCode_complexitySum);
+    return ll_cas.ll_getIntValue(addr, casFeatCode_complexitySum);
   }
   /** @generated
    * @param addr low level Feature Structure reference
@@ -219,36 +138,9 @@ public class GoldComplexity_Type extends Annotation_Type {
   public void setComplexitySum(int addr, int v) {
         if (featOkTst && casFeat_complexitySum == null)
       jcas.throwFeatMissing("complexitySum", "de.unidue.langtech.teaching.pp.type.GoldComplexity");
-    ll_cas.ll_setRefValue(addr, casFeatCode_complexitySum, v);}
+    ll_cas.ll_setIntValue(addr, casFeatCode_complexitySum, v);}
     
-   /** @generated
-   * @param addr low level Feature Structure reference
-   * @param i index of item in the array
-   * @return value at index i in the array 
-   */
-  public int getComplexitySum(int addr, int i) {
-        if (featOkTst && casFeat_complexitySum == null)
-      jcas.throwFeatMissing("complexitySum", "de.unidue.langtech.teaching.pp.type.GoldComplexity");
-    if (lowLevelTypeChecks)
-      return ll_cas.ll_getIntArrayValue(ll_cas.ll_getRefValue(addr, casFeatCode_complexitySum), i, true);
-    jcas.checkArrayBounds(ll_cas.ll_getRefValue(addr, casFeatCode_complexitySum), i);
-  return ll_cas.ll_getIntArrayValue(ll_cas.ll_getRefValue(addr, casFeatCode_complexitySum), i);
-  }
-   
-  /** @generated
-   * @param addr low level Feature Structure reference
-   * @param i index of item in the array
-   * @param v value to set
-   */ 
-  public void setComplexitySum(int addr, int i, int v) {
-        if (featOkTst && casFeat_complexitySum == null)
-      jcas.throwFeatMissing("complexitySum", "de.unidue.langtech.teaching.pp.type.GoldComplexity");
-    if (lowLevelTypeChecks)
-      ll_cas.ll_setIntArrayValue(ll_cas.ll_getRefValue(addr, casFeatCode_complexitySum), i, v, true);
-    jcas.checkArrayBounds(ll_cas.ll_getRefValue(addr, casFeatCode_complexitySum), i);
-    ll_cas.ll_setIntArrayValue(ll_cas.ll_getRefValue(addr, casFeatCode_complexitySum), i, v);
-  }
- 
+  
 
 
 
@@ -262,19 +154,19 @@ public class GoldComplexity_Type extends Annotation_Type {
     casImpl.getFSClassRegistry().addGeneratorForType((TypeImpl)this.casType, getFSGenerator());
 
  
-    casFeat_word = jcas.getRequiredFeatureDE(casType, "word", "uima.cas.StringArray", featOkTst);
+    casFeat_word = jcas.getRequiredFeatureDE(casType, "word", "uima.cas.String", featOkTst);
     casFeatCode_word  = (null == casFeat_word) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_word).getCode();
 
  
-    casFeat_position = jcas.getRequiredFeatureDE(casType, "position", "uima.cas.IntegerArray", featOkTst);
+    casFeat_position = jcas.getRequiredFeatureDE(casType, "position", "uima.cas.Integer", featOkTst);
     casFeatCode_position  = (null == casFeat_position) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_position).getCode();
 
  
-    casFeat_complexity = jcas.getRequiredFeatureDE(casType, "complexity", "uima.cas.IntegerArray", featOkTst);
+    casFeat_complexity = jcas.getRequiredFeatureDE(casType, "complexity", "uima.cas.Integer", featOkTst);
     casFeatCode_complexity  = (null == casFeat_complexity) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_complexity).getCode();
 
  
-    casFeat_complexitySum = jcas.getRequiredFeatureDE(casType, "complexitySum", "uima.cas.IntegerArray", featOkTst);
+    casFeat_complexitySum = jcas.getRequiredFeatureDE(casType, "complexitySum", "uima.cas.Integer", featOkTst);
     casFeatCode_complexitySum  = (null == casFeat_complexitySum) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_complexitySum).getCode();
 
   }

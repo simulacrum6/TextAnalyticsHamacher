@@ -27,9 +27,9 @@ public class ExtendedPipeline
                         ReaderTrain.PARAM_INPUT_FILE, "src/main/resources/inputfiles/cwi_training_allannotations.txt"
                 ),
                 AnalysisEngineFactory.createEngineDescription(BreakIteratorSegmenter.class),
-                AnalysisEngineFactory.createEngineDescription(StanfordLemmatizer.class)//,
-//                AnalysisEngineFactory.createEngineDescription(FrequencyAnnotator.class)//, 
-//                		FrequencyAnnotator.PARAM_FREQUENCY_LIST, "src/main/resources/required/5kwordfrequency.txt"),
+                AnalysisEngineFactory.createEngineDescription(StanfordLemmatizer.class),
+                AnalysisEngineFactory.createEngineDescription(FrequencyAnnotator.class, 
+                		FrequencyAnnotator.PARAM_FREQUENCY_LIST, "src/main/resources/required/5kwordfrequency.txt")
 //                AnalysisEngineFactory.createEngineDescription(CharNGramAnnotator.class),
 //                AnalysisEngineFactory.createEngineDescription(Playground.class)
 

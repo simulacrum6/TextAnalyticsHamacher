@@ -3,14 +3,14 @@ package de.unidue.langtech.teaching.pp.utils;
 import java.util.HashMap;
 import java.util.Map;
 
-public class FrequencyList {
+public class FrequencyMap {
 
 	private Map<String, String[]> freqMap;
 	private int minFreq;
 	private int maxFreq;
 	private int size;
 	
-	public FrequencyList()
+	public FrequencyMap()
 	{
 		this.minFreq = Integer.MAX_VALUE;
 		this.maxFreq = 0;
@@ -19,7 +19,7 @@ public class FrequencyList {
 		this.freqMap = new HashMap<String, String[]>();
 	};
 	
-	public FrequencyList(String[] lemmas, String[] pos, String[] freqCount, String[] freqRank)
+	public FrequencyMap(String[] lemmas, String[] pos, String[] freqCount, String[] freqRank)
 	{
 		this.minFreq = Integer.MAX_VALUE;
 		this.maxFreq = 0;
