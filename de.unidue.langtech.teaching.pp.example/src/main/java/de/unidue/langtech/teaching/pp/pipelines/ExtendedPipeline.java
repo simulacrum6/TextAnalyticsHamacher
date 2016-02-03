@@ -29,9 +29,9 @@ public class ExtendedPipeline
                 AnalysisEngineFactory.createEngineDescription(BreakIteratorSegmenter.class),
                 AnalysisEngineFactory.createEngineDescription(StanfordLemmatizer.class),
                 AnalysisEngineFactory.createEngineDescription(FrequencyAnnotator.class, 
-                		FrequencyAnnotator.PARAM_FREQUENCY_LIST, "src/main/resources/required/5kwordfrequency.txt")
+                		FrequencyAnnotator.PARAM_FREQUENCY_LIST, "src/main/resources/required/5kwordfrequency.txt"),
 //                AnalysisEngineFactory.createEngineDescription(CharNGramAnnotator.class),
-//                AnalysisEngineFactory.createEngineDescription(Playground.class)
+                AnalysisEngineFactory.createEngineDescription(Playground.class)
 
         );
     }

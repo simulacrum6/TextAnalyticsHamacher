@@ -1,4 +1,4 @@
-package de.unidue.langtech.teaching.pp.annotators;
+package de.unidue.langtech.teaching.pp.FrequencyAnnotation;
 
 import java.io.File;
 import java.io.IOException;
@@ -29,7 +29,7 @@ import de.unidue.langtech.teaching.pp.type.CharNGram;
 import de.unidue.langtech.teaching.pp.type.CorpusFrequency;
 import de.unidue.langtech.teaching.pp.type.MyType;
 
-public class FrequencyAnnotator
+public class FrequencyAnnotatorTest
 	  extends JCasAnnotator_ImplBase
 	  {		  
 		public static final String PARAM_FREQUENCY_LIST = "FrequencyList";

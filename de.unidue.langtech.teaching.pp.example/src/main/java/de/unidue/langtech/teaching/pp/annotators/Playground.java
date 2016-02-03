@@ -1,29 +1,20 @@
 package de.unidue.langtech.teaching.pp.annotators;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.fit.component.JCasAnnotator_ImplBase;
 import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
 
-import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.NGram;
+import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Lemma;
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token;
-import de.tudarmstadt.ukp.dkpro.core.ngrams.NGramIterable;
-import de.tudarmstadt.ukp.dkpro.core.ngrams.util.CharacterNGramStringIterable;
-import de.unidue.langtech.teaching.pp.type.TokenSyllableCount;
-import de.unidue.langtech.teaching.pp.type.CharNGram;
 import de.unidue.langtech.teaching.pp.type.CorpusFrequency;
 
 public class Playground
     extends JCasAnnotator_ImplBase
 {
-	
 
 	
     @Override
@@ -31,54 +22,54 @@ public class Playground
         throws AnalysisEngineProcessException
     {
         System.out.println("Document is: " + jcas.getDocumentText());
-       
+        System.out.println();
         
-       List<Token> tokens = new ArrayList<Token>(JCasUtil.select(jcas, Token.class));        
-       List<TokenSyllableCount> tsc = new ArrayList<TokenSyllableCount>(JCasUtil.select(jcas, TokenSyllableCount.class));
-       List<CharNGram> ngrams = new ArrayList<CharNGram>(JCasUtil.select(jcas, CharNGram.class));
-       //List<CorpusFrequency> frequencies = new ArrayList<CorpusFrequency>(JCasUtil.select(jcas, CorpusFrequency.class));
-       
-       int syllableCount;
-       String word;
-       String charNgrams = "";
-              
-       System.out.println("CAS contains " + tokens.size() + " tokens.");        
-       System.out.println("CAS contains " + tsc.size() + " SylCounts.");
-       System.out.println("CAS contains " + ngrams.size() + " CharNGrams.");
-      // System.out.println("CAS contains " + frequencies.size() + " CharNGrams.");
-       
-//       for(CharNGram ngram : ngrams){
-//    	   for(String charNGram : ngram.getCharNGrams().toArray()){
-//    		   System.out.print(charNGram);
-//    	   }
-//    	   System.out.println();
-//       }
-       
-       for(int i = 0; i < tokens.size(); i++){
-    	   word = tokens.get(i).getCoveredText();
-    	   syllableCount = tsc.get(i).getCountSyllables();
-    	   charNgrams = "";
-//    	   
-//    	   for(int j = 0; j < ngrams.get(i).getCharNGrams().size(); j++){
-//    		   charNgrams += ngrams.get(i).getCharNGrams(j) + ", ";
-//    	   }
-    	   
-    	   System.out.println("Token[" + i + "]: " + word + ", " + syllableCount + " syllables. CharNGrams: " + charNgrams);    	   
-       }
-              
-        System.out.println("\n");
+        //Token Test
+        List<Token> tokens = new ArrayList<Token>(JCasUtil.select(jcas, Token.class));
+        Token token;
         
-        //NGram test
+        System.out.println("CAS contains " + tokens.size() + " Token Annotations.");
         
+        //Lemma Test
+        List<Lemma> lemmas = new ArrayList<Lemma>(JCasUtil.select(jcas, Lemma.class));
+        Lemma lemma;
         
+        System.out.println("CAS contains " + lemmas.size() + " Lemma Annotations.");
         
+        //Frequency Test
+        List<CorpusFrequency> frequencies = new ArrayList<CorpusFrequency>(JCasUtil.select(jcas, CorpusFrequency.class));
+        CorpusFrequency frequency;
         
-      
+        System.out.println("CAS contains " + frequencies.size() + " Frequency Annotations.");
+        
+        //Info Output
+        System.out.println();
+        
+        for(int i = 0; i < tokens.size(); i++){
+     	   token = tokens.get(i);
+     	   lemma = lemmas.get(i);
+     	   frequency = frequencies.get(i);
+     	       	   
+     	   System.out.println(
+     			   "Token[" + i + "](" + token.getCoveredText() + ") " +
+     			   "Lemma: " + lemma.getValue() + ", " +
+     			   "Frequency Count: " + frequency.getCount() + ", " +
+     			   "Frequency Rank: " + frequency.getRank()
+     			   );    	   
+        }
+        System.out.println();
+        
+//        Junkyard
 //       
 //        Collection<NGram> ngrams = JCasUtil.select(jcas, NGram.class);
 //        for (NGram ngram : ngrams)
 //        System.out.println(ngram.getText());
 //       
-        
+//     for(CharNGram ngram : ngrams){
+// 	   for(String charNGram : ngram.getCharNGrams().toArray()){
+// 		   System.out.print(charNGram);
+// 	   }
+// 	   System.out.println();
+//    }        
     }
 }

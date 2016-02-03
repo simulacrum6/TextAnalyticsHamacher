@@ -1,4 +1,29 @@
-FrequencyAnnotator
-FrequencyList
+FUNCTIONALITY
+	DKPro
+		Functions
+			+Syllable Annotator
+			+NGrams / CharNGrams?
+			+ReaderTest
+		Tests
+			+ReaderTest & ReaderTrain
+			+FrequencyAnnotator (after fix)
+			+CharNGramAnnotator
+			+(FrequencyMap?)
+			+(SyllableCountAnnotator?)
+	DKPro TC
+		Feature Extraction/Conversion
+			+Length
+			+HasSuffix
+			+HasSuffix(x)
+			+FrequencyRank
+			+FrequencyCount
+			+Contains(charsequence)
+		Classification
+			+Naive Bayes
+			+SVM
 
-DKPRO TC
+BUGS
+	FrequencyAnnotator.java
+		+Rank&Frequency Annotation buggy (HashMap related?)
+	
+	

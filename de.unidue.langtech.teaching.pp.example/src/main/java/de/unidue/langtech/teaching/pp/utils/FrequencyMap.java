@@ -1,6 +1,8 @@
 package de.unidue.langtech.teaching.pp.utils;
 
 import java.util.HashMap;
+import java.util.Hashtable;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class FrequencyMap {
@@ -16,7 +18,7 @@ public class FrequencyMap {
 		this.maxFreq = 0;
 		this.size = 0;
 		
-		this.freqMap = new HashMap<String, String[]>();
+		this.freqMap = new Hashtable<String, String[]>();
 	};
 	
 	public FrequencyMap(String[] lemmas, String[] pos, String[] freqCount, String[] freqRank)
@@ -26,7 +28,7 @@ public class FrequencyMap {
 		this.size = lemmas.length;
 		
 		//TODO Check for length, throw exception
-		this.freqMap = new HashMap<String, String[]>();
+		this.freqMap = new Hashtable<String, String[]>();
 		
 		for(int i = 0; i < lemmas.length; i++){
 			//TODO check for correct format of freqCount/Rank
@@ -93,6 +95,7 @@ public class FrequencyMap {
 		values[0] = pos;
 		values[1] = count;
 		values[2] = rank;
+		
 		this.put(lemma, values);
 	}
 	
