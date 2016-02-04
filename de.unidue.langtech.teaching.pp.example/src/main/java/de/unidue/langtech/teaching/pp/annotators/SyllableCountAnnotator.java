@@ -46,16 +46,5 @@ public class SyllableCountAnnotator
 		          
 	          	
 	          }  
-	          
-//	          TokenSyllableCount tsc = new TokenSyllableCount(jcas);
-//	          tsc.setCountSyllables(intArr);
-//	          tsc.addToIndexes();
-	          
-	          /*
-	          Collection<TokenSyllableCount> cTsc = JCasUtil.select(jcas, TokenSyllableCount.class);
-	          for(TokenSyllableCount sylCount : cTsc){
-	        	  System.out.println(sylCount);
-	          }*/
-
-	      }
+	    }
 }

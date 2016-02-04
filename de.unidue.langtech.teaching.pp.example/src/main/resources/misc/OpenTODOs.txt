@@ -21,6 +21,8 @@ FUNCTIONALITY
 		Classification
 			+Naive Bayes
 			+SVM
+		Peparation
+			+Finish TODOs for ComplexityClassification.java
 
 BUGS
 	FrequencyAnnotator.java

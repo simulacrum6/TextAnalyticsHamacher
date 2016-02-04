@@ -47,16 +47,16 @@ public class ReaderTrain
     //Language required for Stanford Lemmatizer
     public static final String PARAM_DOCUMENT_LANGUAGE = "DocumentLanguage";
     @ConfigurationParameter(name = PARAM_DOCUMENT_LANGUAGE, defaultValue = "en")
-    private String documentLanguage;
+    String documentLanguage;
     
-    private List<String> lines;
-    private int currentLine;
-    private String documentText;
+    List<String> lines;
+    int currentLine;
+    String documentText;
     
-    private List<String> wordBuffer = new ArrayList<String>();
-    private List<Integer> positionBuffer = new ArrayList<Integer>();
-    private List<Integer> complexityBuffer = new ArrayList<Integer>();
-    private List<Integer> complexitySumBuffer = new ArrayList<Integer>();
+    List<String> wordBuffer = new ArrayList<String>();
+    List<Integer> positionBuffer = new ArrayList<Integer>();
+    List<Integer> complexityBuffer = new ArrayList<Integer>();
+    List<Integer> complexitySumBuffer = new ArrayList<Integer>();
     
     @Override
     public void initialize(UimaContext context)
@@ -135,8 +135,7 @@ public class ReaderTrain
         	}while(documentText.equals(currLineText)&& currentLine < lines.size()-1);
 
         }
-        
-    	
+            	
     	return currentLine < lines.size();
     }
     

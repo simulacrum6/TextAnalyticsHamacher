@@ -1,9 +1,15 @@
 package de.unidue.langtech.teaching.pp.utils;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
+
+import org.apache.commons.io.FileUtils;
+import org.apache.uima.resource.ResourceInitializationException;
 
 public class FrequencyMap {
 
@@ -23,12 +29,8 @@ public class FrequencyMap {
 	
 	public FrequencyMap(String[] lemmas, String[] pos, String[] freqCount, String[] freqRank)
 	{
-		this.minFreq = Integer.MAX_VALUE;
-		this.maxFreq = 0;
+		this();
 		this.size = lemmas.length;
-		
-		//TODO Check for length, throw exception
-		this.freqMap = new Hashtable<String, String[]>();
 		
 		for(int i = 0; i < lemmas.length; i++){
 			//TODO check for correct format of freqCount/Rank
@@ -37,7 +39,7 @@ public class FrequencyMap {
 		}
 		
 	}
-	
+		
 	//Getters
 	
 	public String[] get(String key)
@@ -78,11 +80,12 @@ public class FrequencyMap {
 	
 	public void put(String key, String[] values)
 	{
-		this.setMaxFreq(Integer.parseInt(values[1]));
-		this.setMinFreq(Integer.parseInt(values[1]));
-		this.size ++;
+		this.updateMaxFreq(Integer.parseInt(values[1]));
+		this.updateMinFreq(Integer.parseInt(values[1]));
 		
 		freqMap.put(key, values);
+		
+		this.updateSize();
 	}
 	
 	public void updateSize(){
@@ -99,14 +102,14 @@ public class FrequencyMap {
 		this.put(lemma, values);
 	}
 	
-	public void setMaxFreq(int aFreq)
+	public void updateMaxFreq(int aFreq)
 	{
 		if(aFreq > maxFreq){
 			maxFreq = aFreq;
 		}
 	}
 	
-	public void setMinFreq(int aFreq)
+	public void updateMinFreq(int aFreq)
 	{
 		if(aFreq < minFreq){
 			minFreq = aFreq;
@@ -121,5 +124,25 @@ public class FrequencyMap {
 		}
 	}
 	
+	// TODO Enable Construction from Filepath
+		public FrequencyMap(File inputfile)
+		{
+			this();
+			List<String> lines;
+			String[] values;
+			
+			try {
+				
+				lines = FileUtils.readLines(inputfile);	              
+				for(String line : lines){
+		        	
+		        	values = line.split("\\t"); 
+		        	this.put(values[1].trim(), values[2].trim(), values[3].trim(), values[0].trim());
+		        }
+				
+			}catch (IOException e) {
+		    	e.printStackTrace();
+		    }	
+		}
 
 }
