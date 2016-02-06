@@ -2,13 +2,13 @@ FUNCTIONALITY
 	DKPro
 		Functions
 			+Syllable Annotator
-			+NGrams / CharNGrams?
-			+ReaderTest
+			+NGrams / CharNGrams? --> NGram Frequency Available?
+			+(ReaderTest)
+			+ReaderTrain tokenization + unit isolation
 		Tests
 			+ReaderTest & ReaderTrain
-			+FrequencyAnnotator (after fix)
 			+CharNGramAnnotator
-			+(FrequencyMap?)
+			+(FrequencyMap) test all functions
 			+(SyllableCountAnnotator?)
 	DKPro TC
 		Feature Extraction/Conversion
@@ -18,14 +18,20 @@ FUNCTIONALITY
 			+FrequencyRank
 			+FrequencyCount
 			+Contains(charsequence)
+			+Etymology
 		Classification
 			+Naive Bayes
 			+SVM
 		Peparation
 			+Finish TODOs for ComplexityClassification.java
-
-BUGS
-	FrequencyAnnotator.java
-		+Rank&Frequency Annotation buggy (HashMap related?)
-	
-	
+			
+	Misc
+		Look for different Frequency Corpus 
+			+Brown Corpus`?
+			+Google n-gram
+		Look for ready to use Annotators
+			+morphemes
+			+etymology (list?/corpus?)
+			+ambiguity (senses)
+			
+		

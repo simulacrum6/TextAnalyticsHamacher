@@ -25,16 +25,15 @@ public class FrequencyMap {
 		this.size = 0;
 		
 		this.freqMap = new Hashtable<String, String[]>();
-	};
+	}
 	
 	public FrequencyMap(String[] lemmas, String[] pos, String[] freqCount, String[] freqRank)
 	{
 		this();
 		this.size = lemmas.length;
 		
-		for(int i = 0; i < lemmas.length; i++){
+		for (int i = 0; i < lemmas.length; i++) {
 			//TODO check for correct format of freqCount/Rank
-			
 			this.put(lemmas[i], pos[i], freqCount[i], freqRank[i]);
 		}
 		
@@ -42,6 +41,27 @@ public class FrequencyMap {
 		
 	//Getters
 	
+	public FrequencyMap(File inputfile)
+	{
+		this();
+		List<String> lines;
+		String[] values;
+		
+		try {
+			
+			lines = FileUtils.readLines(inputfile);	              
+			
+			for(String line : lines)
+			{
+	           	values = line.split("\\t"); 
+	        	this.put(values[1].trim(), values[2].trim(), values[3].trim(), values[0].trim());
+	        }
+			
+		}catch (IOException e) {
+	    	e.printStackTrace();
+	    }	
+	}
+
 	public String[] get(String key)
 	{
 		return freqMap.get(key);
@@ -52,14 +72,14 @@ public class FrequencyMap {
 		return freqMap.get(key)[0];
 	}
 	
-	public int getCount(String key)
-	{
-		return Integer.parseInt( freqMap.get(key)[1] );
-	}
-	
 	public int getRank(String key)
 	{
 		return Integer.parseInt( freqMap.get(key)[2] );
+	}
+
+	public int getCount(String key)
+	{
+		return Integer.parseInt( freqMap.get(key)[1] );
 	}
 	
 	public int getMaxFreq()
@@ -78,17 +98,8 @@ public class FrequencyMap {
 	
 	//Setters
 	
-	public void put(String key, String[] values)
+	public void updateSize()
 	{
-		this.updateMaxFreq(Integer.parseInt(values[1]));
-		this.updateMinFreq(Integer.parseInt(values[1]));
-		
-		freqMap.put(key, values);
-		
-		this.updateSize();
-	}
-	
-	public void updateSize(){
 		this.size = freqMap.size();
 	}
 	
@@ -100,6 +111,16 @@ public class FrequencyMap {
 		values[2] = rank;
 		
 		this.put(lemma, values);
+	}
+	
+	public void put(String key, String[] values)
+	{
+		this.updateMaxFreq(Integer.parseInt(values[1]));
+		this.updateMinFreq(Integer.parseInt(values[1]));
+		
+		freqMap.put(key, values);
+		
+		this.updateSize();
 	}
 	
 	public void updateMaxFreq(int aFreq)
@@ -115,6 +136,7 @@ public class FrequencyMap {
 			minFreq = aFreq;
 		}
 	}
+	
 	public boolean contains(String lemma)
 	{
 		if(freqMap.containsKey(lemma)){
@@ -123,26 +145,4 @@ public class FrequencyMap {
 			return false;
 		}
 	}
-	
-	// TODO Enable Construction from Filepath
-		public FrequencyMap(File inputfile)
-		{
-			this();
-			List<String> lines;
-			String[] values;
-			
-			try {
-				
-				lines = FileUtils.readLines(inputfile);	              
-				for(String line : lines){
-		        	
-		        	values = line.split("\\t"); 
-		        	this.put(values[1].trim(), values[2].trim(), values[3].trim(), values[0].trim());
-		        }
-				
-			}catch (IOException e) {
-		    	e.printStackTrace();
-		    }	
-		}
-
 }

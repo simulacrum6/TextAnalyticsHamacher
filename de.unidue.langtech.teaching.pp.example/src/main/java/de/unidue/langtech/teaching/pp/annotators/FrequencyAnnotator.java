@@ -20,64 +20,67 @@ import de.unidue.langtech.teaching.pp.utils.FrequencyMap;
 
 public class FrequencyAnnotator
 	  extends JCasAnnotator_ImplBase
-	  {		  
-		public static final String PARAM_FREQUENCY_LIST = "PARAM_FREQUENCY_LIST";
-	    @ConfigurationParameter(name = PARAM_FREQUENCY_LIST, mandatory = true)
-	    private File frequencyList;
-	    		
-		private List<String> lines;
-		private FrequencyMap freqs;
-		
-		@Override
-	    public void initialize(UimaContext context)
-	        throws ResourceInitializationException
-	    {
-	        super.initialize(context);
-	        
-	        try {
-	           lines = FileUtils.readLines(frequencyList);	              
-	        }
-	        catch (IOException e) {
-	            throw new ResourceInitializationException(e);
-	        }
-	        
-	        freqs = new FrequencyMap();
-	        String[] values;
-	        for(String line : lines){
-	        	
-	        	values = line.split("\\t"); 
-	        	freqs.put(values[1].trim(), values[2].trim(), values[3].trim(), values[0].trim());
-	        }
-	    }
+{		  
+	public static final String PARAM_FREQUENCY_LIST = "PARAM_FREQUENCY_LIST";
+    @ConfigurationParameter(name = PARAM_FREQUENCY_LIST, mandatory = true)
+    File frequencyList;
+    		
+	List<String> lines;
+	FrequencyMap freqs;
 	
-		  @Override
-	      public void process(JCas jcas)
-	          throws AnalysisEngineProcessException
-	      {
+	@Override
+    public void initialize(UimaContext context)
+        throws ResourceInitializationException
+    {
+        super.initialize(context);
+        
+        try {
+           lines = FileUtils.readLines(frequencyList);	              
+        }
+        catch (IOException e) {
+            throw new ResourceInitializationException(e);
+        }
+        
+        freqs = new FrequencyMap();
+        String[] values;
+        
+        for(String line : lines)
+        {	
+        	values = line.split("\\t"); 
+        	freqs.put(values[1].trim(), values[2].trim(), values[3].trim(), values[0].trim());
+        }
+        
+    }
+
+	@Override
+    public void process (JCas jcas)
+    	throws AnalysisEngineProcessException
+	{	  
+		for (Lemma l : new ArrayList<Lemma>(JCasUtil.select(jcas, Lemma.class)))
+		{  
+			String lemma = l.getValue();
+			int begin = l.getBegin();
+			int end = l.getEnd();
+			int count;
+			int rank;
+			
+			if (freqs.contains(lemma)) {
+				count = freqs.getCount(lemma);
+				rank = freqs.getRank(lemma);
+			} else {
+				//count = freqs.getMinFreq() - 1;
+				count = 0;
+				rank = freqs.getSize() + 1;
+			}
 			  
-			  String lemma;
-			  int count;
-			  int rank;
-			  
-			  for(Lemma l : new ArrayList<Lemma>(JCasUtil.select(jcas, Lemma.class))){
-				  
-				  lemma = l.getValue();
-				  
-				  if(freqs.contains(lemma)){
-					  count = freqs.getCount(lemma);
-					  rank = freqs.getRank(lemma);
-				  }else{
-					  //count = freqs.getMinFreq() - 1;
-					  count = 0;
-					  rank = freqs.getSize() + 1;
-				  }
-				  
-				  CorpusFrequency freqAnno = new CorpusFrequency(jcas);
-				  freqAnno.setCount(count);
-				  freqAnno.setRank(rank);
-				  freqAnno.addToIndexes();
-			  }
-			  
-	      
-	      }
+			CorpusFrequency freqAnno = new CorpusFrequency(jcas);
+			freqAnno.setBegin(begin);
+			freqAnno.setEnd(end);
+			freqAnno.setCount(count);
+			freqAnno.setRank(rank);
+			freqAnno.addToIndexes();
+		}
+  	      
+    }
+	  
 }

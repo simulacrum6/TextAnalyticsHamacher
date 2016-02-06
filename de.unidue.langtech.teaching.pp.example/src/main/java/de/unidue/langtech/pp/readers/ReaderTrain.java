@@ -15,6 +15,7 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.Progress;
 import org.apache.uima.util.ProgressImpl;
 
+import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Sentence;
 import de.unidue.langtech.teaching.pp.type.GoldComplexity;
 
 /* 
@@ -34,8 +35,6 @@ import de.unidue.langtech.teaching.pp.type.GoldComplexity;
  *		Each individual rating must be either 1 or 0. 
 */
 
-//FIXME ISSUE: Out of bounds exception.
-
 public class ReaderTrain
     extends JCasCollectionReader_ImplBase
 {
@@ -48,21 +47,21 @@ public class ReaderTrain
     public static final String PARAM_DOCUMENT_LANGUAGE = "DocumentLanguage";
     @ConfigurationParameter(name = PARAM_DOCUMENT_LANGUAGE, defaultValue = "en")
     String documentLanguage;
-    
-    List<String> lines;
-    int currentLine;
+
     String documentText;
+    int currentLine;
+    List<String> lines;
     
-    List<String> wordBuffer = new ArrayList<String>();
-    List<Integer> positionBuffer = new ArrayList<Integer>();
-    List<Integer> complexityBuffer = new ArrayList<Integer>();
-    List<Integer> complexitySumBuffer = new ArrayList<Integer>();
+    List<String> wordBuffer;
+    List<Integer> positionBuffer;
+    List<Integer> complexityBuffer;
+    List<Integer> complexitySumBuffer;
     
     @Override
     public void initialize(UimaContext context)
         throws ResourceInitializationException
     {
-        super.initialize(context);
+    	super.initialize(context);
         
         try {
            lines = FileUtils.readLines(inputFile);
@@ -77,15 +76,10 @@ public class ReaderTrain
         throws IOException, CollectionException
     {
         String currLineText;
-        
-        wordBuffer = new ArrayList<String>();
-        positionBuffer = new ArrayList<Integer>();
-        complexityBuffer = new ArrayList<Integer>();
-        complexitySumBuffer = new ArrayList<Integer>();
-        
+                
         //TODO reduce to 1 split variable.
-        String[] split1;
-        String[] split2;
+        String[] split;
+        String[] _split;
         
         int complexitySum;
         
@@ -94,31 +88,35 @@ public class ReaderTrain
         complexityBuffer = new ArrayList<Integer>();
         complexitySumBuffer = new ArrayList<Integer>();
     	
-        if(currentLine < lines.size()){
+        if (currentLine < lines.size()) 
+        {
             //Splits line into sentence and tokeninfo component
-            split1 = lines.get(currentLine).split("\\s[\\.\\!\\?]\\t");
-            if (split1.length != 2) {
+            split = lines.get(currentLine).split("\\s[\\.\\!\\?]\\t");
+            
+            if (split.length != 2) {
                 throw new IOException("Wrong line format: " + lines.get(currentLine) + " \n Line needs to contain the following separator: '.\\t' ");
             }
-        	currLineText = split1[0];
+            
+        	currLineText = split[0];
         	documentText = currLineText;
         	
         	//TODO transform to while loop.
-        	do{
-                split2 = split1[1].split("\t", -1);
-                if (split2.length < 3) {
-                    throw new IOException("Wrong Tokeninfo format: " + split1[1]);
+        	do {
+        		_split = split[1].split("\t", -1);
+                if (_split.length < 3) {
+                    throw new IOException("Wrong Tokeninfo format: " + split[1]);
                 }
                 
                 complexitySum = 0;
-                for(int i = 3; i < split2.length; i++){
-                	if(split2[i].equals("1")){
+                for (int i = 3; i < _split.length; i++) 
+                {
+                	if (_split[i].equals("1")) {
                 		complexitySum ++;
                 	}
                 }
                 
-                wordBuffer.add(split2[0]);
-                positionBuffer.add( Integer.parseInt( split2[1] ) );
+                wordBuffer.add(_split[0]);
+                positionBuffer.add( Integer.parseInt( _split[1] ) );
                 complexitySumBuffer.add(complexitySum);
                 complexityBuffer.add( (complexitySum > 0)?1:0 );
                 
@@ -126,13 +124,15 @@ public class ReaderTrain
                 
                 currentLine ++;
                 
-            	split1 = lines.get(currentLine).split("\\s[\\.\\!\\?]\\t");
-                if (split1.length != 2) {
+            	split = lines.get(currentLine).split("\\s[\\.\\!\\?]\\t");
+                
+            	if (split.length != 2) {
                 	throw new IOException("Wrong line format: " + lines.get(currentLine) + " \n Line needs to contain the following separator: '.\\t' ");
-                }    	
-            	currLineText = split1[0];
+                }
             	
-        	}while(documentText.equals(currLineText)&& currentLine < lines.size()-1);
+            	currLineText = split[0];
+            	
+        	}while (documentText.equals(currLineText)&& currentLine < lines.size()-1);
 
         }
             	
@@ -145,20 +145,47 @@ public class ReaderTrain
     {  	
    	
         //Set Gold Annotation.
-    	for(int i = 0; i < wordBuffer.size(); i++){
+    	for (int i = 0; i < wordBuffer.size(); i++)
+    	{
     		GoldComplexity goldComplexity = new GoldComplexity(jcas);
-            goldComplexity.setWord(wordBuffer.get(i));
-            goldComplexity.setPosition(positionBuffer.get(i));
-            goldComplexity.setComplexity(complexityBuffer.get(i));
-            goldComplexity.setComplexitySum(complexitySumBuffer.get(i));
-            goldComplexity.addToIndexes();
+	            
+    			goldComplexity.setWord(wordBuffer.get(i));
+	            goldComplexity.setPosition(positionBuffer.get(i));
+	            goldComplexity.setComplexity(complexityBuffer.get(i));
+	            goldComplexity.setComplexitySum(complexitySumBuffer.get(i));
+	            goldComplexity.addToIndexes();
     	}
     	
+    	// TODO Set Sentence
+    	Sentence sentence = new Sentence(jcas, 0, documentText.length());
+    	sentence.addToIndexes();
+    		
+    	// TODO Set Tokens
+//    	String[] tokensplits = documentText.split(" ");
+//    	int currentPosition = -1;
+//    	int tokenBegin = 0;
+//    	int tokenEnd = 0;
+//
+//    	for (String tokensplit : tokensplits)
+//    	{
+//    		tokenBegin = currentPosition + 1;
+//    		currentPosition += tokensplit.length();
+//    		tokenEnd = currentPosition;
+//
+//    		Token token = new Token(jcas, tokenBegin, tokenEnd);
+//    		token.addToIndexes();
+//    	}
+    	    	
+    	// TODO Set Sequence
+    	// TODO Set Unit
+    	    	
         jcas.setDocumentText(documentText);
         jcas.setDocumentLanguage(documentLanguage);
         
         currentLine++;
     }
+    
+    
 
     public Progress[] getProgress()
     {
