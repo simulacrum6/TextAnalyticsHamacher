@@ -10,8 +10,14 @@ import java.util.Map;
 
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.fit.component.NoOpAnnotator;
+import org.apache.uima.fit.factory.AnalysisEngineFactory;
 import org.apache.uima.resource.ResourceInitializationException;
 
+import de.tudarmstadt.ukp.dkpro.core.stanfordnlp.StanfordLemmatizer;
+import de.tudarmstadt.ukp.dkpro.lab.Lab;
+import de.tudarmstadt.ukp.dkpro.lab.task.Dimension;
+import de.tudarmstadt.ukp.dkpro.lab.task.ParameterSpace;
+import de.tudarmstadt.ukp.dkpro.lab.task.impl.BatchTask.ExecutionPolicy;
 //TODO Add dependencies for required Packages.
 //weka -> weka
 //de.tudarmstadt.ukp.dkpro.lab.task -> dkpro.lab
@@ -24,10 +30,17 @@ import org.apache.uima.resource.ResourceInitializationException;
 //import de.tudarmstadt.ukp.dkpro.lab.task.Dimension;
 //import de.tudarmstadt.ukp.dkpro.lab.task.ParameterSpace;
 import de.tudarmstadt.ukp.dkpro.tc.core.Constants;
+import de.tudarmstadt.ukp.dkpro.tc.features.length.NrOfCharsUFE;
 //import de.tudarmstadt.ukp.dkpro.tc.examples.util.DemoUtils;
 //import de.tudarmstadt.ukp.dkpro.tc.features.length.NrOfCharsUFE;
 //import de.tudarmstadt.ukp.dkpro.tc.ml.ExperimentCrossValidation;
 //import de.tudarmstadt.ukp.dkpro.tc.weka.WekaClassificationAdapter;
+import de.tudarmstadt.ukp.dkpro.tc.ml.ExperimentCrossValidation;
+import de.tudarmstadt.ukp.dkpro.tc.weka.WekaClassificationAdapter;
+import de.unidue.langtech.pp.readers.ReaderTrainTC;
+import de.unidue.langtech.teaching.pp.annotators.FrequencyAnnotator;
+import de.unidue.langtech.teaching.pp.annotators.Playground;
+import weka.classifiers.bayes.NaiveBayes;
 
 //TODO Delete that stuff
 /**
@@ -52,7 +65,7 @@ public class ComplexityClassification
     	// This is used to ensure that the required DKPRO_HOME environment variable is set.
     	// Ensures that people can run the experiments even if they haven't read the setup instructions first :)
     	// Don't use this in real experiments! Read the documentation and set DKPRO_HOME as explained there.
-    	DemoUtils.setDkproHome(ComplexityClassification.class.getSimpleName());
+    	System.setProperty("DKPRO_HOME", "src/main/resources/output");
     	
         new ComplexityClassification().runCrossValidation(getParameterSpace());
     }
@@ -62,8 +75,8 @@ public class ComplexityClassification
         throws Exception
     {
     	//TODO Check Experiment Types, identify correct ones
-        ExperimentCrossValidation batch = new ExperimentCrossValidation("SemEval16Complexity",
-        		WekaClassificationAdapter.class, NUM_FOLDS);
+    	ExperimentCrossValidation batch = new ExperimentCrossValidation("MyComplexityExperiment",
+        		WekaClassificationAdapter.class, null, NUM_FOLDS);
         batch.setPreprocessing(getPreprocessing());
 //        batch.addInnerReport(WekaClassificationReport.class);
         batch.setParameterSpace(pSpace);
@@ -80,11 +93,11 @@ public class ComplexityClassification
         // configure training and test data reader dimension
         Map<String, Object> dimReaders = new HashMap<String, Object>();
         //TODO Insert Training Reader
-        dimReaders.put(DIM_READER_TRAIN, MyReaderTrain.class); 
+        dimReaders.put(DIM_READER_TRAIN, ReaderTrainTC.class); 
         dimReaders.put(
                 DIM_READER_TRAIN_PARAMS,
                 //Parameter List
-                Arrays.asList(new Object[] { MyReaderTrain.PARAM_LANGUAGE, "en"
+                Arrays.asList(new Object[] { ReaderTrainTC.PARAM_INPUT_FILE, "src/main/resources/inputfiles/cwi_training_allannotations.txt"
                 }));
         
         //TODO Select Classifier. SVM?
@@ -95,8 +108,8 @@ public class ComplexityClassification
         //TODO Add Pipeline Parameters. Unsure as to which ones.
         @SuppressWarnings("unchecked")
         Dimension<List<Object>> dimPipelineParameters = Dimension.create(DIM_PIPELINE_PARAMS,
-                Arrays.asList(new Object[] { "something", "something" }),
-                Arrays.asList(new Object[] { "something2", "something2" }));
+        		 Arrays.asList(new Object[] {
+                 }));
         
         //TODO Add Feature Extractors
         @SuppressWarnings("unchecked")
@@ -106,7 +119,7 @@ public class ComplexityClassification
         //TODO Fit for Experiment (LM_Single_Label, FM_UNIT/FM_SEQUENCE)
 		ParameterSpace pSpace = new ParameterSpace(Dimension.createBundle("readers", dimReaders),
                 Dimension.create(DIM_LEARNING_MODE, LM_SINGLE_LABEL), Dimension.create(
-                        DIM_FEATURE_MODE, FM_UNIT), dimPipelineParameters, dimFeatureSets,
+                        DIM_FEATURE_MODE, FM_SEQUENCE), dimPipelineParameters, dimFeatureSets,
                 dimClassificationArgs);
 
         return pSpace;
@@ -115,8 +128,13 @@ public class ComplexityClassification
     protected AnalysisEngineDescription getPreprocessing()
         throws ResourceInitializationException
     {	
-    	//TODO Add Annotators.
-        return createEngineDescription(createEngineDescription(MyAnnotator.class));
+    	
+        return createEngineDescription(createEngineDescription(
+        		AnalysisEngineFactory.createEngineDescription(StanfordLemmatizer.class),
+                AnalysisEngineFactory.createEngineDescription(FrequencyAnnotator.class, 
+                		FrequencyAnnotator.PARAM_FREQUENCY_LIST, "src/main/resources/required/5kwordfrequency.txt"),
+                AnalysisEngineFactory.createEngineDescription(Playground.class))
+        		);
     }
 
 }

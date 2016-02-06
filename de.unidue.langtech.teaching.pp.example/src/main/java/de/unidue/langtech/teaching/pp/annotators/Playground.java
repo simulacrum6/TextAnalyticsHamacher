@@ -10,6 +10,8 @@ import org.apache.uima.jcas.JCas;
 
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Lemma;
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token;
+import de.tudarmstadt.ukp.dkpro.tc.api.type.TextClassificationOutcome;
+import de.tudarmstadt.ukp.dkpro.tc.api.type.TextClassificationUnit;
 import de.unidue.langtech.teaching.pp.type.CorpusFrequency;
 
 public class Playground
@@ -24,25 +26,35 @@ public class Playground
         System.out.println("Document is: " + jcas.getDocumentText());
         System.out.println();
         
-        //Token Test
+        // Token Test
         List<Token> tokens = new ArrayList<Token>(JCasUtil.select(jcas, Token.class));
         Token token;
         
         System.out.println("CAS contains " + tokens.size() + " Token Annotations.");
         
-        //Lemma Test
+        // Lemma Test
         List<Lemma> lemmas = new ArrayList<Lemma>(JCasUtil.select(jcas, Lemma.class));
         Lemma lemma;
         
         System.out.println("CAS contains " + lemmas.size() + " Lemma Annotations.");
         
-        //Frequency Test
+        // Frequency Test
         List<CorpusFrequency> frequencies = new ArrayList<CorpusFrequency>(JCasUtil.select(jcas, CorpusFrequency.class));
         CorpusFrequency frequency;
         
         System.out.println("CAS contains " + frequencies.size() + " Frequency Annotations.");
         
-        //Info Output
+        // Classification Units Test
+        List<TextClassificationUnit> units = new ArrayList<TextClassificationUnit>(JCasUtil.select(jcas, TextClassificationUnit.class));
+        TextClassificationUnit unit;
+        System.out.println("CAS contains " + units.size() + " Classification Units.");
+        
+        // Classification Outcomes Test
+        List<TextClassificationOutcome> outcomes = new ArrayList<TextClassificationOutcome>(JCasUtil.select(jcas, TextClassificationOutcome.class));
+        TextClassificationUnit outcome;
+        System.out.println("CAS contains " + units.size() + " Classification Units.");
+        
+        // Info Output
         System.out.println();
         
         for(int i = 0; i < tokens.size(); i++){

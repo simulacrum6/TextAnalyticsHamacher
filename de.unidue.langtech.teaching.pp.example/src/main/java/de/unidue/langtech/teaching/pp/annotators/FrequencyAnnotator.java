@@ -74,11 +74,11 @@ public class FrequencyAnnotator
 			}
 			  
 			CorpusFrequency freqAnno = new CorpusFrequency(jcas);
-			freqAnno.setBegin(begin);
-			freqAnno.setEnd(end);
-			freqAnno.setCount(count);
-			freqAnno.setRank(rank);
-			freqAnno.addToIndexes();
+				freqAnno.setBegin(begin);
+				freqAnno.setEnd(end);
+				freqAnno.setCount(count);
+				freqAnno.setRank(rank);
+				freqAnno.addToIndexes();
 		}
   	      
     }
