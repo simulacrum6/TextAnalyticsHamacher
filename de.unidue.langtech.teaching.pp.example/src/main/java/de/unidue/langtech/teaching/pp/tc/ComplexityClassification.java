@@ -3,7 +3,9 @@ package de.unidue.langtech.teaching.pp.tc;
 import static de.tudarmstadt.ukp.dkpro.core.api.io.ResourceCollectionReaderBase.INCLUDE_PREFIX;
 import static org.apache.uima.fit.factory.AnalysisEngineFactory.createEngineDescription;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -52,25 +54,22 @@ import weka.classifiers.bayes.NaiveBayes;
 public class ComplexityClassification
     implements Constants
 {
-
     public static final String LANGUAGE_CODE = "en";
     public static final int NUM_FOLDS = 2;
-    //TODO Check dat stuff
     public static final String corpusFilePathTrain = "src/main/resources/inputfiles/cwi_testing_allannotations.txt";
 
     public static void main(String[] args)
         throws Exception
     {
-    	//TODO Set environment Variable
-    	// This is used to ensure that the required DKPRO_HOME environment variable is set.
-    	// Ensures that people can run the experiments even if they haven't read the setup instructions first :)
-    	// Don't use this in real experiments! Read the documentation and set DKPRO_HOME as explained there.
-    	System.setProperty("DKPRO_HOME", "src/main/resources/output");
+    	// Set environment Variable
+    	String timestamp = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss_SSS").format(new Date());
+    	System.setProperty("DKPRO_HOME", "src/main/resources/output/" + timestamp);
     	
+    	// Run experiment
         new ComplexityClassification().runCrossValidation(getParameterSpace());
     }
 
-    // ##### CV #####
+    
     protected void runCrossValidation(ParameterSpace pSpace)
         throws Exception
     {

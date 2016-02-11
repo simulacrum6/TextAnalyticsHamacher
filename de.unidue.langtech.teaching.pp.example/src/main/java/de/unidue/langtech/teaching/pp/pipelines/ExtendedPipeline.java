@@ -25,7 +25,8 @@ public class ExtendedPipeline
         SimplePipeline.runPipeline(
                 CollectionReaderFactory.createReader(
                         ReaderTrainTC.class,
-                        ReaderTrainTC.PARAM_INPUT_FILE, "src/main/resources/inputfiles/cwi_training_allannotations.txt"
+                        ReaderTrainTC.PARAM_INPUT_FILE, "src/main/resources/inputfiles/cwi_training_allannotations.txt",
+                        ReaderTrainTC.PARAM_CLASSIFICATION_MODE, "sum"
                 ),
                 AnalysisEngineFactory.createEngineDescription(StanfordLemmatizer.class),
                 AnalysisEngineFactory.createEngineDescription(FrequencyAnnotator.class, 

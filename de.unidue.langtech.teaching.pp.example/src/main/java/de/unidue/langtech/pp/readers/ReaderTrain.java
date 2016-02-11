@@ -54,6 +54,7 @@ public class ReaderTrain
     int meta_docCount;
     String documentText;
     List<String> lines;
+    List<String[]> linesplits;
     
     int currentLine;
     
@@ -71,6 +72,7 @@ public class ReaderTrain
 
         try {
            lines = FileUtils.readLines(inputFile);
+           linesplits = getLineSplits(lines);
            currentLine = 0;
            meta_docCount = 0;
         }
@@ -82,27 +84,21 @@ public class ReaderTrain
     public boolean hasNext()
         throws IOException, CollectionException
     {    
+    	boolean hasnext = currentLine < lines.size();   	
     	// TODO Clean up code       	
-        if (currentLine < lines.size()) 
-        {
-        	meta_docCount++;
-        	
+        if (hasnext) 
+        {        	
         	wordBuffer = new ArrayList<String>();
             positionBuffer = new ArrayList<Integer>();
             complexityBuffer = new ArrayList<Integer>();
             complexitySumBuffer = new ArrayList<Integer>();
             
-        	String[] split = lines.get(currentLine).split("\\s[\\.\\!\\?]\\t");
-            
-            if (split.length != 2) {
-                throw new IOException("Wrong line format: " + lines.get(currentLine) + " \n Line needs to contain the following separator: '.\\t' ");
-            }
-            
+        	String[] split = linesplits.get(currentLine);            
             String currLineText = split[0];
         	documentText = currLineText;
         	
-        	//TODO transform to while loop.
-        	do {
+        	while ( documentText.equals(currLineText) && currentLine < lines.size()-1 ) 
+        	{
         		String[] tokeninfo = split[1].split("\t", -1);
         		
                 if (tokeninfo.length < 3) {
@@ -124,24 +120,16 @@ public class ReaderTrain
                 complexitySumBuffer.add(complexitySum);
                 complexityBuffer.add( (complexitySum > 0)?1:0 );
                 
-                //Preparations for next loop
                 
                 currentLine ++;
-                
-                // TODO write prepareNext() method
-            	split = lines.get(currentLine).split("\\s[\\.\\!\\?]\\t");
-                
-            	if (split.length != 2) {
-                	throw new IOException("Wrong line format: " + lines.get(currentLine) + " \n Line needs to contain the following separator: '.\\t' ");
-                }
-            	
+            	split = linesplits.get(currentLine);
             	currLineText = split[0];
             	
-        	}while (documentText.equals(currLineText)&& currentLine < lines.size()-1);
+        	}
 
         }
             	
-    	return currentLine < lines.size();
+    	return hasnext;
     }
     
     @Override
@@ -150,15 +138,13 @@ public class ReaderTrain
     {  	
     	jcas.setDocumentText(documentText);
         jcas.setDocumentLanguage(documentLanguage);
-        // FIXME MetaData DocumentID is not working properly
-//        List<DocumentMetaData> metaDatas = new ArrayList<DocumentMetaData>(JCasUtil.select(jcas, DocumentMetaData.class));
-        if(JCasUtil.select(jcas, DocumentMetaData.class).isEmpty())
-        {
-        	DocumentMetaData metaData = new DocumentMetaData(jcas);
-		    	metaData.setDocumentId("SemEval16_Complexity" + meta_docCount);
-		    	metaData.setDocumentTitle( "SemEval16_Complexity" );
-		    	metaData.addToIndexes();
-        }
+         
+        meta_docCount ++;
+        
+        // Set Metadata
+    	DocumentMetaData metaData = DocumentMetaData.create(jcas);
+	    	metaData.setDocumentId("SemEval16_Complexity_" + meta_docCount);
+	    	metaData.setDocumentTitle( "SemEval16_Complexity" );       
         
     	// Set Sentence
     	Sentence sentence = new Sentence(jcas, 0, documentText.length());
@@ -196,6 +182,38 @@ public class ReaderTrain
     	}
 
         currentLine++;
+    }
+    
+    public String[] getSafeSplits (String line, String splitpoint, int splitCount)
+    	throws IOException
+    {
+    	if ( splitpoint.equals("default") ) {
+    		splitpoint = "\\s[\\.\\!\\?]\\t";
+    	}
+ 
+    	String[] split = line.split( splitpoint );
+    	
+    	if ( splitCount != -1){
+    		
+    		if (split.length != splitCount) {
+             throw new IOException("Wrong line format: " + lines.get(currentLine) + " \n Line needs to match the following separator: " + splitpoint);
+    		}
+    		
+    	}
+    	
+    	return split;
+    }
+    
+    public List<String[]> getLineSplits (List<String> lines)
+    	throws IOException
+    {
+    	List<String[]> linesplits = new ArrayList<String[]>();
+    	
+    	for(String line : lines)
+    	{
+    		linesplits.add(getSafeSplits (line, "default", 2));
+    	}
+    	return linesplits;
     }
     
     public Progress[] getProgress()

@@ -1,6 +1,8 @@
 package de.unidue.langtech.teaching.pp.annotators;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
@@ -23,7 +25,8 @@ public class Playground
     public void process(JCas jcas)
         throws AnalysisEngineProcessException
     {
-        System.out.println("Document is: " + jcas.getDocumentText());
+    	System.out.println(new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss_SSS").format(new Date()));
+    	System.out.println("Document is: " + jcas.getDocumentText());
         System.out.println();
         
         // Token Test
@@ -47,21 +50,22 @@ public class Playground
         // Classification Units Test
         List<TextClassificationUnit> units = new ArrayList<TextClassificationUnit>(JCasUtil.select(jcas, TextClassificationUnit.class));
         TextClassificationUnit unit;
-        System.out.println("CAS contains " + units.size() + " Classification Units.");
         
+        System.out.println("CAS contains " + units.size() + " Classification Units.");
+             
         // Classification Outcomes Test
         List<TextClassificationOutcome> outcomes = new ArrayList<TextClassificationOutcome>(JCasUtil.select(jcas, TextClassificationOutcome.class));
-        TextClassificationUnit outcome;
-        System.out.println("CAS contains " + units.size() + " Classification Units.");
+        TextClassificationOutcome outcome;
         
-        // Info Output
+        System.out.println("CAS contains " + outcomes.size() + " Classification Outcomes.");
         System.out.println();
         
+        // Annotation Info
         for(int i = 0; i < tokens.size(); i++){
      	   token = tokens.get(i);
      	   lemma = lemmas.get(i);
      	   frequency = frequencies.get(i);
-     	       	   
+     	       	       	   
      	   System.out.println(
      			   "Token[" + i + "](" + token.getCoveredText() + ") " +
      			   "Lemma: " + lemma.getValue() + ", " +
@@ -69,6 +73,22 @@ public class Playground
      			   "Frequency Rank: " + frequency.getRank()
      			   );    	   
         }
+        System.out.println();
+        
+        //Classification Info
+        for(int i = 0; i < units.size(); i++)
+        {
+        	unit = units.get(i);
+        	outcome = outcomes.get(i);
+        	
+        	System.out.println(
+      			   "ClassificationUnit[" + i + "](" + unit.getCoveredText() + ") " +
+      			   "Classification Outcome: " + outcome.getOutcome()
+      			   );
+        }
+        System.out.println();
+        
+        System.out.println("----------");
         System.out.println();
         
 //        Junkyard
