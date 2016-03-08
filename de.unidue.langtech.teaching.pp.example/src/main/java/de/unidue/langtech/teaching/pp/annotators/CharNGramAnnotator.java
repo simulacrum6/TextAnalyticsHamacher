@@ -7,6 +7,7 @@ import java.util.List;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.fit.component.JCasAnnotator_ImplBase;
 import org.apache.uima.fit.descriptor.ConfigurationParameter;
+import org.apache.uima.fit.descriptor.TypeCapability;
 import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.cas.StringArray;
@@ -14,6 +15,7 @@ import org.apache.uima.jcas.cas.StringArray;
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token;
 import de.unidue.langtech.teaching.pp.type.CharNGram;
 
+@TypeCapability(inputs = { "de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token" })
 public class CharNGramAnnotator
 	  extends JCasAnnotator_ImplBase
 	  {		  
@@ -64,12 +66,10 @@ public class CharNGramAnnotator
 	    		  charNgrams = getCharNGrams(word, minN, maxN);
 	    		  annoCharNgrams = new StringArray(jcas, charNgrams.size());
 	    		  
-	    		  
 	    		  for(String ngram : charNgrams){
 	    			  annoCharNgrams.set(i, ngram);
 	    			  i++;
 	    		  }
-	    		  
 	    		  
 	    		  CharNGram ngrams = new CharNGram(jcas);
 	    		  ngrams.setCharNGrams(annoCharNgrams);

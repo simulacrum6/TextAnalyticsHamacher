@@ -46,9 +46,8 @@ public class ReaderTrain
     @ConfigurationParameter(name = PARAM_INPUT_FILE, mandatory = true)
     private File inputFile;
 
-    //Language required for Stanford Lemmatizer
     public static final String PARAM_DOCUMENT_LANGUAGE = "DocumentLanguage";
-    @ConfigurationParameter(name = PARAM_DOCUMENT_LANGUAGE, defaultValue = "en")
+    @ConfigurationParameter(name = PARAM_DOCUMENT_LANGUAGE, defaultValue = "en", mandatory = true)
     String documentLanguage;
     
     int meta_docCount;

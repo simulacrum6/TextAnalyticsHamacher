@@ -164,5 +164,9 @@
   		<groupId>de.tudarmstadt.ukp.dkpro.tc</groupId>
   		<artifactId>dkpro-tc-features</artifactId>
   	</dependency>
+  	<dependency>
+  		<groupId>de.tudarmstadt.ukp.dkpro.tc</groupId>
+  		<artifactId>dkpro-tc-features-ngram</artifactId>
+  	</dependency>
   </dependencies>
 </project>

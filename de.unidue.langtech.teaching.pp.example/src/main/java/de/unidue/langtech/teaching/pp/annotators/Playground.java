@@ -1,8 +1,6 @@
 package de.unidue.langtech.teaching.pp.annotators;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
@@ -20,12 +18,10 @@ public class Playground
     extends JCasAnnotator_ImplBase
 {
 
-	
     @Override
     public void process(JCas jcas)
         throws AnalysisEngineProcessException
     {
-    	System.out.println(new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss_SSS").format(new Date()));
     	System.out.println("Document is: " + jcas.getDocumentText());
         System.out.println();
         

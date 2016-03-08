@@ -3,31 +3,24 @@ FUNCTIONALITY
 		Functions
 			+Syllable Annotator
 			+NGrams / CharNGrams? --> NGram Frequency Available?
-			+(ReaderTest)
-			+ReaderTrain tokenization + unit isolation
-		Tests
+	Tests
 			+ReaderTest & ReaderTrain
 			+CharNGramAnnotator
 			+(FrequencyMap) test all functions
 			+(SyllableCountAnnotator?)
 	DKPro TC
 		Feature Extraction/Conversion
-			+Length
-			+HasSuffix
-			+HasSuffix(x)
 			+FrequencyRank
 			+FrequencyCount
-			+Contains(charsequence)
-			+Etymology
+			+NGrams
+			+Etymology (?)
+			+Ambiguity (#synonyms)
 		Classification
-			+Naive Bayes
 			+SVM
-		Peparation
-			+Finish TODOs for ComplexityClassification.java
 			
 	Misc
-		Look for different Frequency Corpus 
-			+Brown Corpus`?
+		Look for different Frequency Corpus
+			+Brown Corpus?
 			+Google n-gram
 		Look for ready to use Annotators
 			+morphemes

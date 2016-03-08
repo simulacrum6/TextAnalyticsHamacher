@@ -33,6 +33,7 @@ import de.tudarmstadt.ukp.dkpro.lab.task.impl.BatchTask.ExecutionPolicy;
 //import de.tudarmstadt.ukp.dkpro.lab.task.ParameterSpace;
 import de.tudarmstadt.ukp.dkpro.tc.core.Constants;
 import de.tudarmstadt.ukp.dkpro.tc.features.length.NrOfCharsUFE;
+import de.tudarmstadt.ukp.dkpro.tc.features.ngram.LuceneNGramUFE;
 //import de.tudarmstadt.ukp.dkpro.tc.examples.util.DemoUtils;
 //import de.tudarmstadt.ukp.dkpro.tc.features.length.NrOfCharsUFE;
 //import de.tudarmstadt.ukp.dkpro.tc.ml.ExperimentCrossValidation;
@@ -44,13 +45,6 @@ import de.unidue.langtech.teaching.pp.annotators.FrequencyAnnotator;
 import de.unidue.langtech.teaching.pp.annotators.Playground;
 import weka.classifiers.bayes.NaiveBayes;
 
-//TODO Delete that stuff
-/**
- * This is an example for POS tagging as unit classification. Each POS is treated as a
- * classification unit, but unlike sequence tagging the decision for each POS is taken
- * independently. This will usually give worse results, so this is only to showcase the concept.
- * 
- */
 public class ComplexityClassification
     implements Constants
 {
@@ -63,7 +57,7 @@ public class ComplexityClassification
     {
     	// Set environment Variable
     	String timestamp = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss_SSS").format(new Date());
-    	System.setProperty("DKPRO_HOME", "src/main/resources/output/" + timestamp);
+    	System.setProperty("DKPRO_HOME", "src/main/resources/output/ComplexityExperiment-NaiveBayes/" + timestamp);
     	
     	// Run experiment
         new ComplexityClassification().runCrossValidation(getParameterSpace());
@@ -89,13 +83,13 @@ public class ComplexityClassification
 
     public static ParameterSpace getParameterSpace()
     {
-        // configure training and test data reader dimension
+        // Configure training reader dimension
         Map<String, Object> dimReaders = new HashMap<String, Object>();
-        //TODO Insert Training Reader
+      
         dimReaders.put(DIM_READER_TRAIN, ReaderTrainTC.class); 
         dimReaders.put(
                 DIM_READER_TRAIN_PARAMS,
-                //Parameter List
+                // Parameter List
                 Arrays.asList(new Object[] { ReaderTrainTC.PARAM_INPUT_FILE, "src/main/resources/inputfiles/cwi_training_allannotations.txt"
                 }));
         
@@ -108,12 +102,19 @@ public class ComplexityClassification
         @SuppressWarnings("unchecked")
         Dimension<List<Object>> dimPipelineParameters = Dimension.create(DIM_PIPELINE_PARAMS,
         		 Arrays.asList(new Object[] {
+        				 // Not tested.
+        				 // LuceneNGramUFE.PARAM_NGRAM_LOWER_CASE, "true"
                  }));
         
         //TODO Add Feature Extractors
         @SuppressWarnings("unchecked")
         Dimension<List<String>> dimFeatureSets = Dimension.create(DIM_FEATURE_SET,
-                Arrays.asList(new String[] { NrOfCharsUFE.class.getName() }));
+                Arrays.asList(new String[] { 
+                		NrOfCharsUFE.class.getName()
+                		
+                		// Does not work. "Class def not found org/apache/lucene/index/IndexableField"
+                		//LuceneNGramUFE.class.getName()                		
+                }));
         
         //TODO Fit for Experiment (LM_Single_Label, FM_UNIT/FM_SEQUENCE)
 		ParameterSpace pSpace = new ParameterSpace(Dimension.createBundle("readers", dimReaders),
