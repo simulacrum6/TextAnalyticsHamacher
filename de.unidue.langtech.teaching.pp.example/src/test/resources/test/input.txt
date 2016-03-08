@@ -1,4 +1,4 @@
-Peter went into the office before they arrived there .	into	3	0	1	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0
+Peter went into the office before they arrived there .	into	3	1	1	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0
 Peter went into the office before they arrived there .	arrived	8	1	0	0	1	1	0	1	1	1	0	0	0	0	0	0	0	1	0	0	1
 This is not a test .	test	5	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
 This is not a test .	not	3	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	

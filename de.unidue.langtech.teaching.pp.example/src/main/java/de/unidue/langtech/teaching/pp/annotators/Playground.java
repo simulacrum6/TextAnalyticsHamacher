@@ -8,6 +8,7 @@ import org.apache.uima.fit.component.JCasAnnotator_ImplBase;
 import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
 
+import de.tudarmstadt.ukp.dkpro.core.api.metadata.type.DocumentMetaData;
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Lemma;
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token;
 import de.tudarmstadt.ukp.dkpro.tc.api.type.TextClassificationOutcome;
@@ -23,6 +24,11 @@ public class Playground
         throws AnalysisEngineProcessException
     {
     	System.out.println("Document is: " + jcas.getDocumentText());
+    	
+    	// DocumentMetaData Test
+    	DocumentMetaData metaData = JCasUtil.selectSingle(jcas, DocumentMetaData.class);
+       
+        System.out.println("DocumentId: " + metaData.getDocumentId());
         System.out.println();
         
         // Token Test

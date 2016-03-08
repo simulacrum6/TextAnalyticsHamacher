@@ -37,7 +37,7 @@ import de.unidue.langtech.teaching.pp.type.GoldComplexity;
  *		[TAB][WordX][TAB][Position(WordX)][TAB][Rating1][TAB](...)[TAB][RatingM]
  *		Each individual rating must be either 1 or 0. 
 */
-
+// FIXME First ClassificationUnits of each jCas and the very last ClassificationUnit are not registered. In this case: student
 public class ReaderTrain
     extends JCasCollectionReader_ImplBase
 {
@@ -104,9 +104,8 @@ public class ReaderTrain
                     throw new IOException("Wrong Tokeninfo format: " + split[1]);
                 }
                 
-                int complexitySum = 0;
-                
-                for (int i = 3; i < tokeninfo.length; i++) 
+                int complexitySum = 0;   
+                for (int i = 2; i < tokeninfo.length; i++) 
                 {
                 	if (tokeninfo[i].equals("1")) {
                 		complexitySum ++;
@@ -123,7 +122,6 @@ public class ReaderTrain
                 currentLine ++;
             	split = linesplits.get(currentLine);
             	currLineText = split[0];
-            	
         	}
 
         }
@@ -150,11 +148,9 @@ public class ReaderTrain
     		sentence.addToIndexes();
     	
     	// Set Tokens
-    	
     	int currentPosition = 0;
     	
     	String[] tokensplits = jcas.getDocumentText().split(" ");
-
     	for (String tokensplit : tokensplits)
     	{
 	    	int begin = currentPosition;
@@ -162,10 +158,10 @@ public class ReaderTrain
 	    		
 	    	currentPosition += tokensplit.length() + 1;
     			    	
-    			int index = wordBuffer.indexOf(tokensplit);	
+    		int index = wordBuffer.indexOf(tokensplit);	
 	    		
-	    		Token token = new Token(jcas, begin, end);
-	    			token.addToIndexes();
+	    	Token token = new Token(jcas, begin, end);
+	    		token.addToIndexes();
 	    	
 			if (wordBuffer.contains(tokensplit))
     		{	
@@ -179,7 +175,7 @@ public class ReaderTrain
     		}
     		
     	}
-
+    	// TODO Do not forget!
         currentLine++;
     }
     
