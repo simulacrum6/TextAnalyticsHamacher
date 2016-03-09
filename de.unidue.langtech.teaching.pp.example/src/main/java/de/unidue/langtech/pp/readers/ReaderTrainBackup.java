@@ -24,22 +24,21 @@ import de.unidue.langtech.teaching.pp.type.GoldComplexity;
 /* 
  * A training data reader for the SemEval2016 Task11: Complex Word Identification.
  * Input files must be organised in the following format:
- *	 Each INPUTFILE
+ *	 Each TEXT in INPUT
  *		[Line1]
  *		[Line2]
  *		(...)
  *		[LineN]
- *	 Each LINE in INPUTFILE
- *		[Sentence][SPACE][.][TAB][Tokeninfo]
+ *	 Each LINE in TEXT
+ *		[Sentence][TAB][.][TAB][Tokeninfo]
  *	 Each SENTENCE in LINE
  *		[Word1][TAB][Word2][TAB](...)[TAB][WordN]
  *	 Each TOKENINFO in LINE
  *		[TAB][WordX][TAB][Position(WordX)][TAB][Rating1][TAB](...)[TAB][RatingM]
- *		Each individual RATING must be either 1 or 0.
- *		Each individual WORD must be a sequence of characters. 
+ *		Each individual rating must be either 1 or 0. 
 */
 // FIXME First ClassificationUnits of each jCas and the very last ClassificationUnit are not registered. In this case: student
-public class ReaderTrain
+public class ReaderTrainBackup
     extends JCasCollectionReader_ImplBase
 {
 
@@ -93,15 +92,16 @@ public class ReaderTrain
             complexityBuffer = new ArrayList<Integer>();
             complexitySumBuffer = new ArrayList<Integer>();
             
-            String docTextBuffer = getCurrentLine();
-            String currLineText = getCurrentLine();
+        	String[] split = linesplits.get(currentLine);            
+            String currLineText = split[0];
+        	documentText = currLineText;
         	
-        	while ( docTextBuffer.equals(currLineText) && currentLine < lines.size()-1 ) 
+        	while ( documentText.equals(currLineText) && currentLine < lines.size()-1 ) 
         	{
-        		String[] tokeninfo = linesplits.get(currentLine)[1].split("\t", -1);
+        		String[] tokeninfo = split[1].split("\t", -1);
         		
                 if (tokeninfo.length < 3) {
-                    throw new IOException("Wrong Tokeninfo format: " + linesplits.get(currentLine)[1]);
+                    throw new IOException("Wrong Tokeninfo format: " + split[1]);
                 }
                 
                 int complexitySum = 0;   
@@ -120,9 +120,10 @@ public class ReaderTrain
                 
                 
                 currentLine ++;
-            	currLineText = getCurrentLine();
+            	split = linesplits.get(currentLine);
+            	currLineText = split[0];
         	}
-        	documentText = docTextBuffer;
+
         }
             	
     	return hasnext;
@@ -149,7 +150,7 @@ public class ReaderTrain
     	// Set Tokens
     	int currentPosition = 0;
     	
-    	String[] tokensplits = jcas.getDocumentText().split(" ", -1);
+    	String[] tokensplits = jcas.getDocumentText().split(" ");
     	for (String tokensplit : tokensplits)
     	{
 	    	int begin = currentPosition;
@@ -157,12 +158,13 @@ public class ReaderTrain
 	    		
 	    	currentPosition += tokensplit.length() + 1;
     			    	
+    		int index = wordBuffer.indexOf(tokensplit);	
+	    		
 	    	Token token = new Token(jcas, begin, end);
 	    		token.addToIndexes();
 	    	
 			if (wordBuffer.contains(tokensplit))
     		{	
-				int index = wordBuffer.indexOf(tokensplit);
 	    	    // Set Gold Annotation.		
  				GoldComplexity goldComplexity = new GoldComplexity(jcas, begin, end);
     				goldComplexity.setWord( wordBuffer.get(index) );
@@ -207,11 +209,6 @@ public class ReaderTrain
     		linesplits.add(getSafeSplits (line, "default", 2));
     	}
     	return linesplits;
-    }
-    
-    public String getCurrentLine()
-    {
-    	return linesplits.get(currentLine)[0];
     }
     
     public Progress[] getProgress()

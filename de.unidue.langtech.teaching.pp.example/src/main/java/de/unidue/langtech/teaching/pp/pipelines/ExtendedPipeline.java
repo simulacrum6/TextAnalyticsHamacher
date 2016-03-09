@@ -4,7 +4,10 @@ import org.apache.uima.fit.factory.AnalysisEngineFactory;
 import org.apache.uima.fit.factory.CollectionReaderFactory;
 import org.apache.uima.fit.pipeline.SimplePipeline;
 
+import de.tudarmstadt.ukp.dkpro.core.decompounding.uima.annotator.CompoundAnnotator;
+import de.tudarmstadt.ukp.dkpro.core.decompounding.uima.resource.BananaSplitterResource;
 import de.tudarmstadt.ukp.dkpro.core.stanfordnlp.StanfordLemmatizer;
+import de.tudarmstadt.ukp.dkpro.core.stanfordnlp.StanfordPosTagger;
 import de.unidue.langtech.pp.readers.ReaderTrainTC;
 import de.unidue.langtech.teaching.pp.annotators.FrequencyAnnotator;
 import de.unidue.langtech.teaching.pp.annotators.Playground;
@@ -29,9 +32,10 @@ public class ExtendedPipeline
                 AnalysisEngineFactory.createEngineDescription(StanfordLemmatizer.class),
                 AnalysisEngineFactory.createEngineDescription(FrequencyAnnotator.class, 
                 		FrequencyAnnotator.PARAM_FREQUENCY_LIST, "src/main/resources/required/5kwordfrequency.txt"),
-//                AnalysisEngineFactory.createEngineDescription(CharNGramAnnotator.class),
+                AnalysisEngineFactory.createEngineDescription(StanfordPosTagger.class),
+//                AnalysisEngineFactory.createEngineDescription(CompoundAnnotator.class,
+//                		CompoundAnnotator.PARAM_SPLITTING_ALGO, BananaSplitterResource.class),
                 AnalysisEngineFactory.createEngineDescription(Playground.class)
-
         );
     }
 }

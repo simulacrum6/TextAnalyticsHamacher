@@ -1,4 +1,4 @@
-package de.unidue.langtech.teaching.pp.tc;
+package experiments;
 
 import static de.tudarmstadt.ukp.dkpro.core.api.io.ResourceCollectionReaderBase.INCLUDE_PREFIX;
 import static org.apache.uima.fit.factory.AnalysisEngineFactory.createEngineDescription;
@@ -16,6 +16,7 @@ import org.apache.uima.fit.factory.AnalysisEngineFactory;
 import org.apache.uima.resource.ResourceInitializationException;
 
 import de.tudarmstadt.ukp.dkpro.core.stanfordnlp.StanfordLemmatizer;
+import de.tudarmstadt.ukp.dkpro.core.stanfordnlp.StanfordPosTagger;
 import de.tudarmstadt.ukp.dkpro.lab.Lab;
 import de.tudarmstadt.ukp.dkpro.lab.task.Dimension;
 import de.tudarmstadt.ukp.dkpro.lab.task.ParameterSpace;
@@ -33,16 +34,21 @@ import de.tudarmstadt.ukp.dkpro.lab.task.impl.BatchTask.ExecutionPolicy;
 //import de.tudarmstadt.ukp.dkpro.lab.task.ParameterSpace;
 import de.tudarmstadt.ukp.dkpro.tc.core.Constants;
 import de.tudarmstadt.ukp.dkpro.tc.features.length.NrOfCharsUFE;
+import de.tudarmstadt.ukp.dkpro.tc.features.ngram.LuceneCharacterNGramUFE;
 import de.tudarmstadt.ukp.dkpro.tc.features.ngram.LuceneNGramUFE;
 //import de.tudarmstadt.ukp.dkpro.tc.examples.util.DemoUtils;
 //import de.tudarmstadt.ukp.dkpro.tc.features.length.NrOfCharsUFE;
 //import de.tudarmstadt.ukp.dkpro.tc.ml.ExperimentCrossValidation;
 //import de.tudarmstadt.ukp.dkpro.tc.weka.WekaClassificationAdapter;
 import de.tudarmstadt.ukp.dkpro.tc.ml.ExperimentCrossValidation;
+import de.tudarmstadt.ukp.dkpro.tc.ml.report.BatchCrossValidationReport;
 import de.tudarmstadt.ukp.dkpro.tc.weka.WekaClassificationAdapter;
+import de.tudarmstadt.ukp.dkpro.tc.weka.report.WekaClassificationReport;
 import de.unidue.langtech.pp.readers.ReaderTrainTC;
 import de.unidue.langtech.teaching.pp.annotators.FrequencyAnnotator;
 import de.unidue.langtech.teaching.pp.annotators.Playground;
+import featureExtractors.FrequencyUFE;
+import featureExtractors.PosUFE;
 import weka.classifiers.bayes.NaiveBayes;
 
 public class ComplexityClassification
@@ -68,13 +74,13 @@ public class ComplexityClassification
         throws Exception
     {
     	//TODO Check Experiment Types, identify correct ones
-    	ExperimentCrossValidation batch = new ExperimentCrossValidation("MyComplexityExperiment",
+    	ExperimentCrossValidation batch = new ExperimentCrossValidation("ComplexityExperiment-NaiveBayes",
         		WekaClassificationAdapter.class, null, NUM_FOLDS);
         batch.setPreprocessing(getPreprocessing());
-//        batch.addInnerReport(WekaClassificationReport.class);
+      // batch.addInnerReport(WekaClassificationReport.class);
         batch.setParameterSpace(pSpace);
-        batch.setExecutionPolicy(ExecutionPolicy.RUN_AGAIN); //Not sure, what that one does. Needs checking.
-//        batch.addReport(BatchCrossValidationReport.class);
+        batch.setExecutionPolicy(ExecutionPolicy.RUN_AGAIN);
+       // batch.addReport(BatchCrossValidationReport.class);
         // batch.addReport(BatchRuntimeReport.class);
 
         // Run
@@ -93,30 +99,36 @@ public class ComplexityClassification
                 Arrays.asList(new Object[] { ReaderTrainTC.PARAM_INPUT_FILE, "src/main/resources/inputfiles/cwi_training_allannotations.txt"
                 }));
         
-        //TODO Select Classifier. SVM?
+        // Select Classifier. 
         @SuppressWarnings("unchecked")
         Dimension<List<String>> dimClassificationArgs = Dimension.create(DIM_CLASSIFICATION_ARGS,
                 Arrays.asList(new String[] { NaiveBayes.class.getName() }));
         
-        //TODO Add Pipeline Parameters. Unsure as to which ones.
+        
         @SuppressWarnings("unchecked")
         Dimension<List<Object>> dimPipelineParameters = Dimension.create(DIM_PIPELINE_PARAMS,
         		 Arrays.asList(new Object[] {
-        				 // Not tested.
-        				 // LuceneNGramUFE.PARAM_NGRAM_LOWER_CASE, "true"
+//        				LuceneCharacterNGramUFE.PARAM_CHAR_NGRAM_MIN_N, 2,
+//                      LuceneCharacterNGramUFE.PARAM_CHAR_NGRAM_MAX_N, 4,
+//                      LuceneCharacterNGramUFE.PARAM_CHAR_NGRAM_USE_TOP_K, 50,
+//                      LuceneCharacterNGramUFE.PARAM_CHAR_NGRAM_LOWER_CASE, true
                  }));
         
-        //TODO Add Feature Extractors
+        // Select Feature Extractors
         @SuppressWarnings("unchecked")
         Dimension<List<String>> dimFeatureSets = Dimension.create(DIM_FEATURE_SET,
                 Arrays.asList(new String[] { 
-                		NrOfCharsUFE.class.getName()
-                		
-                		// Does not work. "Class def not found org/apache/lucene/index/IndexableField"
-                		//LuceneNGramUFE.class.getName()                		
+                		NrOfCharsUFE.class.getName(),
+                		FrequencyUFE.class.getName(),
+                		PosUFE.class.getName(),
+                		/*
+                		 * FIXME Issue with the "org/apache/lucene/index/IndexableField" class
+                		 * URL Loader can't locate it. Too bad. 
+                		 * */
+//                		LuceneCharacterNGramUFE.class.getName()
                 }));
         
-        //TODO Fit for Experiment (LM_Single_Label, FM_UNIT/FM_SEQUENCE)
+        // Fit for Experiment (LM_Single_Label, FM_UNIT/FM_SEQUENCE)
 		ParameterSpace pSpace = new ParameterSpace(Dimension.createBundle("readers", dimReaders),
                 Dimension.create(DIM_LEARNING_MODE, LM_SINGLE_LABEL), Dimension.create(
                         DIM_FEATURE_MODE, FM_SEQUENCE), dimPipelineParameters, dimFeatureSets,
@@ -128,9 +140,9 @@ public class ComplexityClassification
     protected AnalysisEngineDescription getPreprocessing()
         throws ResourceInitializationException
     {	
-    	
         return createEngineDescription(createEngineDescription(
         		AnalysisEngineFactory.createEngineDescription(StanfordLemmatizer.class),
+        		AnalysisEngineFactory.createEngineDescription(StanfordPosTagger.class),
                 AnalysisEngineFactory.createEngineDescription(FrequencyAnnotator.class, 
                 		FrequencyAnnotator.PARAM_FREQUENCY_LIST, "src/main/resources/required/5kwordfrequency.txt"),
                 AnalysisEngineFactory.createEngineDescription(Playground.class))

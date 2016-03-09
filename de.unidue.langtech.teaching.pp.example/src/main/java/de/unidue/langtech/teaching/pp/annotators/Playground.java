@@ -1,14 +1,18 @@
 package de.unidue.langtech.teaching.pp.annotators;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.fit.component.JCasAnnotator_ImplBase;
 import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
 
+import de.tudarmstadt.ukp.dkpro.core.api.lexmorph.type.pos.POS;
 import de.tudarmstadt.ukp.dkpro.core.api.metadata.type.DocumentMetaData;
+import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Compound;
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Lemma;
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token;
 import de.tudarmstadt.ukp.dkpro.tc.api.type.TextClassificationOutcome;
@@ -24,7 +28,7 @@ import de.unidue.langtech.teaching.pp.type.CorpusFrequency;
 public class Playground
     extends JCasAnnotator_ImplBase
 {
-
+	
     @Override
     public void process(JCas jcas)
         throws AnalysisEngineProcessException
@@ -49,6 +53,16 @@ public class Playground
         
         System.out.println("CAS contains " + lemmas.size() + " Lemma Annotations.");
         
+        // POS Test
+        List<POS> posTags = new ArrayList<POS>(JCasUtil.select(jcas, POS.class));
+        POS posTag;
+        
+        System.out.println("CAS contains " + posTags.size() + " POS Annotations.");
+        
+        // Decompounder Test
+        List<Compound> compounds = new ArrayList<Compound>(JCasUtil.select(jcas, Compound.class));
+        Compound compound;
+        
         // Frequency Test
         List<CorpusFrequency> frequencies = new ArrayList<CorpusFrequency>(JCasUtil.select(jcas, CorpusFrequency.class));
         CorpusFrequency frequency;
@@ -72,11 +86,15 @@ public class Playground
         for(int i = 0; i < tokens.size(); i++){
      	   token = tokens.get(i);
      	   lemma = lemmas.get(i);
+     	   posTag = posTags.get(i);
+     	   compound = compounds.get(i);
      	   frequency = frequencies.get(i);
-     	       	       	   
+     	   
      	   System.out.println(
      			   "Token[" + i + "](" + token.getCoveredText() + ") " +
      			   "Lemma: " + lemma.getValue() + ", " +
+     			   "POS: " + posTag.getTypeIndexID() + posTag.getPosValue() + ", " +
+     			   "Compound:" + compound.getSplits(i) + ", " +
      			   "Frequency Count: " + frequency.getCount() + ", " +
      			   "Frequency Rank: " + frequency.getRank()
      			   );    	   
@@ -98,6 +116,9 @@ public class Playground
         
         System.out.println("----------");
         System.out.println();
+
+        
+        
         
 //        Junkyard
 //       

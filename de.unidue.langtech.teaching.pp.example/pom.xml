@@ -168,5 +168,11 @@
   		<groupId>de.tudarmstadt.ukp.dkpro.tc</groupId>
   		<artifactId>dkpro-tc-features-ngram</artifactId>
   	</dependency>
+  	<dependency>
+  		<groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
+  		<artifactId>
+  			de.tudarmstadt.ukp.dkpro.core.decompounding-asl
+  		</artifactId>
+  	</dependency>
   </dependencies>
 </project>
