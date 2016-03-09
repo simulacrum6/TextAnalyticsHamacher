@@ -4,21 +4,19 @@ import org.apache.uima.fit.factory.AnalysisEngineFactory;
 import org.apache.uima.fit.factory.CollectionReaderFactory;
 import org.apache.uima.fit.pipeline.SimplePipeline;
 
-import de.tudarmstadt.ukp.dkpro.core.clearnlp.ClearNlpPosTagger;
-import de.tudarmstadt.ukp.dkpro.core.clearnlp.ClearNlpSegmenter;
-import de.tudarmstadt.ukp.dkpro.core.ngrams.NGramAnnotator;
 import de.tudarmstadt.ukp.dkpro.core.stanfordnlp.StanfordLemmatizer;
-import de.tudarmstadt.ukp.dkpro.core.tokit.BreakIteratorSegmenter;
-import de.unidue.langtech.pp.readers.ReaderTrain;
 import de.unidue.langtech.pp.readers.ReaderTrainTC;
-import de.unidue.langtech.teaching.pp.annotators.CharNGramAnnotator;
 import de.unidue.langtech.teaching.pp.annotators.FrequencyAnnotator;
 import de.unidue.langtech.teaching.pp.annotators.Playground;
-import de.unidue.langtech.teaching.pp.annotators.SyllableCountAnnotator;
 
+/*
+ * Simple test pipeline to test readers and annotators informally.
+ * */
+
+// TODO Move to test.
 public class ExtendedPipeline
 {
-
+	
     public static void main(String[] args)
         throws Exception
     {

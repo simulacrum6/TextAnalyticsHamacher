@@ -10,6 +10,7 @@ import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.fit.component.JCasAnnotator_ImplBase;
 import org.apache.uima.fit.descriptor.ConfigurationParameter;
+import org.apache.uima.fit.descriptor.TypeCapability;
 import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
@@ -18,6 +19,12 @@ import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Lemma;
 import de.unidue.langtech.teaching.pp.type.CorpusFrequency;
 import de.unidue.langtech.teaching.pp.utils.FrequencyMap;
 
+/*
+ * List based annotator, adding Rank & Frequency. Uses frequency value from a text file. 
+ * Currently the formatting requirements are very strict. Make sure to look into these and select appropriate txt files as sources.< 
+ * */
+
+@TypeCapability(inputs = { "de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Lemma" })
 public class FrequencyAnnotator
 	  extends JCasAnnotator_ImplBase
 {		  

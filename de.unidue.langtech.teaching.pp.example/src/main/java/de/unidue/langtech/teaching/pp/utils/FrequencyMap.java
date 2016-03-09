@@ -40,7 +40,6 @@ public class FrequencyMap {
 	}
 		
 	//Getters
-	
 	public FrequencyMap(File inputfile)
 	{
 		this();
@@ -91,6 +90,7 @@ public class FrequencyMap {
 	{
 		return minFreq;
 	}
+	
 	public int getSize()
 	{
 		return this.size;
@@ -123,14 +123,14 @@ public class FrequencyMap {
 		this.updateSize();
 	}
 	
-	public void updateMaxFreq(int aFreq)
+	private void updateMaxFreq(int aFreq)
 	{
 		if(aFreq > maxFreq){
 			maxFreq = aFreq;
 		}
 	}
 	
-	public void updateMinFreq(int aFreq)
+	private void updateMinFreq(int aFreq)
 	{
 		if(aFreq < minFreq){
 			minFreq = aFreq;

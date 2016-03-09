@@ -32,8 +32,7 @@ public class FrequencyAnnotatorTest
         JCas jcas = ae.newJCas();
         
         List<String> testwords = new ArrayList<String>();
-        
-	        testwords.add("the");
+            testwords.add("the");
 	        testwords.add("notInList");
 	        testwords.add("example");
 	                

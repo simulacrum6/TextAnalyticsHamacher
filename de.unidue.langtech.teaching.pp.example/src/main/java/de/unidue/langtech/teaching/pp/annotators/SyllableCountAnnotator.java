@@ -6,39 +6,38 @@ import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.fit.component.JCasAnnotator_ImplBase;
 import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
-import org.apache.uima.jcas.cas.IntegerArray;
 
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token;
 import de.tudarmstadt.ukp.dkpro.core.readability.measure.WordSyllableCounter;
 import de.unidue.langtech.teaching.pp.type.TokenSyllableCount;
 
+/*
+ * Simple Annotator for Syllable counts.  
+ * Uses the syllable count algorithm from de.tudarmstadt.ukp.dkpro.core.readability.measure.
+ */
+
 public class SyllableCountAnnotator
 	  extends JCasAnnotator_ImplBase
-	  {		  
-	      @Override
-	      public void process(JCas jcas)
-	          throws AnalysisEngineProcessException
-	      {
+{		  
+	@Override
+	public void process(JCas jcas)
+		throws AnalysisEngineProcessException
+	{
+		Collection<Token> tokens = JCasUtil.select(jcas, Token.class);
 	    	  
-	    	  Collection<Token> tokens = JCasUtil.select(jcas, Token.class);
-	    	  
-	    	  WordSyllableCounter wsc = new WordSyllableCounter("en");
-	    	  IntegerArray intArr = new IntegerArray(jcas, tokens.size());
-	    	  
-	    	  String word;
-	          int syllableCount;
-	          int i = 0;
+	    WordSyllableCounter wsc = new WordSyllableCounter("en");
+	      
+	    String word;
+	    int syllableCount;
 	          
-	          for(Token token : tokens){
-	          	word = token.getCoveredText();
-	          	syllableCount = wsc.countSyllables(word);
-	          	i++;
-	          
-	          	TokenSyllableCount tsc = new TokenSyllableCount(jcas);
-		        tsc.setCountSyllables(syllableCount);
-		        tsc.addToIndexes();
-		          
-	          	
-	          }  
+	    for(Token token : tokens){
+	    	word = token.getCoveredText();
+	    	syllableCount = wsc.countSyllables(word);
+
+			TokenSyllableCount tsc = new TokenSyllableCount(jcas);
+				tsc.setBegin(token.getBegin());
+				tsc.setEnd(token.getEnd());
+				tsc.setCountSyllables(syllableCount);
 	    }
+	}
 }

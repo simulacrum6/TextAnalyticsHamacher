@@ -15,6 +15,12 @@ import de.tudarmstadt.ukp.dkpro.tc.api.type.TextClassificationOutcome;
 import de.tudarmstadt.ukp.dkpro.tc.api.type.TextClassificationUnit;
 import de.unidue.langtech.teaching.pp.type.CorpusFrequency;
 
+/*
+ * Console based testing environment for quick and dirty testing.
+ * Used as final annotator in pipeline.
+ * */
+
+// TODO Move to test.
 public class Playground
     extends JCasAnnotator_ImplBase
 {
