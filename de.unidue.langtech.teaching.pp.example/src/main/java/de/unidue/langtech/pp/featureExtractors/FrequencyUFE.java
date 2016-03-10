@@ -1,4 +1,4 @@
-package featureExtractors;
+package de.unidue.langtech.pp.featureExtractors;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package experiments;
+package de.unidue.langtech.pp.experiments;
 
 import static de.tudarmstadt.ukp.dkpro.core.api.io.ResourceCollectionReaderBase.INCLUDE_PREFIX;
 import static org.apache.uima.fit.factory.AnalysisEngineFactory.createEngineDescription;
@@ -32,11 +32,11 @@ import de.tudarmstadt.ukp.dkpro.tc.ml.report.BatchCrossValidationReport;
 import de.tudarmstadt.ukp.dkpro.tc.ml.report.BatchRuntimeReport;
 import de.tudarmstadt.ukp.dkpro.tc.weka.WekaClassificationAdapter;
 import de.tudarmstadt.ukp.dkpro.tc.weka.report.WekaClassificationReport;
+import de.unidue.langtech.pp.featureExtractors.FrequencyUFE;
+import de.unidue.langtech.pp.featureExtractors.PosUFE;
 import de.unidue.langtech.pp.readers.ReaderTrainTC;
 import de.unidue.langtech.teaching.pp.annotators.FrequencyAnnotator;
 import de.unidue.langtech.teaching.pp.annotators.Playground;
-import featureExtractors.FrequencyUFE;
-import featureExtractors.PosUFE;
 import weka.attributeSelection.InfoGainAttributeEval;
 import weka.attributeSelection.Ranker;
 import weka.classifiers.bayes.NaiveBayes;
@@ -49,7 +49,7 @@ public class Complexity_RandomForest_CV
     public static final String EXPERIMENT_NAME = "ComplexityExperiment-RandomForest";
     public static final String EXPERIMENT_TYPE = "CV";
     public static final int NUM_FOLDS = 2;    
-    public static final String corpusFilePathTrain = "src/main/resources/inputfiles/cwi_testing_allannotations.txt";
+    public static final String CORPUS_FILEPATH_TRAIN = "src/main/resources/inputfiles/cwi_training_allannotations.txt";
 
     public static void main(String[] args)
         throws Exception
@@ -89,7 +89,7 @@ public class Complexity_RandomForest_CV
 	        dimReaders.put(DIM_READER_TRAIN, ReaderTrainTC.class); 
 	        dimReaders.put(
 	            DIM_READER_TRAIN_PARAMS,
-	            Arrays.asList( new Object[] { ReaderTrainTC.PARAM_INPUT_FILE, "src/main/resources/inputfiles/cwi_training_allannotations.txt" })
+	            Arrays.asList( new Object[] { ReaderTrainTC.PARAM_INPUT_FILE, CORPUS_FILEPATH_TRAIN })
 	        );
         
 	        
@@ -168,9 +168,8 @@ public class Complexity_RandomForest_CV
         		AnalysisEngineFactory.createEngineDescription(StanfordPosTagger.class),
                 AnalysisEngineFactory.createEngineDescription(FrequencyAnnotator.class, 
                 		FrequencyAnnotator.PARAM_FREQUENCY_LIST, "src/main/resources/required/SUBTLEXus.txt",
-                		FrequencyAnnotator.PARAM_FREQUENCY_CORPUS_NAME, "subtlexus"),
-                AnalysisEngineFactory.createEngineDescription(Playground.class))
-        		);
+                		FrequencyAnnotator.PARAM_FREQUENCY_CORPUS_NAME, "subtlexus")
+        		));
     }
 
 }
