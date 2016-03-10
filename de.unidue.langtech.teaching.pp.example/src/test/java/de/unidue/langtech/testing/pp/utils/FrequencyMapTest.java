@@ -1,4 +1,4 @@
-package de.unidue.langtech.teaching.pp.utils;
+package de.unidue.langtech.testing.pp.utils;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;

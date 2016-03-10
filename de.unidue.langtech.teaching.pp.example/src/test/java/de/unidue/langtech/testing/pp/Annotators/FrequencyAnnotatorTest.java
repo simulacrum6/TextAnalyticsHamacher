@@ -1,4 +1,4 @@
-package de.unidue.langtech.teaching.pp.Annotators;
+package de.unidue.langtech.testing.pp.Annotators;
 
 
 import static org.apache.uima.fit.factory.AnalysisEngineFactory.createEngine;
@@ -41,9 +41,7 @@ public class FrequencyAnnotatorTest
 	        for(String word : testwords)
 	        {
 	        	Lemma lemmaAnno = jb.add(word, Lemma.class);
-	        	
-	        	lemmaAnno.setValue(word);
-	        	
+	        	    lemmaAnno.setValue(word);
 	        	jb.add(" ");
 	        }
 	        

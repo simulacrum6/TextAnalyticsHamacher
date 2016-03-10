@@ -1,9 +1,9 @@
-package de.unidue.langtech.teaching.pp.utils;
+package de.unidue.langtech.testing.pp.misc;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class VariousTests 
+public class ReaderLogicTest 
 {
 	public static void main(String[] args) 
 	{
@@ -44,8 +44,7 @@ public class VariousTests
 			if(	this.currentLine < this.lines.size() ){
 				hasNext = true;
 				
-				while( currentLine < this.lines.size()-1 && this.documentText.equals(lines.get(this.currentLine))  )
-				{
+				while( currentLine < this.lines.size()-1 && this.documentText.equals(lines.get(this.currentLine))  ) {
 					this.currentLine ++;
 				}
 				this.documentText = lines.get(this.currentLine);

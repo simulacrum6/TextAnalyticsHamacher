@@ -99,9 +99,10 @@ public class Complexity_Comparison_CV
         Dimension<List<String>> dimClassificationArgs = Dimension.create(
         		DIM_CLASSIFICATION_ARGS,
         		Arrays.asList(new String[] { NaiveBayes.class.getName() }),
+        		Arrays.asList(new String[] { J48.class.getName() }),
         		// "-I": number of trees
-        		Arrays.asList(new String[] { RandomForest.class.getName(), "-I", "5" }),
-        		Arrays.asList(new String[] { J48.class.getName() })
+        		Arrays.asList(new String[] { RandomForest.class.getName(), "-I", "5" })
+        		
         );
         
 

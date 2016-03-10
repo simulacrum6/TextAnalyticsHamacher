@@ -1,4 +1,4 @@
-package de.unidue.langtech.teaching.pp.readers;
+package de.unidue.langtech.testing.pp.readers;
 
 import static org.apache.uima.fit.factory.AnalysisEngineFactory.createEngine;
 import static org.apache.uima.fit.util.JCasUtil.select;

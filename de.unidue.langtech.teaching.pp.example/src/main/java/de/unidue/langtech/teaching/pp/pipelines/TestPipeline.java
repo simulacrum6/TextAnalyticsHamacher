@@ -9,6 +9,7 @@ import de.tudarmstadt.ukp.dkpro.core.decompounding.uima.resource.BananaSplitterR
 import de.tudarmstadt.ukp.dkpro.core.stanfordnlp.StanfordLemmatizer;
 import de.tudarmstadt.ukp.dkpro.core.stanfordnlp.StanfordPosTagger;
 import de.unidue.langtech.pp.readers.ReaderTrainTC;
+import de.unidue.langtech.teaching.pp.annotators.CharNGramAnnotator;
 import de.unidue.langtech.teaching.pp.annotators.FrequencyAnnotator;
 import de.unidue.langtech.teaching.pp.annotators.Playground;
 
@@ -17,7 +18,7 @@ import de.unidue.langtech.teaching.pp.annotators.Playground;
  * */
 
 // TODO Move to test.
-public class ExtendedPipeline
+public class TestPipeline
 {
 	
     public static void main(String[] args)
@@ -34,8 +35,7 @@ public class ExtendedPipeline
                 		FrequencyAnnotator.PARAM_FREQUENCY_LIST, "src/main/resources/required/SUBTLEXus.txt",
                 		FrequencyAnnotator.PARAM_FREQUENCY_CORPUS_NAME, "subtlexus"),
                 AnalysisEngineFactory.createEngineDescription(StanfordPosTagger.class),
-//                AnalysisEngineFactory.createEngineDescription(CompoundAnnotator.class,
-//                CompoundAnnotator.PARAM_SPLITTING_ALGO, BananaSplitterResource.class),
+                AnalysisEngineFactory.createEngineDescription(CharNGramAnnotator.class),
                 AnalysisEngineFactory.createEngineDescription(Playground.class)
         );
     }
