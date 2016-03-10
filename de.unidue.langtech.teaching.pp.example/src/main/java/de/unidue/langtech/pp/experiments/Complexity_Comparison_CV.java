@@ -22,6 +22,7 @@ import de.tudarmstadt.ukp.dkpro.lab.task.ParameterSpace;
 import de.tudarmstadt.ukp.dkpro.lab.task.impl.BatchTask.ExecutionPolicy;
 import de.tudarmstadt.ukp.dkpro.tc.core.Constants;
 import de.tudarmstadt.ukp.dkpro.tc.features.length.NrOfCharsUFE;
+import de.tudarmstadt.ukp.dkpro.tc.features.ngram.FrequencyDistributionNGramUFE;
 import de.tudarmstadt.ukp.dkpro.tc.features.ngram.LuceneCharacterNGramUFE;
 import de.tudarmstadt.ukp.dkpro.tc.features.ngram.LuceneNGramUFE;
 //import de.tudarmstadt.ukp.dkpro.tc.features.wordDifficulty.IsInflectedWordUFE;
@@ -32,11 +33,11 @@ import de.tudarmstadt.ukp.dkpro.tc.ml.report.BatchCrossValidationReport;
 import de.tudarmstadt.ukp.dkpro.tc.ml.report.BatchRuntimeReport;
 import de.tudarmstadt.ukp.dkpro.tc.weka.WekaClassificationAdapter;
 import de.tudarmstadt.ukp.dkpro.tc.weka.report.WekaClassificationReport;
+import de.unidue.langtech.pp.annotators.FrequencyAnnotator;
+import de.unidue.langtech.pp.annotators.Playground;
 import de.unidue.langtech.pp.featureExtractors.FrequencyUFE;
 import de.unidue.langtech.pp.featureExtractors.PosUFE;
 import de.unidue.langtech.pp.readers.ReaderTrainTC;
-import de.unidue.langtech.teaching.pp.annotators.FrequencyAnnotator;
-import de.unidue.langtech.teaching.pp.annotators.Playground;
 import weka.attributeSelection.InfoGainAttributeEval;
 import weka.attributeSelection.Ranker;
 import weka.classifiers.bayes.NaiveBayes;
@@ -60,7 +61,7 @@ public class Complexity_Comparison_CV
     	System.setProperty("DKPRO_HOME", "src/main/resources/output/"+ EXPERIMENT_NAME + "/" + EXPERIMENT_TYPE + "/" + NUM_FOLDS + "fold/" + timestamp);
     	
     	// Run experiment
-        new Complexity_RandomForest_CV().runCrossValidation(getParameterSpace());
+        new Complexity_Comparison_CV().runCrossValidation(getParameterSpace());
     }
 
     // Experiment Setup
@@ -102,7 +103,6 @@ public class Complexity_Comparison_CV
         		Arrays.asList(new String[] { J48.class.getName() }),
         		// "-I": number of trees
         		Arrays.asList(new String[] { RandomForest.class.getName(), "-I", "5" })
-        		
         );
         
 
@@ -110,12 +110,13 @@ public class Complexity_Comparison_CV
         @SuppressWarnings("unchecked")
         Dimension<List<String>> dimFeatureSets = Dimension.create(DIM_FEATURE_SET,
                 Arrays.asList( new String[] { 
-                		NrOfCharsUFE.class.getName(),
+//                		NrOfCharsUFE.class.getName(),
                 		FrequencyUFE.class.getName(),
-                		PosUFE.class.getName(),
+//                		PosUFE.class.getName(),
+//                		LuceneCharacterNGramUFE.class.getName(),
+//                		LuceneNGramUFE.class.getName()                		
                 		// IsLatinWordUFE.class.getName(),
                 		// IsInflectedWordUFE.class.getName()
-                		LuceneCharacterNGramUFE.class.getName()
                 })
         );
        
@@ -126,10 +127,11 @@ public class Complexity_Comparison_CV
         				PosUFE.PARAM_USE_POS_INDEX, true,
         				PosUFE.PARAM_USE_POS_TYPES, false,
         				
-        				LuceneCharacterNGramUFE.PARAM_CHAR_NGRAM_MIN_N, 2,
-        				LuceneCharacterNGramUFE.PARAM_CHAR_NGRAM_MAX_N, 4,
-                        LuceneCharacterNGramUFE.PARAM_CHAR_NGRAM_USE_TOP_K, 50,
-                        LuceneCharacterNGramUFE.PARAM_CHAR_NGRAM_LOWER_CASE, true
+//        				LuceneCharacterNGramUFE.PARAM_CHAR_NGRAM_MIN_N, 2,
+//        				LuceneCharacterNGramUFE.PARAM_CHAR_NGRAM_MAX_N, 4,
+//                        LuceneCharacterNGramUFE.PARAM_CHAR_NGRAM_LOWER_CASE, true,
+                        
+                        
                  })
         );
         
@@ -172,7 +174,8 @@ public class Complexity_Comparison_CV
         		AnalysisEngineFactory.createEngineDescription(StanfordPosTagger.class),
                 AnalysisEngineFactory.createEngineDescription(FrequencyAnnotator.class, 
                 		FrequencyAnnotator.PARAM_FREQUENCY_LIST, "src/main/resources/required/SUBTLEXus.txt",
-                		FrequencyAnnotator.PARAM_FREQUENCY_CORPUS_NAME, "subtlexus")                
+                		FrequencyAnnotator.PARAM_FREQUENCY_CORPUS_NAME, "subtlex")
+//                		FrequencyAnnotator.PARAM_FREQUENCY_LIST, "src/main/resources/required/5kwordfrequency.txt")               
         		));
     }
 

@@ -29,10 +29,10 @@ import de.tudarmstadt.ukp.dkpro.core.api.metadata.type.DocumentMetaData;
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Lemma;
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token;
 import de.tudarmstadt.ukp.dkpro.core.stanfordnlp.StanfordLemmatizer;
+import de.unidue.langtech.pp.annotators.FrequencyAnnotator;
+import de.unidue.langtech.pp.annotators.Playground;
 import de.unidue.langtech.pp.readers.ReaderTrain;
 import de.unidue.langtech.pp.readers.ReaderTrainTC;
-import de.unidue.langtech.teaching.pp.annotators.FrequencyAnnotator;
-import de.unidue.langtech.teaching.pp.annotators.Playground;
 import de.unidue.langtech.teaching.pp.type.CorpusFrequency;
 import de.unidue.langtech.teaching.pp.type.GoldComplexity;
 

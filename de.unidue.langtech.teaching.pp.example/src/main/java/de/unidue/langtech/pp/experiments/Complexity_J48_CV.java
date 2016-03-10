@@ -31,11 +31,11 @@ import de.tudarmstadt.ukp.dkpro.tc.ml.ExperimentCrossValidation;
 import de.tudarmstadt.ukp.dkpro.tc.ml.report.BatchCrossValidationReport;
 import de.tudarmstadt.ukp.dkpro.tc.weka.WekaClassificationAdapter;
 import de.tudarmstadt.ukp.dkpro.tc.weka.report.WekaClassificationReport;
+import de.unidue.langtech.pp.annotators.FrequencyAnnotator;
+import de.unidue.langtech.pp.annotators.Playground;
 import de.unidue.langtech.pp.featureExtractors.FrequencyUFE;
 import de.unidue.langtech.pp.featureExtractors.PosUFE;
 import de.unidue.langtech.pp.readers.ReaderTrainTC;
-import de.unidue.langtech.teaching.pp.annotators.FrequencyAnnotator;
-import de.unidue.langtech.teaching.pp.annotators.Playground;
 import weka.attributeSelection.InfoGainAttributeEval;
 import weka.attributeSelection.Ranker;
 import weka.classifiers.trees.J48;
@@ -57,7 +57,7 @@ public class Complexity_J48_CV
     	System.setProperty("DKPRO_HOME", "src/main/resources/output/"+ EXPERIMENT_NAME + "/" + EXPERIMENT_TYPE + "/" + NUM_FOLDS + "fold/" + timestamp);
     	
     	// Run experiment
-        new Complexity_Bayesline_CV().runCrossValidation(getParameterSpace());
+        new Complexity_J48_CV().runCrossValidation(getParameterSpace());
     }
 
     // Experiment Setup
@@ -166,8 +166,9 @@ public class Complexity_J48_CV
         		AnalysisEngineFactory.createEngineDescription(StanfordLemmatizer.class),
         		AnalysisEngineFactory.createEngineDescription(StanfordPosTagger.class),
                 AnalysisEngineFactory.createEngineDescription(FrequencyAnnotator.class, 
-                		FrequencyAnnotator.PARAM_FREQUENCY_LIST, "src/main/resources/required/SUBTLEXus.txt",
-                		FrequencyAnnotator.PARAM_FREQUENCY_CORPUS_NAME, "subtlexus")
+//                		FrequencyAnnotator.PARAM_FREQUENCY_LIST, "src/main/resources/required/SUBTLEXus.txt",
+//                		FrequencyAnnotator.PARAM_FREQUENCY_CORPUS_NAME, "subtlex")
+                		FrequencyAnnotator.PARAM_FREQUENCY_LIST, "src/main/resources/required/5kwordfrequency.txt")
         		));
     }
 

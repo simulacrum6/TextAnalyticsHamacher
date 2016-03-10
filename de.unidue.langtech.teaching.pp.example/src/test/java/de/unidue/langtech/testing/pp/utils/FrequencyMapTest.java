@@ -5,7 +5,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import de.unidue.langtech.teaching.pp.utils.FrequencyMap;
+import de.unidue.langtech.pp.utils.FrequencyMap;
 
 public class FrequencyMapTest {
 

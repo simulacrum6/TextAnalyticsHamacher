@@ -189,7 +189,7 @@ public class ReaderTrain
     	if ( splitCount != -1){
     		
     		if (split.length != splitCount) {
-             throw new IOException("Wrong line format: " + lines.get(currentLine) + " \n Line needs to match the following separator: " + splitpoint);
+             throw new IOException("Wrong line format: " + line + " \n Line needs to match the following separator: " + splitpoint);
     		}
     		
     	}

@@ -14,7 +14,7 @@ import org.apache.uima.jcas.JCas;
 import org.junit.Test;
 
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Lemma;
-import de.unidue.langtech.teaching.pp.annotators.FrequencyAnnotator;
+import de.unidue.langtech.pp.annotators.FrequencyAnnotator;
 import de.unidue.langtech.teaching.pp.type.CorpusFrequency;
 
 public class FrequencyAnnotatorTest
