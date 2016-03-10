@@ -63,9 +63,9 @@ public class PosUFE
         
         List<Feature> features = new ArrayList<Feature>();
         	features.add(new Feature(POSTAG, posIdx));
-        	for(String pos : posMap.keySet()){
-        		features.add(new Feature("is_POSTYPE_" + pos, posMap.get(pos)));
-        	}
+//        	for(String pos : posMap.keySet()){
+//        		features.add(new Feature("is_POSTYPE_" + pos, posMap.get(pos)));
+//        	}
         	
     	return features;
     }

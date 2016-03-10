@@ -34,7 +34,7 @@ public class ExtendedPipeline
                 		FrequencyAnnotator.PARAM_FREQUENCY_LIST, "src/main/resources/required/5kwordfrequency.txt"),
                 AnalysisEngineFactory.createEngineDescription(StanfordPosTagger.class),
 //                AnalysisEngineFactory.createEngineDescription(CompoundAnnotator.class,
-//                		CompoundAnnotator.PARAM_SPLITTING_ALGO, BananaSplitterResource.class),
+//                CompoundAnnotator.PARAM_SPLITTING_ALGO, BananaSplitterResource.class),
                 AnalysisEngineFactory.createEngineDescription(Playground.class)
         );
     }

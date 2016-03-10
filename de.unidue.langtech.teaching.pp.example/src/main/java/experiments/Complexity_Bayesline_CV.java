@@ -49,9 +49,12 @@ import de.unidue.langtech.teaching.pp.annotators.FrequencyAnnotator;
 import de.unidue.langtech.teaching.pp.annotators.Playground;
 import featureExtractors.FrequencyUFE;
 import featureExtractors.PosUFE;
+import weka.attributeSelection.InfoGainAttributeEval;
+import weka.attributeSelection.Ranker;
 import weka.classifiers.bayes.NaiveBayes;
+import weka.classifiers.trees.J48;
 
-public class ComplexityClassification
+public class Complexity_Bayesline_CV
     implements Constants
 {
     public static final String LANGUAGE_CODE = "en";
@@ -63,25 +66,28 @@ public class ComplexityClassification
     {
     	// Set environment Variable
     	String timestamp = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss_SSS").format(new Date());
-    	System.setProperty("DKPRO_HOME", "src/main/resources/output/ComplexityExperiment-NaiveBayes/" + timestamp);
+    	System.setProperty("DKPRO_HOME", "src/main/resources/output/ComplexityExperiment-NaiveBayes/CV/" + NUM_FOLDS + "Folds/" + timestamp);
     	
     	// Run experiment
-        new ComplexityClassification().runCrossValidation(getParameterSpace());
+        new Complexity_Bayesline_CV().runCrossValidation(getParameterSpace());
     }
 
     
     protected void runCrossValidation(ParameterSpace pSpace)
         throws Exception
     {
-    	//TODO Check Experiment Types, identify correct ones
-    	ExperimentCrossValidation batch = new ExperimentCrossValidation("ComplexityExperiment-NaiveBayes",
-        		WekaClassificationAdapter.class, null, NUM_FOLDS);
-        batch.setPreprocessing(getPreprocessing());
-      // batch.addInnerReport(WekaClassificationReport.class);
-        batch.setParameterSpace(pSpace);
-        batch.setExecutionPolicy(ExecutionPolicy.RUN_AGAIN);
-       // batch.addReport(BatchCrossValidationReport.class);
-        // batch.addReport(BatchRuntimeReport.class);
+    	ExperimentCrossValidation batch = new ExperimentCrossValidation(
+    			"ComplexityExperiment-NaiveBayes",
+        		WekaClassificationAdapter.class, 
+        		null,
+        		NUM_FOLDS
+        );
+	        batch.setPreprocessing(getPreprocessing());
+	        batch.setParameterSpace(pSpace);
+	        batch.setExecutionPolicy(ExecutionPolicy.RUN_AGAIN);
+	        // batch.addInnerReport(WekaClassificationReport.class);
+	        // batch.addReport(BatchCrossValidationReport.class);
+	        // batch.addReport(BatchRuntimeReport.class);
 
         // Run
         Lab.getInstance().run(batch);
@@ -91,19 +97,18 @@ public class ComplexityClassification
     {
         // Configure training reader dimension
         Map<String, Object> dimReaders = new HashMap<String, Object>();
-      
-        dimReaders.put(DIM_READER_TRAIN, ReaderTrainTC.class); 
-        dimReaders.put(
-                DIM_READER_TRAIN_PARAMS,
-                // Parameter List
-                Arrays.asList(new Object[] { ReaderTrainTC.PARAM_INPUT_FILE, "src/main/resources/inputfiles/cwi_training_allannotations.txt"
-                }));
+	        dimReaders.put(DIM_READER_TRAIN, ReaderTrainTC.class); 
+	        dimReaders.put(
+	            DIM_READER_TRAIN_PARAMS,
+	            Arrays.asList( new Object[] { ReaderTrainTC.PARAM_INPUT_FILE, "src/main/resources/inputfiles/cwi_training_allannotations.txt" })
+	        );
         
         // Select Classifier. 
         @SuppressWarnings("unchecked")
-        Dimension<List<String>> dimClassificationArgs = Dimension.create(DIM_CLASSIFICATION_ARGS,
-                Arrays.asList(new String[] { NaiveBayes.class.getName() }));
-        
+        Dimension<List<String>> dimClassificationArgs = Dimension.create(
+        		DIM_CLASSIFICATION_ARGS,
+                Arrays.asList(new String[] { NaiveBayes.class.getName() })
+        );
         
         @SuppressWarnings("unchecked")
         Dimension<List<Object>> dimPipelineParameters = Dimension.create(DIM_PIPELINE_PARAMS,
@@ -117,7 +122,7 @@ public class ComplexityClassification
         // Select Feature Extractors
         @SuppressWarnings("unchecked")
         Dimension<List<String>> dimFeatureSets = Dimension.create(DIM_FEATURE_SET,
-                Arrays.asList(new String[] { 
+                Arrays.asList( new String[] { 
                 		NrOfCharsUFE.class.getName(),
                 		FrequencyUFE.class.getName(),
                 		PosUFE.class.getName(),
@@ -126,13 +131,37 @@ public class ComplexityClassification
                 		 * URL Loader can't locate it. Too bad. 
                 		 * */
 //                		LuceneCharacterNGramUFE.class.getName()
-                }));
+                })
+        );
+       
+        // Filter only best Features
+        Map<String, Object> dimFeatureSelection = new HashMap<String, Object>();
+        		dimFeatureSelection.put(
+        				"featureSearcher", 
+        				Arrays.asList( new String[] {
+        						Ranker.class.getName(), "N", "20"
+        				})
+        		);
+        		dimFeatureSelection.put(
+        				"attributeEvaluator",
+        				Arrays.asList( new String[] {
+        						InfoGainAttributeEval.class.getName() 
+        				})
+        		);
+        		dimFeatureSelection.put("applySelection", new Boolean(true));
+        
         
         // Fit for Experiment (LM_Single_Label, FM_UNIT/FM_SEQUENCE)
-		ParameterSpace pSpace = new ParameterSpace(Dimension.createBundle("readers", dimReaders),
-                Dimension.create(DIM_LEARNING_MODE, LM_SINGLE_LABEL), Dimension.create(
-                        DIM_FEATURE_MODE, FM_SEQUENCE), dimPipelineParameters, dimFeatureSets,
-                dimClassificationArgs);
+		@SuppressWarnings("unchecked")
+		ParameterSpace pSpace = new ParameterSpace(
+				Dimension.createBundle("readers", dimReaders),
+                Dimension.create(DIM_LEARNING_MODE, LM_SINGLE_LABEL), 
+                Dimension.create(DIM_FEATURE_MODE, FM_SEQUENCE),
+//                Dimension.createBundle("featureSelection", dimFeatureSelection),
+                dimPipelineParameters, 
+                dimFeatureSets,
+                dimClassificationArgs  
+		);
 
         return pSpace;
     }

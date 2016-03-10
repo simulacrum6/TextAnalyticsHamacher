@@ -60,8 +60,8 @@ public class Playground
         System.out.println("CAS contains " + posTags.size() + " POS Annotations.");
         
         // Decompounder Test
-        List<Compound> compounds = new ArrayList<Compound>(JCasUtil.select(jcas, Compound.class));
-        Compound compound;
+//        List<Compound> compounds = new ArrayList<Compound>(JCasUtil.select(jcas, Compound.class));
+//        Compound compound;
         
         // Frequency Test
         List<CorpusFrequency> frequencies = new ArrayList<CorpusFrequency>(JCasUtil.select(jcas, CorpusFrequency.class));
@@ -87,14 +87,14 @@ public class Playground
      	   token = tokens.get(i);
      	   lemma = lemmas.get(i);
      	   posTag = posTags.get(i);
-     	   compound = compounds.get(i);
+     	   // compound = compounds.get(i);
      	   frequency = frequencies.get(i);
      	   
      	   System.out.println(
      			   "Token[" + i + "](" + token.getCoveredText() + ") " +
      			   "Lemma: " + lemma.getValue() + ", " +
      			   "POS: " + posTag.getTypeIndexID() + posTag.getPosValue() + ", " +
-     			   "Compound:" + compound.getSplits(i) + ", " +
+//     			   "Compound:" + compound.getSplits(i) + ", " +
      			   "Frequency Count: " + frequency.getCount() + ", " +
      			   "Frequency Rank: " + frequency.getRank()
      			   );    	   
