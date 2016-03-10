@@ -47,11 +47,13 @@ import weka.classifiers.trees.RandomForest;
 public class Complexity_Comparison_CV
     implements Constants
 {
-    public static final String LANGUAGE_CODE = "en";
+	public static final String LANGUAGE_CODE = "en";
     public static final String EXPERIMENT_NAME = "ComplexityExperiment-Comparison";
     public static final String EXPERIMENT_TYPE = "CV";
-    public static final int NUM_FOLDS = 2;    
-    static final String CORPUS_FILEPATH_TRAIN = "src/main/resources/inputfiles/cwi_training_allannotations.txt";
+    public static final int NUM_FOLDS = 2;
+    static final String CORPUS_SMALL = "src/main/resources/inputfiles/cwi_training_allannotations.txt";
+    static final String CORPUS_LARGE = "src/main/resources/inputfiles/cwi_testing_annotated.txt";
+    static final String CORPUS_FILEPATH_TRAIN = CORPUS_LARGE;
 
     public static void main(String[] args)
         throws Exception
@@ -110,10 +112,10 @@ public class Complexity_Comparison_CV
         @SuppressWarnings("unchecked")
         Dimension<List<String>> dimFeatureSets = Dimension.create(DIM_FEATURE_SET,
                 Arrays.asList( new String[] { 
-//                		NrOfCharsUFE.class.getName(),
-                		FrequencyUFE.class.getName(),
-//                		PosUFE.class.getName(),
-//                		LuceneCharacterNGramUFE.class.getName(),
+                		NrOfCharsUFE.class.getName(),
+//                		FrequencyUFE.class.getName(),
+                		PosUFE.class.getName(),
+                		LuceneCharacterNGramUFE.class.getName(),
 //                		LuceneNGramUFE.class.getName()                		
                 		// IsLatinWordUFE.class.getName(),
                 		// IsInflectedWordUFE.class.getName()
@@ -124,12 +126,13 @@ public class Complexity_Comparison_CV
         @SuppressWarnings("unchecked")
         Dimension<List<Object>> dimPipelineParameters = Dimension.create(DIM_PIPELINE_PARAMS,
         		 Arrays.asList(new Object[] {
-        				PosUFE.PARAM_USE_POS_INDEX, true,
-        				PosUFE.PARAM_USE_POS_TYPES, false,
+        				PosUFE.PARAM_USE_POS_INDEX, false,
+        				PosUFE.PARAM_USE_POS_TYPES, true,
         				
-//        				LuceneCharacterNGramUFE.PARAM_CHAR_NGRAM_MIN_N, 2,
-//        				LuceneCharacterNGramUFE.PARAM_CHAR_NGRAM_MAX_N, 4,
-//                        LuceneCharacterNGramUFE.PARAM_CHAR_NGRAM_LOWER_CASE, true,
+        				LuceneCharacterNGramUFE.PARAM_CHAR_NGRAM_MIN_N, 2,
+        				LuceneCharacterNGramUFE.PARAM_CHAR_NGRAM_MAX_N, 4,
+        				LuceneCharacterNGramUFE.PARAM_CHAR_NGRAM_USE_TOP_K, 50,
+                        LuceneCharacterNGramUFE.PARAM_CHAR_NGRAM_LOWER_CASE, true,
                         
                         
                  })

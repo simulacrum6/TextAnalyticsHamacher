@@ -49,7 +49,9 @@ public class Complexity_RandomForest_CV
     public static final String EXPERIMENT_NAME = "ComplexityExperiment-RandomForest";
     public static final String EXPERIMENT_TYPE = "CV";
     public static final int NUM_FOLDS = 2;    
-    public static final String CORPUS_FILEPATH_TRAIN = "src/main/resources/inputfiles/cwi_training_allannotations.txt";
+    static final String CORPUS_SMALL = "src/main/resources/inputfiles/cwi_training_allannotations.txt";
+    static final String CORPUS_LARGE = "src/main/resources/inputfiles/cwi_testing_annotated.txt";
+    static final String CORPUS_FILEPATH_TRAIN = CORPUS_SMALL;
 
     public static void main(String[] args)
         throws Exception
