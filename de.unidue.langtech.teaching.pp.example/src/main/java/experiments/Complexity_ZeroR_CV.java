@@ -53,6 +53,8 @@ public class Complexity_ZeroR_CV
     implements Constants
 {
     public static final String LANGUAGE_CODE = "en";
+    public static final String EXPERIMENT_NAME = "ComplexityExperiment-ZeroR";
+    public static final String EXPERIMENT_TYPE = "CV";
     public static final int NUM_FOLDS = 2;
     public static final String corpusFilePathTrain = "src/main/resources/inputfiles/cwi_testing_allannotations.txt";
 
@@ -61,7 +63,7 @@ public class Complexity_ZeroR_CV
     {
     	// Set environment Variable
     	String timestamp = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss_SSS").format(new Date());
-    	System.setProperty("DKPRO_HOME", "src/main/resources/output/ComplexityExperiment-Majority/CV/" + timestamp);
+    	System.setProperty("DKPRO_HOME", "src/main/resources/output/"+ EXPERIMENT_NAME + "/" + EXPERIMENT_TYPE + "/" + NUM_FOLDS + "fold/" + timestamp);
     	
     	// Run experiment
         new Complexity_Bayesline_CV().runCrossValidation(getParameterSpace());
@@ -72,7 +74,7 @@ public class Complexity_ZeroR_CV
         throws Exception
     {
     	
-    	ExperimentCrossValidation batch = new ExperimentCrossValidation("ComplexityExperiment-Majority_CV",
+    	ExperimentCrossValidation batch = new ExperimentCrossValidation(EXPERIMENT_NAME,
         		WekaClassificationAdapter.class, null, NUM_FOLDS);
         batch.setPreprocessing(getPreprocessing());
      //   batch.addInnerReport(WekaClassificationReport.class);

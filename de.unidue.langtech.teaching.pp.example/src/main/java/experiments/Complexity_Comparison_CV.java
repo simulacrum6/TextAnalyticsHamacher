@@ -29,6 +29,7 @@ import de.tudarmstadt.ukp.dkpro.tc.features.ngram.LuceneNGramUFE;
 
 import de.tudarmstadt.ukp.dkpro.tc.ml.ExperimentCrossValidation;
 import de.tudarmstadt.ukp.dkpro.tc.ml.report.BatchCrossValidationReport;
+import de.tudarmstadt.ukp.dkpro.tc.ml.report.BatchRuntimeReport;
 import de.tudarmstadt.ukp.dkpro.tc.weka.WekaClassificationAdapter;
 import de.tudarmstadt.ukp.dkpro.tc.weka.report.WekaClassificationReport;
 import de.unidue.langtech.pp.readers.ReaderTrainTC;
@@ -38,15 +39,17 @@ import featureExtractors.FrequencyUFE;
 import featureExtractors.PosUFE;
 import weka.attributeSelection.InfoGainAttributeEval;
 import weka.attributeSelection.Ranker;
+import weka.classifiers.bayes.NaiveBayes;
 import weka.classifiers.trees.J48;
+import weka.classifiers.trees.RandomForest;
 
-public class Complexity_J48_CV
+public class Complexity_Comparison_CV
     implements Constants
 {
     public static final String LANGUAGE_CODE = "en";
-    public static final String EXPERIMENT_NAME = "ComplexityExperiment-J48";
+    public static final String EXPERIMENT_NAME = "ComplexityExperiment-Comparison";
     public static final String EXPERIMENT_TYPE = "CV";
-    public static final int NUM_FOLDS = 2;
+    public static final int NUM_FOLDS = 2;    
     public static final String corpusFilePathTrain = "src/main/resources/inputfiles/cwi_testing_allannotations.txt";
 
     public static void main(String[] args)
@@ -57,7 +60,7 @@ public class Complexity_J48_CV
     	System.setProperty("DKPRO_HOME", "src/main/resources/output/"+ EXPERIMENT_NAME + "/" + EXPERIMENT_TYPE + "/" + NUM_FOLDS + "fold/" + timestamp);
     	
     	// Run experiment
-        new Complexity_Bayesline_CV().runCrossValidation(getParameterSpace());
+        new Complexity_RandomForest_CV().runCrossValidation(getParameterSpace());
     }
 
     // Experiment Setup
@@ -66,16 +69,14 @@ public class Complexity_J48_CV
     {
     	ExperimentCrossValidation batch = new ExperimentCrossValidation(
     			EXPERIMENT_NAME,
-        		WekaClassificationAdapter.class, 
-        		null,
-        		NUM_FOLDS
+        		WekaClassificationAdapter.class, null, NUM_FOLDS
         );
 	        batch.setPreprocessing(getPreprocessing());
 	        batch.setParameterSpace(pSpace);
 	        batch.setExecutionPolicy(ExecutionPolicy.RUN_AGAIN);
-	        // batch.addInnerReport(WekaClassificationReport.class);
-	        // batch.addReport(BatchCrossValidationReport.class);
-	        // batch.addReport(BatchRuntimeReport.class);
+	        batch.addInnerReport(WekaClassificationReport.class);
+	        batch.addReport(BatchCrossValidationReport.class);
+	        batch.addReport(BatchRuntimeReport.class);
 
 	        
         // Run
@@ -97,7 +98,10 @@ public class Complexity_J48_CV
         @SuppressWarnings("unchecked")
         Dimension<List<String>> dimClassificationArgs = Dimension.create(
         		DIM_CLASSIFICATION_ARGS,
-                Arrays.asList(new String[] { J48.class.getName() })
+        		Arrays.asList(new String[] { NaiveBayes.class.getName() }),
+        		// "-I": number of trees
+        		Arrays.asList(new String[] { RandomForest.class.getName(), "-I", "5" }),
+        		Arrays.asList(new String[] { J48.class.getName() })
         );
         
 

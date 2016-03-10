@@ -28,9 +28,13 @@ import de.unidue.langtech.teaching.pp.utils.FrequencyMap;
 public class FrequencyAnnotator
 	  extends JCasAnnotator_ImplBase
 {		  
-	public static final String PARAM_FREQUENCY_LIST = "PARAM_FREQUENCY_LIST";
+	public static final String PARAM_FREQUENCY_LIST = "frequencyList";
     @ConfigurationParameter(name = PARAM_FREQUENCY_LIST, mandatory = true)
     File frequencyList;
+    
+	public static final String PARAM_FREQUENCY_CORPUS_NAME = "frequencyCorpusName";
+    @ConfigurationParameter(name = PARAM_FREQUENCY_CORPUS_NAME, mandatory = true, defaultValue = "5kwordfrequency")
+    String frequencyCorpusName;
     		
 	List<String> lines;
 	FrequencyMap freqs;
@@ -48,14 +52,16 @@ public class FrequencyAnnotator
             throw new ResourceInitializationException(e);
         }
         
-        freqs = new FrequencyMap();
-        String[] values;
+        freqs = new FrequencyMap(frequencyList, frequencyCorpusName);
         
-        for(String line : lines)
-        {	
-        	values = line.split("\\t"); 
-        	freqs.put(values[1].trim(), values[2].trim(), values[3].trim(), values[0].trim());
-        }
+//        freqs = new FrequencyMap();
+//        String[] values;
+//        
+//        for(String line : lines)
+//        {	
+//        	values = line.split("\\t"); 
+//        	freqs.put(values[1].trim(), values[2].trim(), values[3].trim(), values[0].trim());
+//        }
         
     }
 

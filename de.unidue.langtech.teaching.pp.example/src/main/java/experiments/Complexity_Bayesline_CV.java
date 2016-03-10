@@ -58,6 +58,8 @@ public class Complexity_Bayesline_CV
     implements Constants
 {
     public static final String LANGUAGE_CODE = "en";
+    public static final String EXPERIMENT_NAME = "ComplexityExperiment-NaiveBayes";
+    public static final String EXPERIMENT_TYPE = "CV";
     public static final int NUM_FOLDS = 2;
     public static final String corpusFilePathTrain = "src/main/resources/inputfiles/cwi_testing_allannotations.txt";
 
@@ -66,7 +68,7 @@ public class Complexity_Bayesline_CV
     {
     	// Set environment Variable
     	String timestamp = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss_SSS").format(new Date());
-    	System.setProperty("DKPRO_HOME", "src/main/resources/output/ComplexityExperiment-NaiveBayes/CV/" + NUM_FOLDS + "Folds/" + timestamp);
+    	System.setProperty("DKPRO_HOME", "src/main/resources/output/"+ EXPERIMENT_NAME + "/" + EXPERIMENT_TYPE + "/" + NUM_FOLDS + "fold/" + timestamp);
     	
     	// Run experiment
         new Complexity_Bayesline_CV().runCrossValidation(getParameterSpace());
@@ -77,10 +79,8 @@ public class Complexity_Bayesline_CV
         throws Exception
     {
     	ExperimentCrossValidation batch = new ExperimentCrossValidation(
-    			"ComplexityExperiment-NaiveBayes",
-        		WekaClassificationAdapter.class, 
-        		null,
-        		NUM_FOLDS
+    			EXPERIMENT_NAME,
+        		WekaClassificationAdapter.class, null, NUM_FOLDS
         );
 	        batch.setPreprocessing(getPreprocessing());
 	        batch.setParameterSpace(pSpace);
@@ -110,14 +110,7 @@ public class Complexity_Bayesline_CV
                 Arrays.asList(new String[] { NaiveBayes.class.getName() })
         );
         
-        @SuppressWarnings("unchecked")
-        Dimension<List<Object>> dimPipelineParameters = Dimension.create(DIM_PIPELINE_PARAMS,
-        		 Arrays.asList(new Object[] {
-//        				LuceneCharacterNGramUFE.PARAM_CHAR_NGRAM_MIN_N, 2,
-//                      LuceneCharacterNGramUFE.PARAM_CHAR_NGRAM_MAX_N, 4,
-//                      LuceneCharacterNGramUFE.PARAM_CHAR_NGRAM_USE_TOP_K, 50,
-//                      LuceneCharacterNGramUFE.PARAM_CHAR_NGRAM_LOWER_CASE, true
-                 }));
+
         
         // Select Feature Extractors
         @SuppressWarnings("unchecked")
@@ -125,13 +118,20 @@ public class Complexity_Bayesline_CV
                 Arrays.asList( new String[] { 
                 		NrOfCharsUFE.class.getName(),
                 		FrequencyUFE.class.getName(),
-                		PosUFE.class.getName(),
-                		/*
-                		 * FIXME Issue with the "org/apache/lucene/index/IndexableField" class
-                		 * URL Loader can't locate it. Too bad. 
-                		 * */
-//                		LuceneCharacterNGramUFE.class.getName()
+                		PosUFE.class.getName(),            
+                		LuceneCharacterNGramUFE.class.getName()
                 })
+        );
+        
+        // Set Params
+        @SuppressWarnings("unchecked")
+        Dimension<List<Object>> dimPipelineParameters = Dimension.create(DIM_PIPELINE_PARAMS,
+        		 Arrays.asList(new Object[] {
+        			  LuceneCharacterNGramUFE.PARAM_CHAR_NGRAM_MIN_N, 2,
+                      LuceneCharacterNGramUFE.PARAM_CHAR_NGRAM_MAX_N, 4,
+                      LuceneCharacterNGramUFE.PARAM_CHAR_NGRAM_USE_TOP_K, 50,
+                      LuceneCharacterNGramUFE.PARAM_CHAR_NGRAM_LOWER_CASE, true
+                 })
         );
        
         // Filter only best Features
@@ -139,7 +139,7 @@ public class Complexity_Bayesline_CV
         		dimFeatureSelection.put(
         				"featureSearcher", 
         				Arrays.asList( new String[] {
-        						Ranker.class.getName(), "N", "20"
+        						Ranker.class.getName(), "-N", "20"
         				})
         		);
         		dimFeatureSelection.put(

@@ -139,13 +139,11 @@
   		<artifactId>
   			de.tudarmstadt.ukp.dkpro.core.stanfordnlp-gpl
   		</artifactId>
-  		<version>1.7.0</version>
   	</dependency>
   	<dependency>
   		<groupId>de.tudarmstadt.ukp.dkpro.tc</groupId>
   		<artifactId>dkpro-tc-core</artifactId>
-  		<version>0.7.0</version>
-  	</dependency>
+  		</dependency>
   	<dependency>
   		<groupId>de.tudarmstadt.ukp.dkpro.tc</groupId>
   		<artifactId>dkpro-tc-ml</artifactId>
@@ -174,5 +172,14 @@
   			de.tudarmstadt.ukp.dkpro.core.decompounding-asl
   		</artifactId>
   	</dependency>
+  	        <dependency>
+
+            <groupId>org.apache.lucene</groupId>
+
+            <artifactId>lucene-core</artifactId>
+
+            <version>4.4.0</version>
+
+      </dependency>
   </dependencies>
 </project>

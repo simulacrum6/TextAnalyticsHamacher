@@ -34,7 +34,15 @@ public class PosUFE
     implements ClassificationUnitFeatureExtractor
 {
     public static final String POSTAG = "PosTag";
-        		
+    
+	public static final String PARAM_USE_POS_TYPES = "usePosTypes";
+	@ConfigurationParameter(name = PARAM_USE_POS_TYPES, defaultValue = "true")
+	protected boolean usePosTypes;
+	
+	public static final String PARAM_USE_POS_INDEX = "usePosIndex";
+	@ConfigurationParameter(name = PARAM_USE_POS_INDEX, defaultValue = "true")
+	protected boolean usePosIndex;
+    
     public List<Feature> extract(JCas jcas, TextClassificationUnit classificationUnit)
         throws TextClassificationException
     {
@@ -62,10 +70,15 @@ public class PosUFE
         	}
         
         List<Feature> features = new ArrayList<Feature>();
-        	features.add(new Feature(POSTAG, posIdx));
-//        	for(String pos : posMap.keySet()){
-//        		features.add(new Feature("is_POSTYPE_" + pos, posMap.get(pos)));
-//        	}
+        	if(usePosIndex) {
+        		features.add(new Feature(POSTAG, posIdx));
+        	}
+        	if(usePosTypes){
+        		for(String pos : posMap.keySet()){
+            		features.add(new Feature("is_POSTYPE_" + pos, posMap.get(pos)));
+            	}
+        	}
+ 
         	
     	return features;
     }
