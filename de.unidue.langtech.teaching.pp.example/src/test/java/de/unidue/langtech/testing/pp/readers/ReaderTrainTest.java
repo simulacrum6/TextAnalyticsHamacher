@@ -146,9 +146,9 @@ public class ReaderTrainTest {
 		ReaderTrain reader = new ReaderTrain();
 		
 		List<String> testLines = new ArrayList<String>(); 
-			testLines.add("Line should be split right here !	And it should not be split hereafter!-CPT.CAPS"); 
-			testLines.add("Don't break my heart !	Please?");
-			testLines.add("You Monster .	</3");
+			testLines.add("Line should be split right here!	And it should not be split hereafter!-CPT.CAPS"); 
+			testLines.add("Don't break my heart!	Please?");
+			testLines.add("You Monster.	</3");
 		
 		List<String[]> lineSplits = reader.getLineSplits(testLines);
 		

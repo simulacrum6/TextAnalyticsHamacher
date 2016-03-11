@@ -61,7 +61,6 @@ public class ReaderLogicTest
 				test_loopStart = currentLine;
 				
 				
-				// Gather Current Line Data -> FUNCTION
 				while(currentLine < lines.size())
 				//for(; currentLine < lines.size(); currentLine++)
 				{
@@ -73,10 +72,13 @@ public class ReaderLogicTest
 					if( !(currentLine+1 < lines.size()) ){
 						break;
 						// Checking for next Line != this line
-					} else if( ! documentText.equals( lines.get(currentLine+1) ) ){
+					} else if( ! lines.get(currentLine).equals( lines.get(currentLine+1) ) ){
 						break;
+					} else {
+						currentLine++;
 					}
-					currentLine++;
+					
+					
 				}	
 				return true;				
 			} else {

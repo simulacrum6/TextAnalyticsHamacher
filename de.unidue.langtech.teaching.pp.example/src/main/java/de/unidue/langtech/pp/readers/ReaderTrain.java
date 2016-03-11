@@ -85,18 +85,17 @@ public class ReaderTrain
         throws IOException, CollectionException
     {    
     	boolean hasnext = currentLine < lines.size();   	
-    	// TODO Clean up code       	
+    	     	
         if (hasnext) 
         {        	
+        	documentText = getCurrentSentence();
+        	
         	wordBuffer = new ArrayList<String>();
             positionBuffer = new ArrayList<Integer>();
             complexityBuffer = new ArrayList<Integer>();
             complexitySumBuffer = new ArrayList<Integer>();
-            
-            String docTextBuffer = getCurrentLine();
-            String currLineText = getCurrentLine();
-        	
-        	while ( docTextBuffer.equals(currLineText) && currentLine < lines.size()-1 ) 
+
+        	while ( currentLine < lines.size() ) 
         	{
         		String[] tokeninfo = linesplits.get(currentLine)[1].split("\t", -1);
         		
@@ -119,13 +118,17 @@ public class ReaderTrain
                 complexityBuffer.add( (complexitySum > 0)?1:0 );
                 
                 
-                currentLine ++;
-            	currLineText = getCurrentLine();
+                if( !(currentLine+1 < lines.size()) ){
+                	break;
+                } else if( !getSentence(currentLine).equals( getSentence(currentLine+1) )){
+                	break;
+                } else {
+                	currentLine ++;
+                }
         	}
-        	documentText = docTextBuffer;
-        }
-            	
-    	return hasnext;
+        
+        }    	
+        return hasnext;
     }
     
     @Override
@@ -164,12 +167,12 @@ public class ReaderTrain
     		{	
 				int index = wordBuffer.indexOf(tokensplit);
 	    	    // Set Gold Annotation.		
- 				GoldComplexity goldComplexity = new GoldComplexity(jcas, begin, end);
-    				goldComplexity.setWord( wordBuffer.get(index) );
-    				goldComplexity.setPosition( positionBuffer.get(index) );
-    				goldComplexity.setComplexity( complexityBuffer.get(index) );
-    				goldComplexity.setComplexitySum( complexitySumBuffer.get(index) );
-    				goldComplexity.addToIndexes();
+ 				GoldComplexity goldAnno = new GoldComplexity(jcas, begin, end);
+    				goldAnno.setWord( wordBuffer.get(index) );
+    				goldAnno.setPosition( positionBuffer.get(index) );
+    				goldAnno.setComplexity( complexityBuffer.get(index) );
+    				goldAnno.setComplexitySum( complexitySumBuffer.get(index) );
+    				goldAnno.addToIndexes();
     		}
     		
     	}
@@ -181,10 +184,10 @@ public class ReaderTrain
     	throws IOException
     {
     	if ( splitpoint.equals("default") ) {
-    		splitpoint = "\\s[\\.\\!\\?]\\t";
+    		splitpoint = "[\\.\\!\\?]\\t";
     	}
  
-    	String[] split = line.split( splitpoint );
+    	String[] split = line.split( splitpoint, splitCount );
     	
     	if ( splitCount != -1){
     		
@@ -209,9 +212,16 @@ public class ReaderTrain
     	return linesplits;
     }
     
-    public String getCurrentLine()
+    public String getSentence(int index){
+    	return linesplits.get(index)[0];
+    }
+    
+    public String getCurrentSentence()
     {
     	return linesplits.get(currentLine)[0];
+    }
+    public String getNextSentence(){
+    	return linesplits.get(currentLine+1)[0];
     }
     
     public Progress[] getProgress()
