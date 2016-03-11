@@ -140,6 +140,7 @@ public class FrequencyMap
 	}
 	
 	// From-file constructor with corpus selection. Currently supported names: "5kwordfrequency", "subtlexus"
+	// TODO Add Unit Test
 	public FrequencyMap(File inputfile, String corpusname)
 	{
 		this();

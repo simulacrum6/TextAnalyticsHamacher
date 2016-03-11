@@ -10,6 +10,11 @@ public class ReaderLogicTest
 		int testsize = 4;
 		
 		List<String> testlist = new ArrayList<String>();
+			testlist.add("Line0");
+			testlist.add("Line0");
+			testlist.add("Line0");
+			testlist.add("Line1");
+			testlist.add("Line1");
 			testlist.add("Line1");
 			testlist.add("Line1");
 			testlist.add("Line2");
@@ -18,10 +23,12 @@ public class ReaderLogicTest
 			testlist.add("Line3");
 			
 		PseudoReader reader = new PseudoReader(testlist);
-		while(reader.hasNext())
-		{
-			reader.getNext();
-		}
+			
+		while(reader.hasNext()){
+				reader.getNext();
+			}
+			
+			
 		
 	}
 	
@@ -29,39 +36,58 @@ public class ReaderLogicTest
 		int currentLine;
 		List<String> lines;
 		String documentText;
+		String lineText;
 		
 		public PseudoReader(List<String> lines)
 		{
 			this.currentLine = 0;
 			this.lines = new ArrayList<String>(lines);
-			this.documentText = lines.get(currentLine);
+			this.documentText = lines.get(0);
+			this.lineText = documentText;
+			System.out.println("Total Lines:" + lines.size());
+			System.out.println();
 		}
 		
 		public boolean hasNext()
-		{
-			boolean hasNext;
+		{			
+			documentText = lines.get(currentLine);
 			
-			if(	this.currentLine < this.lines.size() ){
-				hasNext = true;
+			while(currentLine < lines.size())
+			//for(; currentLine < lines.size(); currentLine++)
+			{
+				// Gather Current Line Data -> FUNCTION
+				System.out.println("Gathered Data, line[" + currentLine + "]");
 				
-				while( currentLine < this.lines.size()-1 && this.documentText.equals(lines.get(this.currentLine))  ) {
-					this.currentLine ++;
+				// Checking for next Value  isArrayOutOfBounds
+				if( !(currentLine+1 < lines.size()) ){
+					break;
+					// Checking for next Line != this line
+				} else if( ! documentText.equals( lines.get(currentLine+1) ) ){
+					break;
 				}
-				this.documentText = lines.get(this.currentLine);
-				
-			} else {
-				hasNext = false;
+				currentLine++;
 			}
-
-			return hasNext;
+			
+			
+			if(	currentLine+1 <lines.size() ){	
+				return true;				
+			} else {
+				return false;
+			}
+			
 		}
 		
 		public void getNext()
 		{
-			System.out.println(currentLine);
-			System.out.println(lines.get(currentLine-1));
+			System.out.println();
+			System.out.println("Current line Index: " + currentLine);
+			System.out.println("Current Line Document: " + documentText);
+			System.out.println();
+			
 			currentLine++;
+			
 		}
+		
 		
 	}
 	
