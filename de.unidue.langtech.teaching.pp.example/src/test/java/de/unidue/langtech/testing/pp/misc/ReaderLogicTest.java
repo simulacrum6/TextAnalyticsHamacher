@@ -5,9 +5,10 @@ import java.util.List;
 
 public class ReaderLogicTest 
 {
+	
+	
 	public static void main(String[] args) 
 	{
-		int testsize = 4;
 		
 		List<String> testlist = new ArrayList<String>();
 			testlist.add("Line0");
@@ -27,8 +28,10 @@ public class ReaderLogicTest
 		while(reader.hasNext()){
 				reader.getNext();
 			}
-			
-			
+		
+		// Checks if all Line Data has been extracted	
+		 System.out.println( "Total Lines: " + reader.lines.size() + ", Extracted Lines: " + reader.test_gatheredData);
+		// assertEquals(test_gatheredData, lines.size())
 		
 	}
 	
@@ -37,6 +40,9 @@ public class ReaderLogicTest
 		List<String> lines;
 		String documentText;
 		String lineText;
+		
+		int test_loopStart;
+		int test_gatheredData;
 		
 		public PseudoReader(List<String> lines)
 		{
@@ -49,27 +55,29 @@ public class ReaderLogicTest
 		}
 		
 		public boolean hasNext()
-		{			
-			documentText = lines.get(currentLine);
-			
-			while(currentLine < lines.size())
-			//for(; currentLine < lines.size(); currentLine++)
-			{
-				// Gather Current Line Data -> FUNCTION
-				System.out.println("Gathered Data, line[" + currentLine + "]");
+		{	
+			if(	currentLine <lines.size() ){
+				documentText = lines.get(currentLine);
+				test_loopStart = currentLine;
 				
-				// Checking for next Value  isArrayOutOfBounds
-				if( !(currentLine+1 < lines.size()) ){
-					break;
-					// Checking for next Line != this line
-				} else if( ! documentText.equals( lines.get(currentLine+1) ) ){
-					break;
-				}
-				currentLine++;
-			}
-			
-			
-			if(	currentLine+1 <lines.size() ){	
+				
+				// Gather Current Line Data -> FUNCTION
+				while(currentLine < lines.size())
+				//for(; currentLine < lines.size(); currentLine++)
+				{
+					
+					System.out.println("Gathered Data, line[" + currentLine + "]");
+					test_gatheredData++;
+					
+					// Checking for next Value  isArrayOutOfBounds
+					if( !(currentLine+1 < lines.size()) ){
+						break;
+						// Checking for next Line != this line
+					} else if( ! documentText.equals( lines.get(currentLine+1) ) ){
+						break;
+					}
+					currentLine++;
+				}	
 				return true;				
 			} else {
 				return false;
@@ -82,6 +90,10 @@ public class ReaderLogicTest
 			System.out.println();
 			System.out.println("Current line Index: " + currentLine);
 			System.out.println("Current Line Document: " + documentText);
+			
+			// assertTrue( currentLine == test_gatheredData  )
+			// assertEquals( documentText, lines.get(test_loopStart) );
+			System.out.println("Current Line Document: " + documentText.equals(lines.get(test_loopStart)));
 			System.out.println();
 			
 			currentLine++;
