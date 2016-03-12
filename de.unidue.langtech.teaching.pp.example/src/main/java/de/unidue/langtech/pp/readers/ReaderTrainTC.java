@@ -57,7 +57,6 @@ public class ReaderTrainTC
     	}
         
         // Set TextClassificationUnit & TextClassificationOutcome
-    	// Not sure, whether all Tokens should be Classified or just the relevant ones.
     	int index = 0;
     	
         for (GoldComplexity goldAnno : JCasUtil.select(jcas, GoldComplexity.class) ) 

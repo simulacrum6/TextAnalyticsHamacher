@@ -9,8 +9,6 @@ import org.junit.Test;
 
 public class ReaderLogicTest 
 {
-	
-	
 	@Test
 	public void ReaderLogicTest()
 	{
@@ -36,7 +34,6 @@ public class ReaderLogicTest
 		// Checks if all Line Data has been extracted	
 		 System.out.println( "Total Lines: " + reader.lines.size() + ", Extracted Lines: " + reader.test_gatheredData);
 		 assertEquals(reader.test_gatheredData, reader.lines.size());
-		
 	}
 	
 	static class PseudoReader{

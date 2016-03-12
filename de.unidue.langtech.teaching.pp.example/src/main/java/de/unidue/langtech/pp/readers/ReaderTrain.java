@@ -174,10 +174,11 @@ public class ReaderTrain
 		    	Token token = new Token(jcas, begin, end);
 		    		token.addToIndexes();
 		    	
+		    	// Set Gold Annotation
 				if (temp_goldAnnotation_words.contains(word))
 	    		{	
 					int index = temp_goldAnnotation_words.indexOf(word);
-		    	    // Set Gold Annotation.		
+		    	    		
 	 				GoldComplexity goldAnno = new GoldComplexity(jcas, begin, end);
 	 					goldAnno.setWord( temp_goldAnnotation_words.get(index) );
 	    				goldAnno.setPosition( temp_goldAnnotation_positions.get(index) );

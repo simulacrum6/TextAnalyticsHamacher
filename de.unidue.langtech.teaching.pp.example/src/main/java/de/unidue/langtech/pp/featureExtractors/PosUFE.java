@@ -33,18 +33,14 @@ public class PosUFE
     extends FeatureExtractorResource_ImplBase
     implements ClassificationUnitFeatureExtractor
 {
-    public static final String POSTAG = "PosTag";
-    
-	public static final String PARAM_USE_POS_TYPES = "usePosTypes";
-	@ConfigurationParameter(name = PARAM_USE_POS_TYPES, defaultValue = "true")
-	protected boolean usePosTypes;
+    public static final String POS = "Pos";
 	
-	public static final String PARAM_USE_POS_TYPE_SINGLE = "usePosTypesSingle";
-	@ConfigurationParameter(name = PARAM_USE_POS_TYPE_SINGLE, defaultValue = "true")
-	protected boolean usePosTypeSingle;
+	public static final String PARAM_USE_POS_TYPE_MULTI = "usePosTypeMulti";
+	@ConfigurationParameter(name = PARAM_USE_POS_TYPE_MULTI, defaultValue = "false")
+	protected boolean usePosTypeMulti;
 	
 	public static final String PARAM_USE_POS_INDEX = "usePosIndex";
-	@ConfigurationParameter(name = PARAM_USE_POS_INDEX, defaultValue = "true")
+	@ConfigurationParameter(name = PARAM_USE_POS_INDEX, defaultValue = "false")
 	protected boolean usePosIndex;
     
     public List<Feature> extract(JCas jcas, TextClassificationUnit classificationUnit)
@@ -58,7 +54,7 @@ public class PosUFE
 				"(",")","NP","PP","VP","ADVP","ADJP","SBAR","PRT","INTJ"
 		});
 		
-    	POS posAnno = JCasUtil.selectCovered(jcas, POS.class, classificationUnit.getBegin(), classificationUnit.getEnd() ).get(0);
+    	POS posAnno = JCasUtil.selectCovering(jcas, POS.class, classificationUnit.getBegin(), classificationUnit.getBegin() ).get(0);
         String posType = posAnno.getPosValue();
         int posIdx = posAnno.getTypeIndexID();
     	
@@ -75,15 +71,18 @@ public class PosUFE
         
         List<Feature> features = new ArrayList<Feature>();
         	if(usePosIndex) {
-        		features.add(new Feature(POSTAG, posIdx));
+        		features.add(new Feature(POS + "_TAG", posIdx));
+        		return features;
         	}
-        	if(usePosTypes){
+        	else if(usePosTypeMulti){
         		for(String pos : posMap.keySet()){
-            		features.add(new Feature("is_POSTYPE_" + pos, posMap.get(pos)));
+            		features.add(new Feature("is" + POS + " _TYPE_" + pos, posMap.get(pos)));
             	}
+        		return features;
         	}
- 
-        	
-    	return features;
+        	else {
+            		features.add( new Feature(POS + " _TYPE", posAnno.getPosValue()) );
+            		return features;
+            } 
     }
 }

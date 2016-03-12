@@ -70,7 +70,7 @@ public class Complexity_Bayesline_CV
     {
     	// Set environment Variable
     	String timestamp = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss_SSS").format(new Date());
-    	System.setProperty("DKPRO_HOME", "src/main/resources/output/"+ EXPERIMENT_NAME + "/" + EXPERIMENT_TYPE + "/" + NUM_FOLDS + "fold/" + timestamp);
+    	System.setProperty("DKPRO_HOME", "src/main/resources/output/"+ EXPERIMENT_NAME + "/" + EXPERIMENT_TYPE + "_" + NUM_FOLDS + "fold/" + timestamp);
     	
     	// Run experiment
         new Complexity_Bayesline_CV().runCrossValidation(getParameterSpace());
@@ -121,7 +121,8 @@ public class Complexity_Bayesline_CV
                 		NrOfCharsUFE.class.getName(),
                 		FrequencyUFE.class.getName(),
                 		PosUFE.class.getName(),            
-//                		LuceneCharacterNGramUFE.class.getName()
+                		LuceneCharacterNGramUFE.class.getName(),
+//                		LuceneNGramUFE.class.getName()
                 })
         );
         
@@ -129,12 +130,15 @@ public class Complexity_Bayesline_CV
         @SuppressWarnings("unchecked")
         Dimension<List<Object>> dimPipelineParameters = Dimension.create(DIM_PIPELINE_PARAMS,
         		 Arrays.asList(new Object[] {
-        				 PosUFE.PARAM_USE_POS_TYPES, true,
-        				 PosUFE.PARAM_USE_POS_INDEX, false
-//        			  LuceneCharacterNGramUFE.PARAM_CHAR_NGRAM_MIN_N, 2,
-//                      LuceneCharacterNGramUFE.PARAM_CHAR_NGRAM_MAX_N, 4,
-//                      LuceneCharacterNGramUFE.PARAM_CHAR_NGRAM_USE_TOP_K, 50,
-//                      LuceneCharacterNGramUFE.PARAM_CHAR_NGRAM_LOWER_CASE, true
+        				 PosUFE.PARAM_USE_POS_INDEX, true,
+        				 FrequencyUFE.PARAM_FEATURE_TYPE, "rank",
+        				 
+        				 LuceneCharacterNGramUFE.PARAM_CHAR_NGRAM_MIN_N, 2,
+        				 LuceneCharacterNGramUFE.PARAM_CHAR_NGRAM_MAX_N, 4,
+        				 LuceneCharacterNGramUFE.PARAM_CHAR_NGRAM_LOWER_CASE, true
+        				 
+//        				 LuceneNGramUFE.PARAM_NGRAM_MAX_N, 2,
+//        				 LuceneNGramUFE.PARAM_NGRAM_MIN_N, 2       				
                  })
         );
        

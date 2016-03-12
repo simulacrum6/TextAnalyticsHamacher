@@ -65,7 +65,7 @@ public class Complexity_ZeroR_CV
     {
     	// Set environment Variable
     	String timestamp = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss_SSS").format(new Date());
-    	System.setProperty("DKPRO_HOME", "src/main/resources/output/"+ EXPERIMENT_NAME + "/" + EXPERIMENT_TYPE + "/" + NUM_FOLDS + "fold/" + timestamp);
+    	System.setProperty("DKPRO_HOME", "src/main/resources/output/"+ EXPERIMENT_NAME + "/" + EXPERIMENT_TYPE + "_" + NUM_FOLDS + "fold/" + timestamp);
     	
     	// Run experiment
         new Complexity_ZeroR_CV().runCrossValidation(getParameterSpace());
