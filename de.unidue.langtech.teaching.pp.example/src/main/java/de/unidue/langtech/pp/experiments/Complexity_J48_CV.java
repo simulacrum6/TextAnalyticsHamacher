@@ -46,7 +46,7 @@ public class Complexity_J48_CV
     public static final String LANGUAGE_CODE = "en";
     public static final String EXPERIMENT_NAME = "ComplexityExperiment-J48";
     public static final String EXPERIMENT_TYPE = "CV";
-    public static final int NUM_FOLDS = 2;
+    public static final int NUM_FOLDS = 10;
     static final String CORPUS_SMALL = "src/main/resources/inputfiles/cwi_training_allannotations.txt";
     static final String CORPUS_LARGE = "src/main/resources/inputfiles/cwi_testing_annotated.txt";
     static final String CORPUS_FILEPATH_TRAIN = CORPUS_LARGE;
@@ -113,6 +113,7 @@ public class Complexity_J48_CV
                 		// IsLatinWordUFE.class.getName(),
                 		// IsInflectedWordUFE.class.getName()
                 		LuceneCharacterNGramUFE.class.getName()
+//                		LuceneNGramUFE.class.getName()                		
                 })
         );
        
@@ -120,12 +121,14 @@ public class Complexity_J48_CV
         @SuppressWarnings("unchecked")
         Dimension<List<Object>> dimPipelineParameters = Dimension.create(DIM_PIPELINE_PARAMS,
         		 Arrays.asList(new Object[] {
-        				PosUFE.PARAM_USE_POS_INDEX, true,
+        				 PosUFE.PARAM_USE_POS_INDEX, true,
         				
         				LuceneCharacterNGramUFE.PARAM_CHAR_NGRAM_MIN_N, 2,
         				LuceneCharacterNGramUFE.PARAM_CHAR_NGRAM_MAX_N, 4,
-                        LuceneCharacterNGramUFE.PARAM_CHAR_NGRAM_USE_TOP_K, 500,
+        				LuceneCharacterNGramUFE.PARAM_CHAR_NGRAM_USE_TOP_K, 500,
                         LuceneCharacterNGramUFE.PARAM_CHAR_NGRAM_LOWER_CASE, true
+                        
+                        
                  })
         );
         

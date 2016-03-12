@@ -8,7 +8,6 @@ import de.tudarmstadt.ukp.dkpro.core.decompounding.uima.annotator.CompoundAnnota
 import de.tudarmstadt.ukp.dkpro.core.decompounding.uima.resource.BananaSplitterResource;
 import de.tudarmstadt.ukp.dkpro.core.stanfordnlp.StanfordLemmatizer;
 import de.tudarmstadt.ukp.dkpro.core.stanfordnlp.StanfordPosTagger;
-import de.unidue.langtech.pp.annotators.CharNGramAnnotator;
 import de.unidue.langtech.pp.annotators.FrequencyAnnotator;
 import de.unidue.langtech.pp.readers.ReaderTrainTC;
 
