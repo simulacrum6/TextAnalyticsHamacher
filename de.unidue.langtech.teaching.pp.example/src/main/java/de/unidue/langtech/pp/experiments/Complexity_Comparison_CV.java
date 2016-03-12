@@ -50,7 +50,7 @@ public class Complexity_Comparison_CV
 	public static final String LANGUAGE_CODE = "en";
     public static final String EXPERIMENT_NAME = "ComplexityExperiment-Comparison";
     public static final String EXPERIMENT_TYPE = "CV";
-    public static final int NUM_FOLDS = 2;
+    public static final int NUM_FOLDS = 8;
     static final String CORPUS_SMALL = "src/main/resources/inputfiles/cwi_training_allannotations.txt";
     static final String CORPUS_LARGE = "src/main/resources/inputfiles/cwi_testing_annotated.txt";
     static final String CORPUS_FILEPATH_TRAIN = CORPUS_LARGE;
@@ -115,7 +115,7 @@ public class Complexity_Comparison_CV
                 		NrOfCharsUFE.class.getName(),
 //                		FrequencyUFE.class.getName(),
                 		PosUFE.class.getName(),
-                		LuceneCharacterNGramUFE.class.getName(),
+//                		LuceneCharacterNGramUFE.class.getName(),
 //                		LuceneNGramUFE.class.getName()                		
                 		// IsLatinWordUFE.class.getName(),
                 		// IsInflectedWordUFE.class.getName()
@@ -129,10 +129,10 @@ public class Complexity_Comparison_CV
         				PosUFE.PARAM_USE_POS_INDEX, false,
         				PosUFE.PARAM_USE_POS_TYPES, true,
         				
-        				LuceneCharacterNGramUFE.PARAM_CHAR_NGRAM_MIN_N, 2,
-        				LuceneCharacterNGramUFE.PARAM_CHAR_NGRAM_MAX_N, 4,
-        				LuceneCharacterNGramUFE.PARAM_CHAR_NGRAM_USE_TOP_K, 50,
-                        LuceneCharacterNGramUFE.PARAM_CHAR_NGRAM_LOWER_CASE, true,
+//        				LuceneCharacterNGramUFE.PARAM_CHAR_NGRAM_MIN_N, 2,
+//        				LuceneCharacterNGramUFE.PARAM_CHAR_NGRAM_MAX_N, 4,
+//        				LuceneCharacterNGramUFE.PARAM_CHAR_NGRAM_USE_TOP_K, 50,
+//                        LuceneCharacterNGramUFE.PARAM_CHAR_NGRAM_LOWER_CASE, true,
                         
                         
                  })
@@ -176,9 +176,9 @@ public class Complexity_Comparison_CV
         		AnalysisEngineFactory.createEngineDescription(StanfordLemmatizer.class),
         		AnalysisEngineFactory.createEngineDescription(StanfordPosTagger.class),
                 AnalysisEngineFactory.createEngineDescription(FrequencyAnnotator.class, 
-                		FrequencyAnnotator.PARAM_FREQUENCY_LIST, "src/main/resources/required/SUBTLEXus.txt",
-                		FrequencyAnnotator.PARAM_FREQUENCY_CORPUS_NAME, "subtlex")
-//                		FrequencyAnnotator.PARAM_FREQUENCY_LIST, "src/main/resources/required/5kwordfrequency.txt")               
+//                		FrequencyAnnotator.PARAM_FREQUENCY_LIST, "src/main/resources/required/SUBTLEXus.txt",
+//                		FrequencyAnnotator.PARAM_FREQUENCY_CORPUS_NAME, "subtlex")
+                		FrequencyAnnotator.PARAM_FREQUENCY_LIST, "src/main/resources/required/5kwordfrequency.txt")               
         		));
     }
 

@@ -18,6 +18,7 @@ import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token;
 import de.tudarmstadt.ukp.dkpro.tc.api.type.TextClassificationOutcome;
 import de.tudarmstadt.ukp.dkpro.tc.api.type.TextClassificationUnit;
 import de.unidue.langtech.teaching.pp.type.CorpusFrequency;
+import de.unidue.langtech.teaching.pp.type.GoldComplexity;
 
 /*
  * Console based testing environment for quick and dirty testing.
@@ -39,7 +40,7 @@ public class PlayGround
     	DocumentMetaData metaData = JCasUtil.selectSingle(jcas, DocumentMetaData.class);
        
         System.out.println("DocumentId: " + metaData.getDocumentId());
-        System.out.println();
+        System.out.println();        
         
         // Token Test
         List<Token> tokens = new ArrayList<Token>(JCasUtil.select(jcas, Token.class));
@@ -68,6 +69,12 @@ public class PlayGround
         CorpusFrequency frequency;
         
         System.out.println("CAS contains " + frequencies.size() + " Frequency Annotations.");
+        
+     // GoldAnno Test
+        List<GoldComplexity> goldComplexities = new ArrayList<GoldComplexity>(JCasUtil.select(jcas, GoldComplexity.class));
+        GoldComplexity goldComplexity;
+        
+        System.out.println("CAS contains " + goldComplexities.size() + " GoldComplexity Annotations.");
         
         // Classification Units Test
         List<TextClassificationUnit> units = new ArrayList<TextClassificationUnit>(JCasUtil.select(jcas, TextClassificationUnit.class));
@@ -104,12 +111,14 @@ public class PlayGround
         //Classification Info
         for(int i = 0; i < units.size(); i++)
         {
+        	goldComplexity = goldComplexities.get(i);
         	unit = units.get(i);
         	outcome = outcomes.get(i);
         	
         	System.out.println(
       			   "ClassificationUnit[" + i + "](" + unit.getCoveredText() + ") " +
-      			   "Classification Outcome: " + outcome.getOutcome()
+      			   "Classification Outcome: " + outcome.getOutcome() + " " +
+      			   "GoldAnnotation: " + goldComplexity.getWord() + ", " + goldComplexity.getPosition() + ", " + goldComplexity.getComplexity() + ", " + goldComplexity.getComplexitySum() 
       			   );
         }
         System.out.println();

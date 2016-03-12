@@ -60,10 +60,10 @@ public class Complexity_Bayesline_CV
     public static final String LANGUAGE_CODE = "en";
     public static final String EXPERIMENT_NAME = "ComplexityExperiment-NaiveBayes";
     public static final String EXPERIMENT_TYPE = "CV";
-    public static final int NUM_FOLDS = 2;
+    public static final int NUM_FOLDS = 10;
     static final String CORPUS_SMALL = "src/main/resources/inputfiles/cwi_training_allannotations.txt";
     static final String CORPUS_LARGE = "src/main/resources/inputfiles/cwi_testing_annotated.txt";
-    static final String CORPUS_FILEPATH_TRAIN = CORPUS_SMALL;
+    static final String CORPUS_FILEPATH_TRAIN = CORPUS_LARGE;
 
     public static void main(String[] args)
         throws Exception
@@ -121,7 +121,7 @@ public class Complexity_Bayesline_CV
                 		NrOfCharsUFE.class.getName(),
                 		FrequencyUFE.class.getName(),
                 		PosUFE.class.getName(),            
-                		LuceneCharacterNGramUFE.class.getName()
+//                		LuceneCharacterNGramUFE.class.getName()
                 })
         );
         
@@ -129,10 +129,12 @@ public class Complexity_Bayesline_CV
         @SuppressWarnings("unchecked")
         Dimension<List<Object>> dimPipelineParameters = Dimension.create(DIM_PIPELINE_PARAMS,
         		 Arrays.asList(new Object[] {
-        			  LuceneCharacterNGramUFE.PARAM_CHAR_NGRAM_MIN_N, 2,
-                      LuceneCharacterNGramUFE.PARAM_CHAR_NGRAM_MAX_N, 4,
-                      LuceneCharacterNGramUFE.PARAM_CHAR_NGRAM_USE_TOP_K, 50,
-                      LuceneCharacterNGramUFE.PARAM_CHAR_NGRAM_LOWER_CASE, true
+        				 PosUFE.PARAM_USE_POS_TYPES, true,
+        				 PosUFE.PARAM_USE_POS_INDEX, false
+//        			  LuceneCharacterNGramUFE.PARAM_CHAR_NGRAM_MIN_N, 2,
+//                      LuceneCharacterNGramUFE.PARAM_CHAR_NGRAM_MAX_N, 4,
+//                      LuceneCharacterNGramUFE.PARAM_CHAR_NGRAM_USE_TOP_K, 50,
+//                      LuceneCharacterNGramUFE.PARAM_CHAR_NGRAM_LOWER_CASE, true
                  })
         );
        

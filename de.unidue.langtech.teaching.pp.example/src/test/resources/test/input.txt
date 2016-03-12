@@ -1,4 +1,7 @@
 Peter went into the office before they arrived there .	into	3	1	1	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0
 Peter went into the office before they arrived there .	arrived	8	1	0	0	1	1	0	1	1	1	0	0	0	0	0	0	0	1	0	0	1
-This is not a test .	test	5	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
-This is not a test .	not	3	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	
+Leo , on December 23 , took an oath of purgation concerning the charges brought against him , and his opponents were exiled .	exiled	22	0	0	0	1	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Leo , on December 23 , took an oath of purgation concerning the charges brought against him , and his opponents were exiled .	oath	8	1	0	1	0	1	0	1	0	0	0	0	0	1	0	0	0	1	0	0	1
+I really hope , this works properly.	hope	3	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+I really hope , this works properly.	really	2	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+I really hope , this works properly.	properly	7	1	0	1	1	1	0	0	0	0	1	0	0	0	1	0	1	0	0	0	0

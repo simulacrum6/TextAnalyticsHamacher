@@ -1,15 +1,19 @@
-package de.unidue.langtech.testing.pp.misc;
+package de.unidue.langtech.testing.pp.readers;
+
+import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import org.junit.Test;
 
 public class ReaderLogicTest 
 {
 	
 	
-	public static void main(String[] args) 
+	@Test
+	public void ReaderLogicTest()
 	{
-		
 		List<String> testlist = new ArrayList<String>();
 			testlist.add("Line0");
 			testlist.add("Line0");
@@ -31,7 +35,7 @@ public class ReaderLogicTest
 		
 		// Checks if all Line Data has been extracted	
 		 System.out.println( "Total Lines: " + reader.lines.size() + ", Extracted Lines: " + reader.test_gatheredData);
-		// assertEquals(test_gatheredData, lines.size())
+		 assertEquals(reader.test_gatheredData, reader.lines.size());
 		
 	}
 	
@@ -56,28 +60,22 @@ public class ReaderLogicTest
 		
 		public boolean hasNext()
 		{	
-			if(	currentLine <lines.size() ){
+			if(	currentLine < lines.size() ){
 				documentText = lines.get(currentLine);
 				test_loopStart = currentLine;
 				
-				
 				while(currentLine < lines.size())
-				//for(; currentLine < lines.size(); currentLine++)
 				{
-					
 					System.out.println("Gathered Data, line[" + currentLine + "]");
 					test_gatheredData++;
 					
-					// Checking for next Value  isArrayOutOfBounds
 					if( !(currentLine+1 < lines.size()) ){
 						break;
-						// Checking for next Line != this line
 					} else if( ! lines.get(currentLine).equals( lines.get(currentLine+1) ) ){
 						break;
 					} else {
 						currentLine++;
 					}
-					
 					
 				}	
 				return true;				
@@ -93,13 +91,13 @@ public class ReaderLogicTest
 			System.out.println("Current line Index: " + currentLine);
 			System.out.println("Current Line Document: " + documentText);
 			
-			// assertTrue( currentLine == test_gatheredData  )
-			// assertEquals( documentText, lines.get(test_loopStart) );
+			
+			assertEquals( documentText, lines.get(test_loopStart) );
 			System.out.println("Current Line Document: " + documentText.equals(lines.get(test_loopStart)));
 			System.out.println();
 			
 			currentLine++;
-			
+			assertEquals( new Integer(currentLine), new Integer(test_gatheredData) );
 		}
 		
 		

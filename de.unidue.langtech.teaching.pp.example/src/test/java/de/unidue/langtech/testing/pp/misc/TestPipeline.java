@@ -27,7 +27,8 @@ public class TestPipeline
         SimplePipeline.runPipeline(
                 CollectionReaderFactory.createReader(
                         ReaderTrainTC.class,
-                        ReaderTrainTC.PARAM_INPUT_FILE, "src/main/resources/inputfiles/cwi_training_allannotations.txt",
+//                        ReaderTrainTC.PARAM_INPUT_FILE, "src/main/resources/inputfiles/cwi_training_allannotations.txt",
+                        ReaderTrainTC.PARAM_INPUT_FILE, "src/test/resources/test/input.txt",
                         ReaderTrainTC.PARAM_CLASSIFICATION_MODE, "sum"
                 ),
                 AnalysisEngineFactory.createEngineDescription(StanfordLemmatizer.class),

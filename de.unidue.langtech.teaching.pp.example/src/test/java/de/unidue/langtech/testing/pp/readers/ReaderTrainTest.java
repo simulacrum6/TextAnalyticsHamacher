@@ -77,9 +77,9 @@ public class ReaderTrainTest {
             } 
             else if( metaId.endsWith("2") )
             {
-            	assertEquals(5, tokens.size());
-                assertEquals("This", tokens.get(0).getCoveredText());
-                assertEquals("test", tokens.get(4).getCoveredText());
+            	assertEquals(24, tokens.size());
+                assertEquals("Leo", tokens.get(0).getCoveredText());
+                assertEquals("23", tokens.get(4).getCoveredText());
                 return;
             }
             
@@ -87,7 +87,7 @@ public class ReaderTrainTest {
 		
 	}
 	
-	
+	// Keeps on failing. https://github.com/simulacrum6/TextAnalyticsHamacher/wiki/Code#readertraintestjava
 	@Test
 	public void testGoldAnno()
 		throws Exception
@@ -100,7 +100,7 @@ public class ReaderTrainTest {
 			List<GoldComplexity> goldAnno = new ArrayList<GoldComplexity>(JCasUtil.select(jcas, GoldComplexity.class));
 			String metaId = JCasUtil.selectSingle(jcas, DocumentMetaData.class).getDocumentId();
 			
-			if( metaId.endsWith("0"))
+			if( metaId.endsWith("1"))
             {
             	assertEquals(2, goldAnno.size());
                 assertEquals("into", goldAnno.get(0).getWord());
@@ -109,14 +109,13 @@ public class ReaderTrainTest {
                 assertEquals(7, goldAnno.get(1).getComplexitySum());
                 return;
             } 
-            else if( metaId.endsWith("2") )
+            else if( metaId.endsWith("3") )
             {
-            	System.out.println(jcas.getDocumentText());
-            	assertEquals( 2 , goldAnno.size());
-                assertEquals( "test" , goldAnno.get(0).getWord());
-                assertEquals( 5 , goldAnno.get(0).getPosition());
-                assertEquals( 0 , goldAnno.get(1).getComplexity());
-                assertEquals( 0 , goldAnno.get(1).getComplexitySum());
+            	assertEquals(3, goldAnno.size());
+                assertEquals("properly", goldAnno.get(2).getWord());
+                assertEquals(7, goldAnno.get(2).getPosition());
+                assertEquals(0, goldAnno.get(0).getComplexity());
+                assertEquals(0, goldAnno.get(0).getComplexitySum());
                 return;
             }
 		}
@@ -124,13 +123,13 @@ public class ReaderTrainTest {
 	
 	
 	@Test
-	public void testFunctionGetSafeSplits() 
+	public void testFunctionGetPartsSafe() 
 		throws IOException
 	{
 		ReaderTrain reader = new ReaderTrain();
 		String testLine = "Hollow words waver , syllables five seven five , just three lines suffice , else your haiku is kaputt.";
 		
-		String[] splits = reader.getSafeSplits(testLine, "\\s,\\s", -1);
+		String[] splits = reader.getPartsSafe(testLine, "\\s,\\s", -1);
 		
 		assertEquals( 4 , splits.length );
 		assertEquals( "Hollow words waver" , splits[0] );
@@ -140,7 +139,7 @@ public class ReaderTrainTest {
 	}
 	
 	@Test
-	public void testFunctionGetLineSplits() 
+	public void testFunctionGetLineParts() 
 		throws IOException
 	{
 		ReaderTrain reader = new ReaderTrain();
@@ -150,7 +149,7 @@ public class ReaderTrainTest {
 			testLines.add("Don't break my heart!	Please?");
 			testLines.add("You Monster.	</3");
 		
-		List<String[]> lineSplits = reader.getLineSplits(testLines);
+		List<String[]> lineSplits = reader.getLineParts(testLines);
 		
 		assertEquals( 3 , lineSplits.size() );
 		assertEquals( "Line should be split right here" , lineSplits.get(0)[0]);

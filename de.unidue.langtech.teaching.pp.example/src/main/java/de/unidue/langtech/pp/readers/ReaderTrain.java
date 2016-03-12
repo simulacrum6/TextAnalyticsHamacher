@@ -22,6 +22,7 @@ import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token;
 import de.unidue.langtech.teaching.pp.type.GoldComplexity;
 
 /* 
+ * 
  * A training data reader for the SemEval2016 Task11: Complex Word Identification.
  * Input files must be organised in the following format:
  *	 Each INPUTFILE
@@ -37,8 +38,13 @@ import de.unidue.langtech.teaching.pp.type.GoldComplexity;
  *		[TAB][WordX][TAB][Position(WordX)][TAB][Rating1][TAB](...)[TAB][RatingM]
  *		Each individual RATING must be either 1 or 0.
  *		Each individual WORD must be a sequence of characters. 
+ *
+ * This is probably the most complicated part of the project (codewise) and not every part might 
+ * seem to make sense at first glance. Particularly the hasNext() method.
+ * For those scorched by the dragons that lay beyond: 
+ * https://github.com/simulacrum6/TextAnalyticsHamacher/wiki/Code#file-reader-readertrainjava
 */
-// FIXME First ClassificationUnits of each jCas and the very last ClassificationUnit are not registered. In this case: student
+
 public class ReaderTrain
     extends JCasCollectionReader_ImplBase
 {
@@ -51,18 +57,17 @@ public class ReaderTrain
     @ConfigurationParameter(name = PARAM_DOCUMENT_LANGUAGE, defaultValue = "en", mandatory = true)
     String documentLanguage;
     
-    int meta_docCount;
+    int meta_documentCount;
     String documentText;
     List<String> lines;
-    List<String[]> linesplits;
+    List<String[]> lineparts;
     
     int currentLine;
     
-    List<String> wordBuffer;
-    List<Integer> positionBuffer;
-    List<Integer> complexityBuffer;
-    List<Integer> complexitySumBuffer;
-    List<Integer> beginBuffer;
+    List<String> temp_goldAnnotation_words;
+    List<Integer> temp_goldAnnotation_positions;
+    List<Integer> temp_goldAnnotation_complexity;
+    List<Integer> temp_goldAnnotation_complexityRatingSums;
     
     @Override
     public void initialize(UimaContext context)
@@ -72,9 +77,9 @@ public class ReaderTrain
 
         try {
            lines = FileUtils.readLines(inputFile);
-           linesplits = getLineSplits(lines);
+           lineparts = getLineParts(lines);
            currentLine = 0;
-           meta_docCount = 0;
+           meta_documentCount = 0;
         }
         catch (IOException e) {
             throw new ResourceInitializationException(e);
@@ -90,43 +95,49 @@ public class ReaderTrain
         {        	
         	documentText = getCurrentSentence();
         	
-        	wordBuffer = new ArrayList<String>();
-            positionBuffer = new ArrayList<Integer>();
-            complexityBuffer = new ArrayList<Integer>();
-            complexitySumBuffer = new ArrayList<Integer>();
+        	temp_goldAnnotation_words = new ArrayList<String>();
+            temp_goldAnnotation_positions = new ArrayList<Integer>();
+            temp_goldAnnotation_complexity = new ArrayList<Integer>();
+            temp_goldAnnotation_complexityRatingSums = new ArrayList<Integer>();
 
+            // Extract Gold Annotations until the next line contains a different sentence or EndOfFile is reached
         	while ( currentLine < lines.size() ) 
         	{
-        		String[] tokeninfo = linesplits.get(currentLine)[1].split("\t", -1);
-        		
-                if (tokeninfo.length < 3) {
-                    throw new IOException("Wrong Tokeninfo format: " + linesplits.get(currentLine)[1]);
+        		String[] annotationInfo = getAnnotationParts(currentLine);
+        			// annotationInfo[0]: Rated Word
+        			// annotationInfo[1]: Position of word in sentence
+        			// annotationInfo[n]: Complexity Rating by Person[n]. n >=2
+        	
+                if (annotationInfo.length < 3) {
+                    throw new IOException("Wrong Tokeninfo format: " + getAnnotationParts(currentLine));
                 }
                 
-                int complexitySum = 0;   
-                for (int i = 2; i < tokeninfo.length; i++) 
+                // Sum complexity ratings for current word
+                int complexityRatingSum = 0;   
+                for (int i = 2; i < annotationInfo.length; i++) 
                 {
-                	if (tokeninfo[i].equals("1")) {
-                		complexitySum ++;
+                	if (annotationInfo[i].equals("1")) {
+                		complexityRatingSum ++;
                 	}
-                	
                 }
-
-                wordBuffer.add(tokeninfo[0]);
-                positionBuffer.add( Integer.parseInt( tokeninfo[1] ) );
-                complexitySumBuffer.add(complexitySum);
-                complexityBuffer.add( (complexitySum > 0)?1:0 );
                 
+                // Add information to buffer
+                temp_goldAnnotation_words.add(annotationInfo[0]);
+                temp_goldAnnotation_positions.add( Integer.parseInt( annotationInfo[1] ) );
+                temp_goldAnnotation_complexityRatingSums.add(complexityRatingSum);
+                temp_goldAnnotation_complexity.add( (complexityRatingSum > 0) ? 1 : 0 );
                 
+                // Checks if End Of Line List is reached. Otherwise loop is ended to prevent ArrayOutOfBoundsException
                 if( !(currentLine+1 < lines.size()) ){
                 	break;
-                } else if( !getSentence(currentLine).equals( getSentence(currentLine+1) )){
+                // Checks if next sentence is different from current sentence. loop ends, if so.
+                } else if(!documentText.equals( getSentence(currentLine+1))){
                 	break;
                 } else {
+                	// Loop continues on next line
                 	currentLine ++;
                 }
         	}
-        
         }    	
         return hasnext;
     }
@@ -135,14 +146,14 @@ public class ReaderTrain
     public void getNext(JCas jcas)
         throws IOException, CollectionException
     {  	
+    	meta_documentCount ++;
+    	
     	jcas.setDocumentText(documentText);
         jcas.setDocumentLanguage(documentLanguage);
-         
-        meta_docCount ++;
         
         // Set Metadata
     	DocumentMetaData metaData = DocumentMetaData.create(jcas);
-	    	metaData.setDocumentId("SemEval16_Complexity_" + meta_docCount);
+	    	metaData.setDocumentId("SemEval16_Complexity_" + meta_documentCount);
 	    	metaData.setDocumentTitle( "SemEval16_Complexity" );       
         
     	// Set Sentence
@@ -150,48 +161,49 @@ public class ReaderTrain
     		sentence.addToIndexes();
     	
     	// Set Tokens
-    	int currentPosition = 0;
+    	int currentPosition = 0;    	
     	
-    	String[] tokensplits = jcas.getDocumentText().split(" ", -1);
-    	for (String tokensplit : tokensplits)
-    	{
-	    	int begin = currentPosition;
-	    	int end = currentPosition + tokensplit.length();
+    	String[] words = jcas.getDocumentText().split(" ", -1);
+	    	for (String word : words)
+	    	{
+		    	int begin = currentPosition;
+		    	int end = currentPosition + word.length();
+		    		
+		    	currentPosition += word.length() + 1;
+	    			    	
+		    	Token token = new Token(jcas, begin, end);
+		    		token.addToIndexes();
+		    	
+				if (temp_goldAnnotation_words.contains(word))
+	    		{	
+					int index = temp_goldAnnotation_words.indexOf(word);
+		    	    // Set Gold Annotation.		
+	 				GoldComplexity goldAnno = new GoldComplexity(jcas, begin, end);
+	 					goldAnno.setWord( temp_goldAnnotation_words.get(index) );
+	    				goldAnno.setPosition( temp_goldAnnotation_positions.get(index) );
+	    				goldAnno.setComplexity( temp_goldAnnotation_complexity.get(index) );
+	    				goldAnno.setComplexitySum( temp_goldAnnotation_complexityRatingSums.get(index) );
+	    				goldAnno.addToIndexes();
+	    		}
 	    		
-	    	currentPosition += tokensplit.length() + 1;
-    			    	
-	    	Token token = new Token(jcas, begin, end);
-	    		token.addToIndexes();
-	    	
-			if (wordBuffer.contains(tokensplit))
-    		{	
-				int index = wordBuffer.indexOf(tokensplit);
-	    	    // Set Gold Annotation.		
- 				GoldComplexity goldAnno = new GoldComplexity(jcas, begin, end);
-    				goldAnno.setWord( wordBuffer.get(index) );
-    				goldAnno.setPosition( positionBuffer.get(index) );
-    				goldAnno.setComplexity( complexityBuffer.get(index) );
-    				goldAnno.setComplexitySum( complexitySumBuffer.get(index) );
-    				goldAnno.addToIndexes();
-    		}
-    		
-    	}
-    	// TODO Do not forget!
+	    	}
         currentLine++;
     }
     
-    public String[] getSafeSplits (String line, String splitpoint, int splitCount)
+    
+    
+    public String[] getPartsSafe (String line, String splitpoint, int partCount)
     	throws IOException
     {
     	if ( splitpoint.equals("default") ) {
     		splitpoint = "[\\.\\!\\?]\\t";
     	}
  
-    	String[] split = line.split( splitpoint, splitCount );
+    	String[] split = line.split( splitpoint, partCount );
     	
-    	if ( splitCount != -1){
-    		
-    		if (split.length != splitCount) {
+    	if ( partCount != -1)
+    	{
+    		if (split.length != partCount) {
              throw new IOException("Wrong line format: " + line + " \n Line needs to match the following separator: " + splitpoint);
     		}
     		
@@ -200,28 +212,44 @@ public class ReaderTrain
     	return split;
     }
     
-    public List<String[]> getLineSplits (List<String> lines)
+    
+    void extractGoldAnnotations()
     	throws IOException
     {
-    	List<String[]> linesplits = new ArrayList<String[]>();
+    	
+    }
+    
+    public List<String[]> getLineParts (List<String> lines)
+    	throws IOException
+    {
+    	List<String[]> lineparts = new ArrayList<String[]>();
     	
     	for(String line : lines)
     	{
-    		linesplits.add(getSafeSplits (line, "default", 2));
+    		lineparts.add(getPartsSafe (line, "default", 2));
     	}
-    	return linesplits;
+    	return lineparts;
     }
     
-    public String getSentence(int index){
-    	return linesplits.get(index)[0];
+    public String[] getAnnotationParts(int lineIndex){
+    	return lineparts.get(currentLine)[1].split("\t", -1);
+    }
+    
+    public String[] getCurrentAnnotationParts(){
+    	return lineparts.get(currentLine)[1].split("\t", -1);    	
+    }
+    
+    
+    public String getSentence(int lineIndex){
+    	return lineparts.get(lineIndex)[0];
     }
     
     public String getCurrentSentence()
     {
-    	return linesplits.get(currentLine)[0];
+    	return lineparts.get(currentLine)[0];
     }
     public String getNextSentence(){
-    	return linesplits.get(currentLine+1)[0];
+    	return lineparts.get(currentLine+1)[0];
     }
     
     public Progress[] getProgress()

@@ -39,6 +39,10 @@ public class PosUFE
 	@ConfigurationParameter(name = PARAM_USE_POS_TYPES, defaultValue = "true")
 	protected boolean usePosTypes;
 	
+	public static final String PARAM_USE_POS_TYPE_SINGLE = "usePosTypesSingle";
+	@ConfigurationParameter(name = PARAM_USE_POS_TYPE_SINGLE, defaultValue = "true")
+	protected boolean usePosTypeSingle;
+	
 	public static final String PARAM_USE_POS_INDEX = "usePosIndex";
 	@ConfigurationParameter(name = PARAM_USE_POS_INDEX, defaultValue = "true")
 	protected boolean usePosIndex;
