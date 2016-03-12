@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 
+import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.fit.component.JCasAnnotator_ImplBase;
 import org.apache.uima.fit.descriptor.ConfigurationParameter;
 import org.apache.uima.fit.descriptor.TypeCapability;
-import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.cas.StringArray;
 
@@ -36,31 +36,30 @@ public class CharNGramAnnotator
 	public void process(JCas jcas)
 		throws AnalysisEngineProcessException
     { 			  
-		List<Token> tokens = new ArrayList<Token>(JCasUtil.select(jcas, Token.class));	    	  
-		LinkedHashSet<String> charNgrams;
-		StringArray annoCharNgrams;
-  	  
-		String word;
-		int i;
-  	  
-		for(Token token : tokens)
-		{
-			i = 0;
-			word = token.getCoveredText().toLowerCase();
-  		  
-			charNgrams = getCharNGrams(word, minN, maxN);
-			annoCharNgrams = new StringArray(jcas, charNgrams.size());
-  		  
-			for(String ngram : charNgrams)
+			    	  
+		
+		
+		
+		List<Token> tokens = new ArrayList<Token>(JCasUtil.select(jcas, Token.class));
+			for(Token token : tokens)
 			{
-				annoCharNgrams.set(i, ngram);
-				i++;
-			}
-  		  
-			CharNGram ngrams = new CharNGram(jcas);	  
-				ngrams.setCharNGrams(annoCharNgrams);
-				ngrams.addToIndexes();
-  	  	}
+				String word;
+				word = token.getCoveredText().toLowerCase();
+	  		  
+				LinkedHashSet<String> charNgrams = getCharNGrams(word, minN, maxN);
+				StringArray annoCharNgrams = new StringArray(jcas, charNgrams.size());
+				
+				int i = 0;
+				for(String ngram : charNgrams)
+				{
+					annoCharNgrams.set(i, ngram);
+					i++;
+				}
+	  		  
+				CharNGram ngrams = new CharNGram(jcas);	  
+					ngrams.setCharNGrams(annoCharNgrams);
+					ngrams.addToIndexes();
+	  	  	}
     }
 	
 	//FIXME Something messes up the ordering.

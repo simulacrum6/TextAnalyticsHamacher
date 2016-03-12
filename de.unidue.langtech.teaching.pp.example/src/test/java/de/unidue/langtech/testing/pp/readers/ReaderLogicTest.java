@@ -10,7 +10,7 @@ import org.junit.Test;
 public class ReaderLogicTest 
 {
 	@Test
-	public void ReaderLogicTest()
+	public void readerLogicTest()
 	{
 		List<String> testlist = new ArrayList<String>();
 			testlist.add("Line0");

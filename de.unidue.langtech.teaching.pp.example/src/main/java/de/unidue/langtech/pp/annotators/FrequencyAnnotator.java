@@ -20,7 +20,7 @@ import de.unidue.langtech.pp.utils.FrequencyMap;
 import de.unidue.langtech.teaching.pp.type.CorpusFrequency;
 
 /*
- * List based annotator, adding Rank & Frequency. Uses frequency value from a text file. 
+ * File based annotator, adding Rank & Frequency. Uses frequency value from a text file. 
  * Currently the formatting requirements are very strict. Make sure to look into these and select appropriate txt files as sources.< 
  * */
 
@@ -52,16 +52,7 @@ public class FrequencyAnnotator
             throw new ResourceInitializationException(e);
         }
         
-        freqs = new FrequencyMap(frequencyList, frequencyCorpusName);
-        
-//        freqs = new FrequencyMap();
-//        String[] values;
-//        
-//        for(String line : lines)
-//        {	
-//        	values = line.split("\\t"); 
-//        	freqs.put(values[1].trim(), values[2].trim(), values[3].trim(), values[0].trim());
-//        }
+        freqs = new FrequencyMap(frequencyList, frequencyCorpusName);        
         
     }
 
@@ -81,7 +72,6 @@ public class FrequencyAnnotator
 				count = freqs.getCount(lemma);
 				rank = freqs.getRank(lemma);
 			} else {
-				//count = freqs.getMinFreq() - 1;
 				count = 0;
 				rank = freqs.getSize() + 1;
 			}

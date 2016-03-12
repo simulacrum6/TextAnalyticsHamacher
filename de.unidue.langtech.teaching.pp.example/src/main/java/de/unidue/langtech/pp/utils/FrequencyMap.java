@@ -2,14 +2,11 @@ package de.unidue.langtech.pp.utils;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Hashtable;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.uima.resource.ResourceInitializationException;
 
 // I could have simply implemented the map interface... or extended an existing map type. But that would be smart...
 // TODO Extend capabilities to handle more frequency measures and corpus stlyes
@@ -140,7 +137,7 @@ public class FrequencyMap
 	}
 	
 	// From-file constructor with corpus selection. Currently supported names: "5kwordfrequency", "subtlexus"
-	// TODO Add Unit Test
+	// TODO Add to Unit Test
 	public FrequencyMap(File inputfile, String corpusname)
 	{
 		this();

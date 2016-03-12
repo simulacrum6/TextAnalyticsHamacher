@@ -1,6 +1,5 @@
 package de.unidue.langtech.pp.featureExtractors;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.uima.fit.descriptor.ConfigurationParameter;
@@ -31,12 +30,11 @@ public class FrequencyUFE
      */
     public static final String FREQUENCY = "Frequency";
     
-    // Possible Types: "count", "rank"
+    // Possible Types: "COUNT", "RANK"
     public static final String PARAM_FEATURE_TYPE = "featureType";
-	@ConfigurationParameter(name = PARAM_FEATURE_TYPE, mandatory = true, defaultValue = "count")
+	@ConfigurationParameter(name = PARAM_FEATURE_TYPE, defaultValue = "count")
 	protected String featureType;
     
-	// Possible Inputs: "raw", "log"
     public static final String PARAM_USE_FREQUENCY_LOG = "useFrequencyLog";
 	@ConfigurationParameter(name = PARAM_USE_FREQUENCY_LOG, defaultValue = "false")
 	protected boolean useFrequencyLog;
@@ -53,9 +51,9 @@ public class FrequencyUFE
     protected Feature getFeature(CorpusFrequency anno)
     		throws IllegalArgumentException
     {
-    	if(featureType.equals("count")){
+    	if(featureType.toLowerCase().equals("count")){
     		return extractCount(anno);
-    	} else if( featureType.equals("rank") ){
+    	} else if( featureType.toLowerCase().equals("rank") ){
     		return extractRank(anno);
     	} else {
     		throw new IllegalArgumentException("Illegal Parameter. PARAM_FREQUENCY_TYPE: " + featureType + ". Must be 'raw' or 'log'.");

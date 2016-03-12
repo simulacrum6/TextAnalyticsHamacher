@@ -1,39 +1,23 @@
 package de.unidue.langtech.testing.pp.readers;
 
-import static org.apache.uima.fit.factory.AnalysisEngineFactory.createEngine;
-import static org.apache.uima.fit.util.JCasUtil.select;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.uima.analysis_engine.AnalysisEngine;
-import org.apache.uima.analysis_engine.AnalysisEngineDescription;
-import org.apache.uima.collection.CollectionReader;
 import org.apache.uima.collection.CollectionReaderDescription;
-import org.apache.uima.fit.factory.AnalysisEngineFactory;
 import org.apache.uima.fit.factory.CollectionReaderFactory;
-import org.apache.uima.fit.factory.JCasBuilder;
 import org.apache.uima.fit.pipeline.JCasIterable;
-import org.apache.uima.fit.pipeline.SimplePipeline;
 import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
-import org.apache.xmlgraphics.xmp.Metadata;
 import org.junit.Test;
 
 import de.tudarmstadt.ukp.dkpro.core.api.metadata.type.DocumentMetaData;
-import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Lemma;
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token;
-import de.tudarmstadt.ukp.dkpro.core.stanfordnlp.StanfordLemmatizer;
-import de.unidue.langtech.pp.annotators.FrequencyAnnotator;
-import de.unidue.langtech.pp.annotators.Playground;
 import de.unidue.langtech.pp.readers.ReaderTrain;
-import de.unidue.langtech.pp.readers.ReaderTrainTC;
-import de.unidue.langtech.teaching.pp.type.CorpusFrequency;
 import de.unidue.langtech.teaching.pp.type.GoldComplexity;
 
 public class ReaderTrainTest {

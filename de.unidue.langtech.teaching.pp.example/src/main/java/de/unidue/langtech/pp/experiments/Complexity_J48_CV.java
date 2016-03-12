@@ -1,6 +1,5 @@
 package de.unidue.langtech.pp.experiments;
 
-import static de.tudarmstadt.ukp.dkpro.core.api.io.ResourceCollectionReaderBase.INCLUDE_PREFIX;
 import static org.apache.uima.fit.factory.AnalysisEngineFactory.createEngineDescription;
 
 import java.text.SimpleDateFormat;
@@ -16,29 +15,29 @@ import org.apache.uima.resource.ResourceInitializationException;
 
 import de.tudarmstadt.ukp.dkpro.core.stanfordnlp.StanfordLemmatizer;
 import de.tudarmstadt.ukp.dkpro.core.stanfordnlp.StanfordPosTagger;
+
 import de.tudarmstadt.ukp.dkpro.lab.Lab;
 import de.tudarmstadt.ukp.dkpro.lab.task.Dimension;
 import de.tudarmstadt.ukp.dkpro.lab.task.ParameterSpace;
 import de.tudarmstadt.ukp.dkpro.lab.task.impl.BatchTask.ExecutionPolicy;
+
 import de.tudarmstadt.ukp.dkpro.tc.core.Constants;
 import de.tudarmstadt.ukp.dkpro.tc.features.length.NrOfCharsUFE;
 import de.tudarmstadt.ukp.dkpro.tc.features.ngram.LuceneCharacterNGramUFE;
-import de.tudarmstadt.ukp.dkpro.tc.features.ngram.LuceneNGramUFE;
-//import de.tudarmstadt.ukp.dkpro.tc.features.wordDifficulty.IsInflectedWordUFE;
-//import de.tudarmstadt.ukp.dkpro.tc.features.wordDifficulty.IsLatinWordUFE;
-
 import de.tudarmstadt.ukp.dkpro.tc.ml.ExperimentCrossValidation;
 import de.tudarmstadt.ukp.dkpro.tc.ml.report.BatchCrossValidationReport;
+import de.tudarmstadt.ukp.dkpro.tc.ml.report.BatchRuntimeReport;
 import de.tudarmstadt.ukp.dkpro.tc.weka.WekaClassificationAdapter;
 import de.tudarmstadt.ukp.dkpro.tc.weka.report.WekaClassificationReport;
-import de.unidue.langtech.pp.annotators.FrequencyAnnotator;
-import de.unidue.langtech.pp.annotators.Playground;
-import de.unidue.langtech.pp.featureExtractors.FrequencyUFE;
-import de.unidue.langtech.pp.featureExtractors.PosUFE;
-import de.unidue.langtech.pp.readers.ReaderTrainTC;
+
 import weka.attributeSelection.InfoGainAttributeEval;
 import weka.attributeSelection.Ranker;
 import weka.classifiers.trees.J48;
+
+import de.unidue.langtech.pp.annotators.FrequencyAnnotator;
+import de.unidue.langtech.pp.featureExtractors.FrequencyUFE;
+import de.unidue.langtech.pp.featureExtractors.PosUFE;
+import de.unidue.langtech.pp.readers.ReaderTrainTC;
 
 public class Complexity_J48_CV
     implements Constants
@@ -49,7 +48,7 @@ public class Complexity_J48_CV
     public static final int NUM_FOLDS = 10;
     static final String CORPUS_SMALL = "src/main/resources/inputfiles/cwi_training_allannotations.txt";
     static final String CORPUS_LARGE = "src/main/resources/inputfiles/cwi_testing_annotated.txt";
-    static final String CORPUS_FILEPATH_TRAIN = CORPUS_LARGE;
+    static final String CORPUS_FILEPATH_TRAIN = CORPUS_SMALL;
 
     public static void main(String[] args)
         throws Exception
@@ -110,8 +109,6 @@ public class Complexity_J48_CV
                 		NrOfCharsUFE.class.getName(),
                 		FrequencyUFE.class.getName(),
                 		PosUFE.class.getName(),
-                		// IsLatinWordUFE.class.getName(),
-                		// IsInflectedWordUFE.class.getName()
                 		LuceneCharacterNGramUFE.class.getName()
 //                		LuceneNGramUFE.class.getName()                		
                 })
@@ -126,9 +123,7 @@ public class Complexity_J48_CV
         				LuceneCharacterNGramUFE.PARAM_CHAR_NGRAM_MIN_N, 2,
         				LuceneCharacterNGramUFE.PARAM_CHAR_NGRAM_MAX_N, 4,
         				LuceneCharacterNGramUFE.PARAM_CHAR_NGRAM_USE_TOP_K, 500,
-                        LuceneCharacterNGramUFE.PARAM_CHAR_NGRAM_LOWER_CASE, true
-                        
-                        
+                        LuceneCharacterNGramUFE.PARAM_CHAR_NGRAM_LOWER_CASE, true  
                  })
         );
         

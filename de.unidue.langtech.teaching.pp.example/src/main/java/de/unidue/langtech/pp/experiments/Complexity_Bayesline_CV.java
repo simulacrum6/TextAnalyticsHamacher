@@ -1,6 +1,5 @@
 package de.unidue.langtech.pp.experiments;
 
-import static de.tudarmstadt.ukp.dkpro.core.api.io.ResourceCollectionReaderBase.INCLUDE_PREFIX;
 import static org.apache.uima.fit.factory.AnalysisEngineFactory.createEngineDescription;
 
 import java.text.SimpleDateFormat;
@@ -11,48 +10,33 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
-import org.apache.uima.fit.component.NoOpAnnotator;
 import org.apache.uima.fit.factory.AnalysisEngineFactory;
 import org.apache.uima.resource.ResourceInitializationException;
 
 import de.tudarmstadt.ukp.dkpro.core.stanfordnlp.StanfordLemmatizer;
 import de.tudarmstadt.ukp.dkpro.core.stanfordnlp.StanfordPosTagger;
+
 import de.tudarmstadt.ukp.dkpro.lab.Lab;
 import de.tudarmstadt.ukp.dkpro.lab.task.Dimension;
 import de.tudarmstadt.ukp.dkpro.lab.task.ParameterSpace;
 import de.tudarmstadt.ukp.dkpro.lab.task.impl.BatchTask.ExecutionPolicy;
-//TODO Add dependencies for required Packages.
-//weka -> weka
-//de.tudarmstadt.ukp.dkpro.lab.task -> dkpro.lab
-//de.tudarmstadt.ukp.dkpro.tc.examples
-//de.tudarmstadt.ukp.dkpro.tc.ml
-//de.tudarmstadt.ukp.dkpro.tc.weka
-//import weka.classifiers.bayes.NaiveBayes;
-//import de.tudarmstadt.ukp.dkpro.lab.Lab;
-//import de.tudarmstadt.ukp.dkpro.lab.task.BatchTask.ExecutionPolicy;
-//import de.tudarmstadt.ukp.dkpro.lab.task.Dimension;
-//import de.tudarmstadt.ukp.dkpro.lab.task.ParameterSpace;
+
 import de.tudarmstadt.ukp.dkpro.tc.core.Constants;
 import de.tudarmstadt.ukp.dkpro.tc.features.length.NrOfCharsUFE;
 import de.tudarmstadt.ukp.dkpro.tc.features.ngram.LuceneCharacterNGramUFE;
-import de.tudarmstadt.ukp.dkpro.tc.features.ngram.LuceneNGramUFE;
-//import de.tudarmstadt.ukp.dkpro.tc.examples.util.DemoUtils;
-//import de.tudarmstadt.ukp.dkpro.tc.features.length.NrOfCharsUFE;
-//import de.tudarmstadt.ukp.dkpro.tc.ml.ExperimentCrossValidation;
-//import de.tudarmstadt.ukp.dkpro.tc.weka.WekaClassificationAdapter;
 import de.tudarmstadt.ukp.dkpro.tc.ml.ExperimentCrossValidation;
-import de.tudarmstadt.ukp.dkpro.tc.ml.report.BatchCrossValidationReport;
 import de.tudarmstadt.ukp.dkpro.tc.weka.WekaClassificationAdapter;
-import de.tudarmstadt.ukp.dkpro.tc.weka.report.WekaClassificationReport;
-import de.unidue.langtech.pp.annotators.FrequencyAnnotator;
-import de.unidue.langtech.pp.annotators.Playground;
-import de.unidue.langtech.pp.featureExtractors.FrequencyUFE;
-import de.unidue.langtech.pp.featureExtractors.PosUFE;
-import de.unidue.langtech.pp.readers.ReaderTrainTC;
+
 import weka.attributeSelection.InfoGainAttributeEval;
 import weka.attributeSelection.Ranker;
 import weka.classifiers.bayes.NaiveBayes;
-import weka.classifiers.trees.J48;
+
+import de.unidue.langtech.pp.annotators.FrequencyAnnotator;
+import de.unidue.langtech.pp.featureExtractors.FrequencyUFE;
+import de.unidue.langtech.pp.featureExtractors.PosUFE;
+import de.unidue.langtech.pp.readers.ReaderTrainTC;
+
+
 
 public class Complexity_Bayesline_CV
     implements Constants
@@ -63,7 +47,7 @@ public class Complexity_Bayesline_CV
     public static final int NUM_FOLDS = 10;
     static final String CORPUS_SMALL = "src/main/resources/inputfiles/cwi_training_allannotations.txt";
     static final String CORPUS_LARGE = "src/main/resources/inputfiles/cwi_testing_annotated.txt";
-    static final String CORPUS_FILEPATH_TRAIN = CORPUS_LARGE;
+    static final String CORPUS_FILEPATH_TRAIN = CORPUS_SMALL;
 
     public static void main(String[] args)
         throws Exception
@@ -126,7 +110,7 @@ public class Complexity_Bayesline_CV
                 })
         );
         
-        // Set Params
+        // Set Feature Extractor Parameters
         @SuppressWarnings("unchecked")
         Dimension<List<Object>> dimPipelineParameters = Dimension.create(DIM_PIPELINE_PARAMS,
         		 Arrays.asList(new Object[] {
@@ -159,7 +143,7 @@ public class Complexity_Bayesline_CV
         		dimFeatureSelection.put("applySelection", new Boolean(true));
         
         
-        // Fit for Experiment (LM_Single_Label, FM_UNIT/FM_SEQUENCE)
+        // Set Parameter Space
 		@SuppressWarnings("unchecked")
 		ParameterSpace pSpace = new ParameterSpace(
 				Dimension.createBundle("readers", dimReaders),
